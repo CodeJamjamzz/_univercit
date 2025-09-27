@@ -1,0 +1,10 @@
+Create venv
+```
+python -m venv venv
+```
+Install libraries
+```
+pip install -r requirements.txt
+```
+
+Create branch on each app <3
