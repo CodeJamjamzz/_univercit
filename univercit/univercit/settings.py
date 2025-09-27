@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'file',
     'curriculum',
     'discussion',
-    'user'
+    'User'
 ]
 
 MIDDLEWARE = [
