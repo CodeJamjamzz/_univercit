@@ -24,6 +24,7 @@ class Thread(models.Model):
     isVisible = models.BooleanField(default=True)
     # Foreign Key(s)
     forumId = models.ForeignKey(Forum, on_delete=models.CASCADE)
+    studentId = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
 
 class Comment(models.Model):
     # Primary Key
