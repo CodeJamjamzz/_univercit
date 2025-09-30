@@ -10,14 +10,14 @@ from discussion.models import Thread
 class Rating(models.Model):
     ratingId = models.AutoField(primary_key=True)
     isUpvoted = models.BooleanField(default=False)
-    studentId = models.ForeignKey(Student, on_delete=models.CASCADE)
+    studentId = models.ForeignKey(Student, on_delete=models.CASCADE,null=True,blank=True)
 
 class CommentRating(Rating):
-    commentId = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    commentId = models.ForeignKey(Comment, on_delete=models.CASCADE,null=True,blank=True)
     pass
 class FileRating(Rating):
-    fileId = models.ForeignKey(File, on_delete=models.CASCADE)
+    fileId = models.ForeignKey(File, on_delete=models.CASCADE,null=True,blank=True)
     pass
 class ThreadRating(Rating):
-    threadId = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    threadId = models.ForeignKey(Thread, on_delete=models.CASCADE,null=True,blank=True)
     pass
