@@ -1,7 +1,7 @@
 from django.db import models
-# Create your models here.fdsfsdfa
+# Create your models here.
 class Student(models.Model):
-    studentId = models.AutoField(max_length=50, primary_key=True)
+    studentId = models.AutoField(primary_key=True)
     fname = models.CharField(max_length=50)
     lname = models.CharField(max_length=50)
     username = models.CharField(max_length=50)
