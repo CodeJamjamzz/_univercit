@@ -1,6 +1,6 @@
 """
     SCRIPT FOR ADDING MOCK DATA TO SERVER
-    1. run 'py mangage.py shell'
+    1. run 'py manage.py shell'
     2. copy and paste code below to shell and execute
 """
 

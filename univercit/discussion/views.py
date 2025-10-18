@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Forum, Thread
+from .models import Forum, Thread, Comment
 
 # Create your views here.
+# @login_required
 def forum_view(request, forum_id):
     # Get forum based on ID in url
     forum = Forum.objects.get(forumId=forum_id)
@@ -19,6 +21,7 @@ def forum_view(request, forum_id):
         'forum_threads': forum_threads
     })
 
+# @login_required
 def thread_view(request, thread_id):
     # Get thread based on ID in url
     thread = Thread.objects.get(threadId=thread_id)
@@ -35,3 +38,19 @@ def thread_view(request, thread_id):
         'thread': thread,
         'thread_comments': thread_comments
     })
+
+def add_comment(request, thread_id):
+    # Reject comment if user not auth
+    # if not request.user.is_authenticated():
+    #     return
+
+    thread = Thread.objects.get(threadId=thread_id)
+
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        Comment.objects.create(
+            content=content,
+            threadId=thread,
+            studentId=request.user.id
+        )
+        return redirect('thread', thread_id=thread_id)
