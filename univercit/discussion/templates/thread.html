@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ thread.threadTitle }}</title>
+</head>
+<body>
+    <h1> {{ thread.threadTitle }} </h1>
+    <br>
+    <ul>
+        {% for comment in thread_comments %}
+            <li> {{ comment.content }} </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -20,8 +20,18 @@ def forum_view(request, forum_id):
     })
 
 def thread_view(request, thread_id):
-    return HttpResponse(
-        """
-        yo
-        """
-    )
+    # Get thread based on ID in url
+    thread = Thread.objects.get(threadId=thread_id)
+    # Give 'page not found error' if thread does not exist
+    if not thread:
+        return HttpResponse("i dunno where that thread is")
+
+    # Get thread's comments
+    # TODO: paginate
+    thread_comments = thread.get_comments()
+
+    # Give thread info to thread template
+    return render(request, 'thread.html', {
+        'thread': thread,
+        'thread_comments': thread_comments
+    })
