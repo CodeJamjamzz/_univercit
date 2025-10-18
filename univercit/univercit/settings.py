@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'univercit',
         'USER': 'root',
-        'PASSWORD': 'Ilovemama3',
+        'PASSWORD': 'jamjam27',
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {'init_command': "SET SQL_MODE='STRICT_TRANS_TABLES'"},

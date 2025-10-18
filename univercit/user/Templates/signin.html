@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UniverCIT Sign In</title>
+</head>
+<body>
+
+<!-- Outer Box -->
+<table border="1" width="70%" align="center" cellpadding="20" style="border-radius: 15px;">
+    <tr>
+        <!-- Left Side -->
+        <td valign="top" width="40%">
+            <h2 align="center">UniverCIT</h2>
+            <p align="center">
+                A platform designed to connect and empower university students
+                through innovative IT-driven tools for collaboration and learning.
+            </p>
+        </td>
+
+        <!-- Right Side (Form Section) -->
+        <td valign="top" width="60%">
+            <fieldset style="border-radius: 10px;">
+                <legend align="center"><b>Sign In Form</b></legend>
+
+                <!-- Django-compatible form -->
+                <form method="POST" action="">
+                    {% csrf_token %}
+
+                    <label>First Name:</label><br>
+                    <input type="text" name="firstname" required><br><br>
+
+                    <label>Last Name:</label><br>
+                    <input type="text" name="lastname" required><br><br>
+
+                    <label>Username:</label><br>
+                    <input type="text" name="username" required><br><br>
+
+                    <label>Email:</label><br>
+                    <input type="email" name="email" required><br><br>
+
+                    <label>Program:</label><br>
+                    <select name="program" required>
+                        <option value="">-- Select Program --</option>
+                        <option value="bscs">BSCS</option>
+                        <option value="bsit">BSIT</option>
+                    </select><br><br>
+
+                    <label>Password:</label><br>
+                    <input type="password" name="password" required><br><br>
+
+                    <label>Confirm Password:</label><br>
+                    <input type="password" name="confirm_password" required><br><br>
+
+                    <input type="submit" value="Sign In">
+                </form>
+            </fieldset>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
