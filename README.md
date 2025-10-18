@@ -32,29 +32,7 @@ In the root directory **CSIT321_F1-UniverCIT**> input below in the terminal to i
 ```
 npm install
 ```
-After the install the tailwind library
-```
-npm install tailwindcss @tailwindcss/cli
-```
-After installling the tailwind library install Daisy UI
-```
-npm i -D daisyui@latest
-```
-After that create a directory and a css file in the directory if it still does not exist <br> ->
-``univercit/static/css/src/input.css`` <br>
-Copy this and paste inside input.css
-```
-@import "tailwindcss";
-@plugin "daisyui";
-```
-Put this code inside the ``package.json`` file
-```
-"scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "tailwindcss -i ./univercit/static/css/src/input.css -o ./univercit/static/css/src/output.css --watch"
-},
-```
-Put this in ``univercit/settings.py`` - needed so that when you put ``{% load static %}`` in the html file it will know that the css is in the ``univercit/static/css/src/input.css``
+If not added put this in ``univercit/settings.py`` - needed so that when you put ``{% load static %}`` in the html file it will know that the css is in the ``univercit/static/css/src/input.css``
 ```
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
