@@ -24,8 +24,8 @@ class SignInView(View):
     def get(self, request):
         return render(request, self.template)
     def post(self, request):
-        program_desc = request.POST['program']
-        program = Program.objects.get(program_desc=program_desc)
+        program_code = request.POST['program']
+        program = Program.objects.get(program_code=program_code)
 
         firstname = request.POST['firstname']
         lastname = request.POST['lastname']
