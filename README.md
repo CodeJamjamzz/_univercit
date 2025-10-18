@@ -28,7 +28,7 @@ Clone the repository
 git clone https://github.com/Smoll05/CSIT321_F1-UniverCIT.git
 ```
 
-In the root directory **CSIT321_F1-UniverCIT**> input below in the terminal to install node packages
+In the root directory **CSIT327_F1-UniverCIT**> input below in the terminal to install node packages
 ```
 npm install
 ```
