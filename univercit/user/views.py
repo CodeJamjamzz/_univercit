@@ -15,7 +15,7 @@ class LogInView(View):
 
         try:
             Student.objects.get(email = email, password = password)
-            return redirect("home") # redirect after login
+            return redirect("index") # redirect after login
         except Student.DoesNotExist:
             return render(request, self.template, {'error': 'user does not exist'})
 
@@ -44,10 +44,10 @@ class SignInView(View):
             email=email,
             password=password
         )
-        return redirect('home')
+        return redirect('index')
 
 class HomeView(View):
 
-    template = "home.html"
+    template = "index.html"
     def get(self, request):
         return render(request, self.template)
