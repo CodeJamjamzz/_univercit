@@ -47,6 +47,7 @@ class SignInView(View):
         return redirect('home')
 
 class HomeView(View):
+
     template = "home.html"
     def get(self, request):
         return render(request, self.template)
