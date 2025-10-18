@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ forum.forumTitle }}</title>
+</head>
+<body>
+    <h1> {{ forum.forumTitle }} </h1>
+    <br>
+    <ul>
+        {% for thread in forum_threads %}
+            <li> {{ thread.threadTitle }} </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

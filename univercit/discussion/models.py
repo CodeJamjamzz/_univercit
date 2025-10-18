@@ -13,6 +13,9 @@ class Forum(models.Model):
     # Foreign Key(s)
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
 
+    def get_threads(self):
+        return Thread.objects.filter(forumId=self.forumId)
+
 class Thread(models.Model):
     # Primary Key
     threadId = models.AutoField(primary_key=True)
@@ -25,6 +28,9 @@ class Thread(models.Model):
     # Foreign Key(s)
     forumId = models.ForeignKey(Forum, on_delete=models.CASCADE)
     studentId = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
+
+    def get_comments(self):
+        return Comment.objects.filter(threadId=self.threadId)
 
 class Comment(models.Model):
     # Primary Key
