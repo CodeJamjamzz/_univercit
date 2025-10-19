@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniverCIT</title>
+    {% load static %}
+    <link href="{% static 'css/src/output.css'%}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <section class="bg-accent h-screen bg-cover bg-center" 
+        style="background-image: url('{% static 'assets/home_background.png' %}');">
+        <header class="p-6">
+            <nav class="bg-base-100 flex justify-between items-center h-16 rounded-xl px-14">
+                <h1 class="text-2xl font-medium">UniverCIT</h1>
+                <div class="flex gap-4 items-center">
+                    <button class="btn btn-secondary px-8 h-[35px]">Sign up</button>
+                    <button class="btn btn-accent px-8 h-[35px]">Log in</button>
+                </div>
+            </nav>
+        </header>
+
+        <div class="max-w-[800px] m-auto flex flex-col justify-center items-center text-base-100 mt-32">
+            <div class="flex justify-center items-center gap-3 mb-6">
+                <div class="avatar-group -space-x-1">
+                    <div class="avatar border-0">
+                        <div class="w-6">
+                        <img src="https://img.daisyui.com/images/profile/demo/batperson@192.webp" />
+                        </div>
+                    </div>
+                    <div class="avatar border-0">
+                        <div class="w-6">
+                        <img src="https://img.daisyui.com/images/profile/demo/spiderperson@192.webp" />
+                        </div>
+                    </div>
+                    <div class="avatar border-0">
+                        <div class="w-6">
+                        <img src="https://img.daisyui.com/images/profile/demo/averagebulk@192.webp" />
+                        </div>
+                    </div>
+                    <div class="avatar avatar-placeholder border-0">
+                        <div class="bg-neutral text-neutral-content w-6">
+                        <span class="text-[10px]">+99</span>
+                        </div>
+                    </div>
+                    </div>
+                
+                <span class="text-[20px]">Over 1k+ happy students</span>
+            </div>
+            
+            <div class="text-center mb-10 relative">
+                <img src="{% static 'assets/star_icon.png'%}" 
+                    class="absolute size-12 left-[-40px] top-[-30px]">
+                <img src="{% static 'assets/squiggly_icon.png'%}" 
+                    class="absolute size-12 right-[-20px] top-[-10px]">
+                <h2 class="text-[54px] font-medium leading-15 tracking-wide">
+                    Empowering Students to Learn, Share, and Grow Together
+                </h2>
+            </div>
+
+            <div class="max-w-[450px] text-center mb-6">
+                <p class="text-xl">
+                    Access study materials, share notes, collaborate on projects, and track your learning progress — all in one place.
+                </p>
+            </div>
+
+            <button class="btn btn-secondary px-12 text-xl h-14">Sign Up</button>
+        </div>
+    </section>
+</body>
+</html>
