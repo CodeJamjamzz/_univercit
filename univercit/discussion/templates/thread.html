@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ thread.thread_title }}</title>
+    {% load static %}
+    <link href="{% static 'css/src/output.css' %}" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <h1> {{ thread.thread_title }} </h1>
