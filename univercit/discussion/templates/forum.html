@@ -2,15 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ forum.forumTitle }}</title>
+    <title>{{ forum.forum_title }}</title>
 </head>
 <body>
-    <h1> {{ forum.forumTitle }} </h1>
+    <h1> {{ forum.forum_title }} </h1>
     <br>
     <ul>
         {% for thread in forum_threads %}
-            <li> {{ thread.threadTitle }} </li>
+            <a href="{% url 'thread' thread_id=thread.thread_id %}"> {{ thread.thread_title }} </a>
         {% endfor %}
     </ul>
+
+    <form action="{% url 'add_thread' forum_id=forum.forum_id %}" method="post">
+    {% csrf_token %}
+        <label for="threadTitle">New Thread Name: </label>
+        <input id="threadTitle" type="text" name="threadTitle" value="{{ threadTitle }}">
+        <input type="submit" value="Create">
+    </form>
 </body>
 </html>

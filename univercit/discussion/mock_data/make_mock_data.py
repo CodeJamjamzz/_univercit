@@ -23,21 +23,21 @@ program_id = Program.objects.create(
 )
 
 forum_id = Forum.objects.create(
-    forumId=1,
-    forumTitle="Postman",
-    forumDesc="Mock HTTP requests",
-    courseId=course_id
+    forum_id=1,
+    forum_title="Postman",
+    forum_desc="Mock HTTP requests",
+    course_id=course_id
 )
 
 thread_id = Thread.objects.create(
-    threadTitle="How to mock POST requests",
-    forumId=forum_id,
-    dateCreated=datetime.now(),
-    studentId=None
+    thread_title="How to mock POST requests",
+    forum_id=forum_id,
+    date_created=datetime.now(),
+    student_id=None
 )
 
 comment1_id = Comment.objects.create(
-    commentId=1,
+    comment_id=1,
     content="What the title says. I'm having a hard time understanding postman",
-    threadId=thread_id
+    thread_id=thread_id
 )
