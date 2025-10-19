@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UniverCIT Login</title>
+</head>
+<body>
+
+<!-- Outer Box -->
+<table border="1" width="70%" align="center" cellpadding="20" style="border-radius: 15px;">
+    <tr>
+        <!-- Left Side -->
+        <td valign="top" width="40%">
+            <h2 align="center">UniverCIT</h2>
+            <p align="center">
+                A platform designed to connect and empower university students
+                through innovative IT-driven tools for collaboration and learning.
+            </p>
+        </td>
+
+        <!-- Right Side (Form Section) -->
+        <td valign="top" width="60%">
+            <fieldset style="border-radius: 10px;">
+                <legend align="center"><b>Login Form</b></legend>
+
+                <form method="POST" action="">
+                    {% csrf_token %}
+
+                    {% if error %}
+                        <p style="color:red;">{{ error }}</p>
+                    {% endif %}
+
+                    <label>Email:</label><br>
+                    <input type="email" name="email" required><br><br>
+
+                    <label>Password:</label><br>
+                    <input type="password" name="password" required><br><br>
+
+                    <input type="submit" value="Login">
+                </form>
+            </fieldset>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
