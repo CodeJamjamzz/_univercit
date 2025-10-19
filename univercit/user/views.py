@@ -1,9 +1,46 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from curriculum.models import Program
 from .models import Student
 
 # Create your views here.
+def student_list(request):
+    students = Student.objects.all()
+    return render(request, 'student_list.html', {'students': students})
+
+def student_list(request):
+    students = Student.objects.all()
+    return render(request, 'student_list.html', {'students': students})
+
+def student_detail(request, student_id):
+    student = get_object_or_404(Student, pk=student_id)
+    return render(request, 'student_detail.html', {'student': student})
+
+def student_edit(request, student_id):
+    student = get_object_or_404(Student, pk=student_id)
+
+    if request.method == 'POST':
+        program_id = request.POST.get('programId')
+        student.programId = Program.objects.get(pk=program_id) if program_id else None
+        student.fname = request.POST.get('fname')
+        student.lname = request.POST.get('lname')
+        student.username = request.POST.get('username')
+        student.email = request.POST.get('email')
+        student.password = request.POST.get('password')
+        student.save()
+        return redirect('student_list')
+
+    programs = Program.objects.all()
+    return render(request, 'student_form.html', {'student': student, 'programs': programs})
+
+def student_delete(request, student_id):
+    student = get_object_or_404(Student, pk=student_id)
+    if request.method == 'POST':
+        student.delete()
+        return redirect('student_list')
+    return render(request, 'student_confirm_delete.html', {'student': student})
+
+
 class LogInView(View):
     template = "login.html"
     def get(self, request):
