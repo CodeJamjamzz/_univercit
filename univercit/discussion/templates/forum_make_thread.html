@@ -1,0 +1,8 @@
+<form action="{% url 'add_thread' forum_id=forum.forum_id %}" method="post" class="card m-8 p-2 shadow-sm max-w-lg">
+    {% csrf_token %}
+    <label for="threadTitle" class="pl-4 pt-2">Create New Thread </label>
+    <div class="flex gap-2 px-4">
+        <input id="threadTitle" type="text" name="threadTitle" class="input" value="{{ threadTitle }}">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

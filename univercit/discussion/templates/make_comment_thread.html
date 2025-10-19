@@ -1,0 +1,8 @@
+<form action="{% url 'add_comment' thread_id=thread.thread_id %}" method="post" class="card my-4 p-2 shadow-sm">
+    {% csrf_token %}
+    <label for="content" class="pl-4 pt-2">Comment </label>
+    <div class="flex gap-2 px-4">
+        <input id="content" type="text" name="content" class="input w-full" value="{{ content }}">
+        <button type="submit" class="btn btn-primary">Comment</button>
+    </div>
+</form>

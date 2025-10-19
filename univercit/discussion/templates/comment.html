@@ -1,6 +1,0 @@
-<form action="{% url 'add_comment' thread_id=thread.thread_id %}" method="post">
-    {% csrf_token %}
-    <label for="content">Comment: </label>
-    <input id="content" type="text" name="content" value="{{ content }}">
-    <input type="submit" value="OK">
-</form>
