@@ -1,7 +1,12 @@
 from django.db import models
-# Create your models here.fdsfsdfa
+
+from curriculum.models import Program
+
+
+# Create your models here.
 class Student(models.Model):
     studentId = models.AutoField(primary_key=True)
+    programId = models.ForeignKey(Program, on_delete=models.SET_NULL, null=True, blank=True)
     fname = models.CharField(max_length=50)
     lname = models.CharField(max_length=50)
     username = models.CharField(max_length=50)

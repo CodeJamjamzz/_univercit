@@ -1,5 +1,8 @@
 from django.db import models
 
+from curriculum.models import Course
+from user.models import Student
+
 # Create your models here.
 class Forum(models.Model):
     # Primary Key
@@ -8,7 +11,7 @@ class Forum(models.Model):
     forumTitle = models.TextField()
     forumDesc = models.TextField()
     # Foreign Key(s)
-    # courseId FK
+    courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 class Thread(models.Model):
     # Primary Key
@@ -21,6 +24,7 @@ class Thread(models.Model):
     isVisible = models.BooleanField(default=True)
     # Foreign Key(s)
     forumId = models.ForeignKey(Forum, on_delete=models.CASCADE)
+    studentId = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
 
 class Comment(models.Model):
     # Primary Key
@@ -32,4 +36,4 @@ class Comment(models.Model):
     isVisible = models.BooleanField(default=True)
     # Foreign Key(s)
     threadId = models.ForeignKey(Thread, on_delete=models.CASCADE)
-    # studentId FK
+    studentId = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)

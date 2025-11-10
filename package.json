@@ -1,0 +1,28 @@
+{
+  "name": "csit321_f1-univercit",
+  "version": "1.0.0",
+  "description": "Create venv\r ```\r python -m venv venv\r ```\r Install libraries\r ```\r pip install -r requirements.txt\r ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "tailwindcss -i ./univercit/static/css/src/input.css -o ./univercit/static/css/src/output.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Smoll05/CSIT321_F1-UniverCIT.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Smoll05/CSIT321_F1-UniverCIT/issues"
+  },
+  "homepage": "https://github.com/Smoll05/CSIT321_F1-UniverCIT#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.14",
+    "tailwindcss": "^4.1.14"
+  },
+  "devDependencies": {
+    "daisyui": "^5.3.7"
+  }
+}
