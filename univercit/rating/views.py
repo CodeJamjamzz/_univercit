@@ -74,4 +74,16 @@ def rate(request):
 
 class RatingView(View):
     def get(self, request):
-        return render(request, 'rating.html')
+        # Dummy data for demonstration
+        context = {
+            'comment_text': 'This is a sample comment that demonstrates the upvote/downvote system. You can click the buttons to see how they work!',
+            'author': 'DemoUser',
+            'vote_count': 42,
+            'upvotes': 50,
+            'downvotes': 8,
+            'user_vote': None,  # Can be 'upvote', 'downvote', or None
+            'item_id': 1,
+            'item_type': 'comment',
+        }
+        
+        return render(request, 'rating.html', context)

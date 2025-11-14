@@ -2,9 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rating System</title>
+    {% load static %}
+    <link href="{% static 'css/src/output.css' %}" rel="stylesheet" type="text/css" />
 </head>
-<body>
-<h1> This is a placeholder because my app does not have its own html it will use others</h1>
+<body class="bg-base-200 min-h-screen py-8">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <h1 class="text-4xl font-bold text-center mb-2">Upvote/Downvote System</h1>
+        <p class="text-center text-base-content/70 mb-8">Working example</p>
+
+        {% if comment %}
+        <div class="card bg-base-100 shadow-xl mb-6">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Comment Rating</h2>
+                <div class="flex items-center gap-4">
+                    <div class="flex flex-col items-center gap-1">
+                        <!-- Upvote Button -->
+                        <form method="post" action="{% url 'rate' %}" class="m-0">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item_id }}">
+                            <input type="hidden" name="item_type" value="{{ item_type }}">
+                            <input type="hidden" name="action" value="upvote">
+                            <input type="hidden" name="next" value="{% url 'ratingView' %}">
+                            <button type="submit" class="btn {% if user_vote == 'upvote' %}bg-success text-success-content shadow-md{% else %}btn-ghost hover:bg-success/20{% endif %} btn-sm p-2 active:scale-95 transition-all">
+                
+                            </button>
+                        </form>
+                        <!-- Vote Count -->
+                        <span class="text-lg font-semibold {% if vote_count < 0 %}text-error{% elif vote_count > 0 %}text-success{% else %}text-base-content{% endif %}">{{ vote_count }}</span>
+                        <!-- Downvote Button -->
+                        <form method="post" action="{% url 'rate' %}" class="m-0">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item_id }}">
+                            <input type="hidden" name="item_type" value="{{ item_type }}">
+                            <input type="hidden" name="action" value="downvote">
+                            <input type="hidden" name="next" value="{% url 'ratingView' %}">
+                            <button type="submit" class="btn {% if user_vote == 'downvote' %}bg-error text-error-content shadow-md{% else %}btn-ghost hover:bg-error/20{% endif %} btn-sm p-2 active:scale-95 transition-all">
+                            </button>
+                        </form>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-base-content">{{ comment.content }}</p>
+                        <p class="text-sm text-base-content/60 mt-1">
+                            {% if comment.studentId %}
+                                Posted by {{ comment.studentId.user.username|default:"Anonymous" }}
+                            {% else %}
+                                Posted by Anonymous
+                            {% endif %}
+                        </p>
+                        <div class="mt-2 text-xs text-base-content/50">
+                            <span>Upvotes: {{ upvotes }}</span>
+                            <span class="mx-2">•</span>
+                            <span>Downvotes: {{ downvotes }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <p class="text-center text-base-content/70">No comments available. Please create a comment first to test the rating system.</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>
