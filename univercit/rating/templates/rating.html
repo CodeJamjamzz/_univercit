@@ -26,7 +26,7 @@
                             <input type="hidden" name="action" value="upvote">
                             <input type="hidden" name="next" value="{% url 'ratingView' %}">
                             <button type="submit" class="btn {% if user_vote == 'upvote' %}bg-success text-success-content shadow-md{% else %}btn-ghost hover:bg-success/20{% endif %} btn-sm p-2 active:scale-95 transition-all">
-                
+                                ↑
                             </button>
                         </form>
                         <!-- Vote Count -->
@@ -39,6 +39,7 @@
                             <input type="hidden" name="action" value="downvote">
                             <input type="hidden" name="next" value="{% url 'ratingView' %}">
                             <button type="submit" class="btn {% if user_vote == 'downvote' %}bg-error text-error-content shadow-md{% else %}btn-ghost hover:bg-error/20{% endif %} btn-sm p-2 active:scale-95 transition-all">
+                                ↓
                             </button>
                         </form>
                     </div>
@@ -58,12 +59,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        {% else %}
-        <div class="card bg-base-100 shadow-xl">
-            <div class="card-body">
-                <p class="text-center text-base-content/70">No comments available. Please create a comment first to test the rating system.</p>
             </div>
         </div>
         {% endif %}

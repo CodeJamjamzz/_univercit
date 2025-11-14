@@ -74,10 +74,17 @@ def rate(request):
 
 class RatingView(View):
     def get(self, request):
+        # Create a mock comment object for demonstration
+        class MockComment:
+            def __init__(self):
+                self.content = 'Mock design only because this app relies on other apps GUI'
+                self.studentId = None  # Can be set to None or a mock student
+        
+        comment = MockComment()
+        
         # Dummy data for demonstration
         context = {
-            'comment_text': 'This is a sample comment that demonstrates the upvote/downvote system. You can click the buttons to see how they work!',
-            'author': 'DemoUser',
+            'comment': comment,
             'vote_count': 42,
             'upvotes': 50,
             'downvotes': 8,
