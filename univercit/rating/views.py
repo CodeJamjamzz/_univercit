@@ -74,23 +74,49 @@ def rate(request):
 
 class RatingView(View):
     def get(self, request):
-        # Create a mock comment object for demonstration
-        class MockComment:
+        # Create mock thread object for title
+        class MockThread:
             def __init__(self):
-                self.content = 'Mock design only because this app relies on other apps GUI'
-                self.studentId = None  # Can be set to None or a mock student
+                self.threadTitle = 'How to mock POST requests'
+                self.threadId = 1
+                self.forumId = type('MockForum', (), {'forumId': 1})()
         
-        comment = MockComment()
+        thread = MockThread()
         
-        # Dummy data for demonstration
+        # Create mock thread object with item structure for the card template
+        class MockThreadItem:
+            def __init__(self):
+                self.content = 'How to mock POST requests'
+                self.student_username = 'Student Username'
+                self.item_id = thread.threadId
+                self.item_type = 'thread'
+                self.vote_count = 0
+                self.user_vote = None  # 'upvote', 'downvote', or None
+        
+        thread_item = MockThreadItem()
+        
+        # Create mock comments with dummy data
+        class MockComment:
+            def __init__(self, content, username, comment_id, vote_count, user_vote):
+                self.content = content
+                self.student_username = username
+                self.item_id = comment_id
+                self.item_type = 'comment'
+                self.vote_count = vote_count
+                self.user_vote = user_vote  # 'upvote', 'downvote', or None
+        
+        # Dummy comments matching the image
+        thread_comments = [
+            MockComment('how to do this', 'Student Username', 1, 0, None),
+            MockComment('no idea', 'Student Username', 2, 0, None),
+            MockComment('just look it up in youtube', 'Student Username', 3, 0, None),
+            MockComment('asdfawhaerehaerg', 'Student Username', 4, 0, None),
+        ]
+        
         context = {
-            'comment': comment,
-            'vote_count': 42,
-            'upvotes': 50,
-            'downvotes': 8,
-            'user_vote': None,  # Can be 'upvote', 'downvote', or None
-            'item_id': 1,
-            'item_type': 'comment',
+            'thread': thread,
+            'thread_item': thread_item,
+            'thread_comments': thread_comments,
         }
         
         return render(request, 'rating.html', context)
