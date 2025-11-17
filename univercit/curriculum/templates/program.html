@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block body %}
+<main>
+    <section class="hero-custom bg-base-200 min-h-[360px] px-24">
+        <div class="flex items-center justify-between gap-1 p-4 w-full flex-col lg:flex-row-reverse">
+            <div>
+                <img
+                    src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+                    class="max-w-sm rounded-lg shadow-2xl"
+                />
+            </div>
+            <div class="max-w-lg">
+                <div class="breadcrumbs text-md mb-4">
+                    <ul>
+                        <li><a>Programs</a></li>
+                        <li><a>{{ program.program_code }}</a></li>
+                    </ul>
+                </div>
+                <h1 class="text-5xl font-bold mb-2">{{ program.program_code }}</h1>
+                <h2 class="text-3xl font-bold mb-6">
+                    {{ program.program_desc }}
+                </h2>
+            </div>
+        </div>
+    </section>
+    <section class="px-24 py-6">
+        <div role="tablist" class="tabs tabs-border">
+            <a role="tab" class="tab">Overview</a>
+            <a role="tab" class="tab tab-active">Courses</a>
+        </div>
+        <section class="py-12 text-justify">
+            <h3 class="text-xl font-bold">OVERVIEW</h3>
+            <h2 class="text-4xl font-bold mb-12">About This Program</h2>
+            <p class="mb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec 
+                gravida ligula odio. Suspendisse gravida nibh eu mi semper placerat. 
+                Aenean aliquam quis ipsum a sollicitudin. Aenean vestibulum, nisi a 
+                bibendum suscipit, ante justo mattis ligula, ornare faucibus urna nisl 
+                sed quam. In ut nisl varius enim iaculis vestibulum at non magna. Maecenas 
+                blandit arcu in porta commodo. Praesent est justo, viverra et venenatis 
+                vitae, accumsan eget arcu. Proin aliquet, metus pharetra vestibulum 
+                lobortis, erat justo elementum mi, at blandit lacus ipsum at nisl. Morbi 
+                quis facilisis velit. Proin vel tristique ex. Proin consequat luctus vulputate.
+            </p>
+
+            <p>
+                Integer non lectus mattis, maximus lectus condimentum, aliquet magna. 
+                Proin at purus erat. Ut laoreet nisi ac leo sodales ultrices. Fusce ut 
+                magna tortor. Morbi a metus vitae felis condimentum pulvinar eu eget 
+                ipsum. Praesent vitae tempor elit. Aliquam pulvinar faucibus elit vel 
+                tincidunt. Morbi eget mattis elit. Nunc ut ante arcu. Sed ornare at ante 
+                ut gravida. Cras et mauris massa. Praesent id arcu quam. Mauris tempor 
+                fringilla nibh nec aliquam. Nunc ultricies risus sed purus laoreet dictum. 
+                Donec eu justo et justo elementum eleifend.
+            </p>
+        </section>
+        <section class="py-12">
+            <label class="input mb-6">
+                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <g
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke="currentColor"
+                    >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                    </g>
+                </svg>
+                <input 
+                    id="course-search" 
+                    type="search" 
+                    required 
+                    placeholder="Search courses..."
+                    value="{{ request.GET.q|default:'' }}"/>
+            </label>
+            <div id="courses-container" class="grid grid-cols-4 gap-6">
+                {% for course in program.courses.all %}
+                    <a href="{% url 'course_detail' program.program_code course.course_id %}"
+                        class="card card-dash card-md bg-base-100 w-80 shadow-md cursor-pointer hover:shadow-lg">
+                    <div class="card-body">
+                        <h2 class="card-title">{{ course.course_id }}: {{ course.course_name }}</h2>
+                        <p>{{ course.course_desc }}</p>
+                        <div class="card-actions justify-end mt-6">
+                            {% for program in course.programs.all %}
+                                <div class="badge badge-primary">{{ program.program_code }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    </a>
+                {% empty %}
+                    <span>No Programs</span>
+                {% endfor %}
+            </div>
+        </section>
+    </section>
+</main>
+{% endblock %}

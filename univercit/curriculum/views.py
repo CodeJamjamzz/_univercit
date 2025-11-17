@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from .models import Program, Course
 from django.http import HttpResponseForbidden
+from django.db.models import Q
 
 
 # Program Views
@@ -14,8 +15,16 @@ class ProgramListView(LoginRequiredMixin, View):
     login_url = '/login/'
     
     def get(self, request):
-        programs = Program.objects.all()
-        return render(request, "program_list.html", {
+        query = request.GET.get('query', '')
+        if query:
+            query = query.strip()
+            programs = Program.objects.filter(
+                Q(program_code__icontains=query) | Q(program_desc__icontains=query)
+            )
+        else:
+            programs = Program.objects.all()
+
+        return render(request, "all_programs.html", {
             "programs": programs
         })
 
@@ -25,7 +34,7 @@ class ProgramDetailView(LoginRequiredMixin, View):
 
     def get(self, request, program_code):
         program = get_object_or_404(Program, pk=program_code)
-        return render(request, 'program_detail', {
+        return render(request, 'program.html', {
             "program": program
         })
 
@@ -86,8 +95,16 @@ class CourseListView(LoginRequiredMixin, View):
     login_url = '/login/'
     
     def get(self, request):
-        courses = Course.objects.all()
-        return render(request, "course_list.html", {
+        query = request.GET.get('query', '')
+        if query:
+            query = query.strip()
+            courses = Course.objects.filter(
+                Q(course_id__icontains=query) | Q(course_name__icontains=query)
+            )
+        else:
+            courses = Course.objects.all()
+
+        return render(request, "all_courses.html", {
             "courses": courses
         })
     
@@ -95,9 +112,11 @@ class CourseListView(LoginRequiredMixin, View):
 class CourseDetailView(LoginRequiredMixin, DetailView):
     login_url = '/login/'
     
-    def get(self, request, course_id):
+    def get(self, request, program_code, course_id):
+        program = get_object_or_404(Program, pk=program_code)
         course = get_object_or_404(Course, course_id=course_id)
-        return render(request, 'program_detail', {
+        return render(request, 'course.html', {
+            "program": program,
             "course": course
         })
 

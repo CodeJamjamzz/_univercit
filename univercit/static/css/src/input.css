@@ -43,3 +43,17 @@
   --depth: 0;
   --noise: 1;
 }
+
+@layer components {
+  .hero-custom {
+        display: grid;
+        width: 100%;
+        place-items: center start;
+        background-size: cover;
+        background-position: center;
+        & > * {
+            grid-column-start: 1;
+            grid-row-start: 1;
+        }
+    }
+}

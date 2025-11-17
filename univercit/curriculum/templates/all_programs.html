@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+    <main>
+        <section
+            class="hero-custom min-h-[360px]"
+            style="background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);"
+        >
+            <div class="hero-overlay"></div>
+                <div class="text-neutral-content">
+                    <div class="max-w-2xl mx-12">
+                        <h1 class="text-5xl font-bold mb-4">All Programs</h1>
+                        <p>
+                            Explore a diverse collection of academic programs designed to build strong 
+                            foundations and specialized expertise. Each program offers a combining 
+                            courses, resources, and discussions that foster growth and collaboration. 
+                            Discover opportunities that match your goals and begin your journey toward 
+                            mastery in your chosen field.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="px-12 py-6">
+            <form id="search-form" method="GET">
+                <label class="input mb-6">
+                    <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <g
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                        stroke-width="2.5"
+                        fill="none"
+                        stroke="currentColor"
+                        >
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                        </g>
+                    </svg>
+                    <input 
+                        id="course-search" 
+                        type="search" 
+                        required 
+                        placeholder="Search programs..."
+                        value="{{ request.GET.q|default:'' }}"/>
+                </label>
+            </form>
+            <div id="courses-container" class="grid grid-cols-4 gap-6">
+                {% for program in programs %}
+                    <a href="{% url 'program_detail' program.program_code %}"
+                        class="card card-dash card-md bg-base-100 w-80 shadow-md cursor-pointer hover:shadow-lg">
+                    <div class="card-body">
+                        <h2 class="card-title">{{ program.program_code }}</h2>
+                        <p>{{ program.program_desc }}</p>
+                    </div>
+                    </a>
+                {% empty %}
+                    <span>No Programs</span>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+    <script src="{% static 'js/course_search.js' %}"></script>
+{% endblock %}

@@ -1,5 +1,277 @@
 {% extends "base.html" %}
 
 {% block body %}
-    
+<main>
+    <section class="hero-custom bg-base-200 min-h-[360px] px-24">
+        <div class="flex items-center justify-between gap-1 p-4 w-full flex-col lg:flex-row-reverse">
+            <div>
+                <img
+                    src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+                    class="max-w-sm rounded-lg shadow-2xl"
+                />
+            </div>
+            <div class="max-w-lg">
+                <div class="breadcrumbs text-md mb-4">
+                    <ul>
+                        <li><a>Programs</a></li>
+                        <li><a>{{ program.program_code }}</a></li>
+                        <li><a>{{ course.course_id }}</a></li>
+                    </ul>
+                </div>
+                <h1 class="text-5xl font-bold mb-2">{{ course.course_id }}</h1>
+                <h2 class="text-3xl font-bold mb-6">
+                    {{ course.course_name }}
+                </h2>
+                <span>Summary:</span>
+                <ul>
+                    <li>Files Uploaded: </li>
+                    <li>Active Discussions: </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="px-24 py-6">
+        <div role="tablist" class="tabs tabs-border">
+            <a role="tab" class="tab">Overview</a>
+            <a role="tab" class="tab tab-active">Files</a>
+            <a role="tab" class="tab">Discussions</a>
+        </div>
+        <section class="py-12 text-justify">
+            <h3 class="text-xl font-bold">OVERVIEW</h3>
+            <h2 class="text-4xl font-bold mb-12">About This Course</h2>
+            <p class="mb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec 
+                gravida ligula odio. Suspendisse gravida nibh eu mi semper placerat. 
+                Aenean aliquam quis ipsum a sollicitudin. Aenean vestibulum, nisi a 
+                bibendum suscipit, ante justo mattis ligula, ornare faucibus urna nisl 
+                sed quam. In ut nisl varius enim iaculis vestibulum at non magna. Maecenas 
+                blandit arcu in porta commodo. Praesent est justo, viverra et venenatis 
+                vitae, accumsan eget arcu. Proin aliquet, metus pharetra vestibulum 
+                lobortis, erat justo elementum mi, at blandit lacus ipsum at nisl. Morbi 
+                quis facilisis velit. Proin vel tristique ex. Proin consequat luctus vulputate.
+            </p>
+
+            <p>
+                Integer non lectus mattis, maximus lectus condimentum, aliquet magna. 
+                Proin at purus erat. Ut laoreet nisi ac leo sodales ultrices. Fusce ut 
+                magna tortor. Morbi a metus vitae felis condimentum pulvinar eu eget 
+                ipsum. Praesent vitae tempor elit. Aliquam pulvinar faucibus elit vel 
+                tincidunt. Morbi eget mattis elit. Nunc ut ante arcu. Sed ornare at ante 
+                ut gravida. Cras et mauris massa. Praesent id arcu quam. Mauris tempor 
+                fringilla nibh nec aliquam. Nunc ultricies risus sed purus laoreet dictum. 
+                Donec eu justo et justo elementum eleifend.
+            </p>
+        </section>
+        <section class="py-12">
+            <h3 class="text-xl font-bold">FILES</h3>
+            <div class="overflow-x-auto">
+            <table class="table">
+                <!-- head -->
+                <thead>
+                <tr>
+                    <th>
+                    <label>
+                        <input type="checkbox" class="checkbox" />
+                    </label>
+                    </th>
+                    <th>Name</th>
+                    <th>Job</th>
+                    <th>Favorite Color</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- row 1 -->
+                <tr>
+                    <th>
+                    <label>
+                        <input type="checkbox" class="checkbox" />
+                    </label>
+                    </th>
+                    <td>
+                    <div class="flex items-center gap-3">
+                        <div class="avatar">
+                        <div class="mask mask-squircle h-12 w-12">
+                            <img
+                            src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                            alt="Avatar Tailwind CSS Component" />
+                        </div>
+                        </div>
+                        <div>
+                        <div class="font-bold">Hart Hagerty</div>
+                        <div class="text-sm opacity-50">United States</div>
+                        </div>
+                    </div>
+                    </td>
+                    <td>
+                    Zemlak, Daniel and Leannon
+                    <br />
+                    <span class="badge badge-ghost badge-sm">Desktop Support Technician</span>
+                    </td>
+                    <td>Purple</td>
+                    <th>
+                    <button class="btn btn-ghost btn-xs">details</button>
+                    </th>
+                </tr>
+                <!-- row 2 -->
+                <tr>
+                    <th>
+                    <label>
+                        <input type="checkbox" class="checkbox" />
+                    </label>
+                    </th>
+                    <td>
+                    <div class="flex items-center gap-3">
+                        <div class="avatar">
+                        <div class="mask mask-squircle h-12 w-12">
+                            <img
+                            src="https://img.daisyui.com/images/profile/demo/3@94.webp"
+                            alt="Avatar Tailwind CSS Component" />
+                        </div>
+                        </div>
+                        <div>
+                        <div class="font-bold">Brice Swyre</div>
+                        <div class="text-sm opacity-50">China</div>
+                        </div>
+                    </div>
+                    </td>
+                    <td>
+                    Carroll Group
+                    <br />
+                    <span class="badge badge-ghost badge-sm">Tax Accountant</span>
+                    </td>
+                    <td>Red</td>
+                    <th>
+                    <button class="btn btn-ghost btn-xs">details</button>
+                    </th>
+                </tr>
+                <!-- row 3 -->
+                <tr>
+                    <th>
+                    <label>
+                        <input type="checkbox" class="checkbox" />
+                    </label>
+                    </th>
+                    <td>
+                    <div class="flex items-center gap-3">
+                        <div class="avatar">
+                        <div class="mask mask-squircle h-12 w-12">
+                            <img
+                            src="https://img.daisyui.com/images/profile/demo/4@94.webp"
+                            alt="Avatar Tailwind CSS Component" />
+                        </div>
+                        </div>
+                        <div>
+                        <div class="font-bold">Marjy Ferencz</div>
+                        <div class="text-sm opacity-50">Russia</div>
+                        </div>
+                    </div>
+                    </td>
+                    <td>
+                    Rowe-Schoen
+                    <br />
+                    <span class="badge badge-ghost badge-sm">Office Assistant I</span>
+                    </td>
+                    <td>Crimson</td>
+                    <th>
+                    <button class="btn btn-ghost btn-xs">details</button>
+                    </th>
+                </tr>
+                <!-- row 4 -->
+                <tr>
+                    <th>
+                    <label>
+                        <input type="checkbox" class="checkbox" />
+                    </label>
+                    </th>
+                    <td>
+                    <div class="flex items-center gap-3">
+                        <div class="avatar">
+                        <div class="mask mask-squircle h-12 w-12">
+                            <img
+                            src="https://img.daisyui.com/images/profile/demo/5@94.webp"
+                            alt="Avatar Tailwind CSS Component" />
+                        </div>
+                        </div>
+                        <div>
+                        <div class="font-bold">Yancy Tear</div>
+                        <div class="text-sm opacity-50">Brazil</div>
+                        </div>
+                    </div>
+                    </td>
+                    <td>
+                    Wyman-Ledner
+                    <br />
+                    <span class="badge badge-ghost badge-sm">Community Outreach Specialist</span>
+                    </td>
+                    <td>Indigo</td>
+                    <th>
+                    <button class="btn btn-ghost btn-xs">details</button>
+                    </th>
+                </tr>
+                </tbody>
+                <!-- foot -->
+                <tfoot>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Job</th>
+                    <th>Favorite Color</th>
+                    <th></th>
+                </tr>
+                </tfoot>
+            </table>
+            </div>
+        </section>
+        <section class="py-12">
+            <h3 class="text-xl font-bold">DISCUSSIONS</h3>
+            <ul class="list bg-base-100 rounded-box shadow-md">
+  
+            <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Most played songs this week</li>
+            
+            <li class="list-row">
+                <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/1@94.webp"/></div>
+                <div>
+                <div>Dio Lupa</div>
+                <div class="text-xs uppercase font-semibold opacity-60">Remaining Reason</div>
+                </div>
+                <button class="btn btn-square btn-ghost">
+                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
+                </button>
+                <button class="btn btn-square btn-ghost">
+                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></g></svg>
+                </button>
+            </li>
+            
+            <li class="list-row">
+                <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/4@94.webp"/></div>
+                <div>
+                <div>Ellie Beilish</div>
+                <div class="text-xs uppercase font-semibold opacity-60">Bears of a fever</div>
+                </div>
+                <button class="btn btn-square btn-ghost">
+                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
+                </button>
+                <button class="btn btn-square btn-ghost">
+                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></g></svg>
+                </button>
+            </li>
+            
+            <li class="list-row">
+                <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/3@94.webp"/></div>
+                <div>
+                <div>Sabrino Gardener</div>
+                <div class="text-xs uppercase font-semibold opacity-60">Cappuccino</div>
+                </div>
+                <button class="btn btn-square btn-ghost">
+                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
+                </button>
+                <button class="btn btn-square btn-ghost">
+                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></g></svg>
+                </button>
+            </li>
+            
+            </ul>
+        </section>
+    </section>
+</main>
 {% endblock %}
