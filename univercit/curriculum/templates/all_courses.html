@@ -5,12 +5,12 @@
     <main>
         <section
             class="hero-custom min-h-[360px]"
-            style="background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);"
+            style="background-image: url({% static 'assets/all-courses-program-bg.jpg' %});"
         >
             <div class="hero-overlay"></div>
-                <div class="text-neutral-content">
-                    <div class="max-w-2xl mx-12">
-                        <h1 class="text-5xl font-bold">All Courses</h1>
+                <div class="text-neutral-content px-24">
+                    <div class="max-w-2xl">
+                        <h1 class="text-5xl font-bold mb-4">All Courses</h1>
                         <p>
                             Discover a wide range of courses designed to help students grow their knowledge and 
                             skills across various programs. Explore subjects, each built with comprehensive 
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </section>
-        <section class="px-12 py-6">
+        <section class="px-24 py-6">
             <form id="search-form" method="GET">
                 <label class="input mb-6">
                     <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -46,7 +46,8 @@
             </form>
             <div id="courses-container" class="grid grid-cols-4 gap-6">
                 {% for course in courses %}
-                    <a class="card card-dash card-md bg-base-100 w-80 shadow-md cursor-pointer hover:shadow-lg">
+                   <a href="{% url 'course_detail' course.course_id %}"  
+                    class="card card-dash card-md bg-base-100 w-80 shadow-md cursor-pointer hover:shadow-lg">
                     <div class="card-body">
                         <h2 class="card-title">{{ course.course_id }}: {{ course.course_name }}</h2>
                         <p>{{ course.course_desc }}</p>

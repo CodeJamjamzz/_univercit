@@ -112,11 +112,10 @@ class CourseListView(LoginRequiredMixin, View):
 class CourseDetailView(LoginRequiredMixin, DetailView):
     login_url = '/login/'
     
-    def get(self, request, program_code, course_id):
-        program = get_object_or_404(Program, pk=program_code)
+    def get(self, request, course_id):
         course = get_object_or_404(Course, course_id=course_id)
         return render(request, 'course.html', {
-            "program": program,
+            "programs": course.programs,
             "course": course
         })
 

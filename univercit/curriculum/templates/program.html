@@ -1,16 +1,20 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block body %}
 <main>
-    <section class="hero-custom bg-base-200 min-h-[360px] px-24">
+    <section class="hero-custom bg-base-200 min-h-[360px] px-24"
+        style="background-image: linear-gradient(to right top, #fa812f, 
+        #fc843a, #fd8744, #fe8a4e, #ff8d57, #ff9060, #ff9368, 
+        #ff9670, #ff9a79, #ff9e82, #ffa28b, #ffa693);">
         <div class="flex items-center justify-between gap-1 p-4 w-full flex-col lg:flex-row-reverse">
             <div>
                 <img
-                    src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+                    src="{% static 'assets/idea.jpg' %}"
                     class="max-w-sm rounded-lg shadow-2xl"
                 />
             </div>
-            <div class="max-w-lg">
+            <div class="max-w-lg text-white">
                 <div class="breadcrumbs text-md mb-4">
                     <ul>
                         <li><a>Programs</a></li>
@@ -77,7 +81,7 @@
             </label>
             <div id="courses-container" class="grid grid-cols-4 gap-6">
                 {% for course in program.courses.all %}
-                    <a href="{% url 'course_detail' program.program_code course.course_id %}"
+                    <a href="{% url 'course_detail' course.course_id %}"
                         class="card card-dash card-md bg-base-100 w-80 shadow-md cursor-pointer hover:shadow-lg">
                     <div class="card-body">
                         <h2 class="card-title">{{ course.course_id }}: {{ course.course_name }}</h2>

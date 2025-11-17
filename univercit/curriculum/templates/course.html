@@ -1,20 +1,31 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block body %}
 <main>
-    <section class="hero-custom bg-base-200 min-h-[360px] px-24">
+    <section class="hero-custom min-h-[360px] px-24"
+        style="background-image: linear-gradient(to right top, #fa812f, 
+        #fc843a, #fd8744, #fe8a4e, #ff8d57, #ff9060, #ff9368, 
+        #ff9670, #ff9a79, #ff9e82, #ffa28b, #ffa693);">
         <div class="flex items-center justify-between gap-1 p-4 w-full flex-col lg:flex-row-reverse">
             <div>
                 <img
-                    src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+                    src="{% static 'assets/idea.jpg' %}"
                     class="max-w-sm rounded-lg shadow-2xl"
                 />
             </div>
-            <div class="max-w-lg">
+            <div class="max-w-lg text-white">
                 <div class="breadcrumbs text-md mb-4">
                     <ul>
-                        <li><a>Programs</a></li>
-                        <li><a>{{ program.program_code }}</a></li>
+                        <li><a href="{% url 'program_list' %}">Programs</a></li>
+                        <li>
+                            {% for program in programs.all %}
+                                <a href="{% url 'program_detail' program.program_code %}">{{ program.program_code }} </a>
+                                {% if not forloop.last %}-{% endif %}
+                            {% empty %}
+                                ___
+                            {% endfor %}
+                        </li>
                         <li><a>{{ course.course_id }}</a></li>
                     </ul>
                 </div>
@@ -62,63 +73,26 @@
             </p>
         </section>
         <section class="py-12">
-            <h3 class="text-xl font-bold">FILES</h3>
+            <h3 class="text-xl font-bold mb-4">FILES</h3>
             <div class="overflow-x-auto">
             <table class="table">
                 <!-- head -->
                 <thead>
                 <tr>
-                    <th>
-                    <label>
-                        <input type="checkbox" class="checkbox" />
-                    </label>
-                    </th>
-                    <th>Name</th>
-                    <th>Job</th>
-                    <th>Favorite Color</th>
-                    <th></th>
+                    <th>Files</th>
+                    <th>Owner</th>
+                    <th class="text-center">Date Uploaded</th>
+                    <th class="text-center">Upvotes</th>
+                    <th class="text-center">Downvotes</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- row 1 -->
+                {% for i in "01234" %}
+                <!-- rows -->
                 <tr>
-                    <th>
-                    <label>
-                        <input type="checkbox" class="checkbox" />
-                    </label>
-                    </th>
                     <td>
-                    <div class="flex items-center gap-3">
-                        <div class="avatar">
-                        <div class="mask mask-squircle h-12 w-12">
-                            <img
-                            src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-                            alt="Avatar Tailwind CSS Component" />
-                        </div>
-                        </div>
-                        <div>
-                        <div class="font-bold">Hart Hagerty</div>
-                        <div class="text-sm opacity-50">United States</div>
-                        </div>
-                    </div>
+                        File Name {{ forloop.counter0 }}
                     </td>
-                    <td>
-                    Zemlak, Daniel and Leannon
-                    <br />
-                    <span class="badge badge-ghost badge-sm">Desktop Support Technician</span>
-                    </td>
-                    <td>Purple</td>
-                    <th>
-                    <button class="btn btn-ghost btn-xs">details</button>
-                    </th>
-                </tr>
-                <!-- row 2 -->
-                <tr>
-                    <th>
-                    <label>
-                        <input type="checkbox" class="checkbox" />
-                    </label>
-                    </th>
                     <td>
                     <div class="flex items-center gap-3">
                         <div class="avatar">
@@ -129,147 +103,66 @@
                         </div>
                         </div>
                         <div>
-                        <div class="font-bold">Brice Swyre</div>
-                        <div class="text-sm opacity-50">China</div>
+                        <div class="font-bold">Jane Doe</div>
+                        <div class="text-sm opacity-50">BSCS</div>
                         </div>
                     </div>
                     </td>
-                    <td>
-                    Carroll Group
-                    <br />
-                    <span class="badge badge-ghost badge-sm">Tax Accountant</span>
-                    </td>
-                    <td>Red</td>
-                    <th>
-                    <button class="btn btn-ghost btn-xs">details</button>
-                    </th>
+                    <td class="text-center">18/11/2025</td>
+                    <td class="text-center">10</td>
+                    <td class="text-center">3</td>
                 </tr>
-                <!-- row 3 -->
-                <tr>
-                    <th>
-                    <label>
-                        <input type="checkbox" class="checkbox" />
-                    </label>
-                    </th>
-                    <td>
-                    <div class="flex items-center gap-3">
-                        <div class="avatar">
-                        <div class="mask mask-squircle h-12 w-12">
-                            <img
-                            src="https://img.daisyui.com/images/profile/demo/4@94.webp"
-                            alt="Avatar Tailwind CSS Component" />
-                        </div>
-                        </div>
-                        <div>
-                        <div class="font-bold">Marjy Ferencz</div>
-                        <div class="text-sm opacity-50">Russia</div>
-                        </div>
-                    </div>
-                    </td>
-                    <td>
-                    Rowe-Schoen
-                    <br />
-                    <span class="badge badge-ghost badge-sm">Office Assistant I</span>
-                    </td>
-                    <td>Crimson</td>
-                    <th>
-                    <button class="btn btn-ghost btn-xs">details</button>
-                    </th>
-                </tr>
-                <!-- row 4 -->
-                <tr>
-                    <th>
-                    <label>
-                        <input type="checkbox" class="checkbox" />
-                    </label>
-                    </th>
-                    <td>
-                    <div class="flex items-center gap-3">
-                        <div class="avatar">
-                        <div class="mask mask-squircle h-12 w-12">
-                            <img
-                            src="https://img.daisyui.com/images/profile/demo/5@94.webp"
-                            alt="Avatar Tailwind CSS Component" />
-                        </div>
-                        </div>
-                        <div>
-                        <div class="font-bold">Yancy Tear</div>
-                        <div class="text-sm opacity-50">Brazil</div>
-                        </div>
-                    </div>
-                    </td>
-                    <td>
-                    Wyman-Ledner
-                    <br />
-                    <span class="badge badge-ghost badge-sm">Community Outreach Specialist</span>
-                    </td>
-                    <td>Indigo</td>
-                    <th>
-                    <button class="btn btn-ghost btn-xs">details</button>
-                    </th>
-                </tr>
+                {% endfor %}
                 </tbody>
-                <!-- foot -->
-                <tfoot>
-                <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Job</th>
-                    <th>Favorite Color</th>
-                    <th></th>
-                </tr>
-                </tfoot>
             </table>
             </div>
         </section>
         <section class="py-12">
             <h3 class="text-xl font-bold">DISCUSSIONS</h3>
+            <h4 class="text-3xl font-bold mb-4">Engage with forums from fellow students.</h4>
             <ul class="list bg-base-100 rounded-box shadow-md">
   
-            <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Most played songs this week</li>
+            <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Most active disucssions</li>
             
             <li class="list-row">
-                <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/1@94.webp"/></div>
-                <div>
-                <div>Dio Lupa</div>
-                <div class="text-xs uppercase font-semibold opacity-60">Remaining Reason</div>
+                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
+                <div class="flex items-center text-xl font-bold">
+                    What part of this course did you find most challenging and why?
                 </div>
-                <button class="btn btn-square btn-ghost">
                 <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-                </button>
-                <button class="btn btn-square btn-ghost">
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></g></svg>
-                </button>
             </li>
             
             <li class="list-row">
-                <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/4@94.webp"/></div>
-                <div>
-                <div>Ellie Beilish</div>
-                <div class="text-xs uppercase font-semibold opacity-60">Bears of a fever</div>
+                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
+                <div class="flex items-center text-xl font-bold">
+                    Can anyone share tips for studying this subject effectively?
                 </div>
-                <button class="btn btn-square btn-ghost">
                 <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-                </button>
-                <button class="btn btn-square btn-ghost">
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></g></svg>
-                </button>
             </li>
             
             <li class="list-row">
-                <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/3@94.webp"/></div>
-                <div>
-                <div>Sabrino Gardener</div>
-                <div class="text-xs uppercase font-semibold opacity-60">Cappuccino</div>
+                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
+                <div class="flex items-center text-xl font-bold">
+                    How do you usually prepare for quizzes or exams in this course?
                 </div>
-                <button class="btn btn-square btn-ghost">
                 <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-                </button>
-                <button class="btn btn-square btn-ghost">
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></g></svg>
-                </button>
             </li>
             
+            <li class="list-row">
+                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
+                <div class="flex items-center text-xl font-bold">
+                    What topics do you think deserve more focus from the instructor?
+                </div>
+                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
+            </li>
+
+            <li class="list-row">
+                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
+                <div class="flex items-center text-xl font-bold">
+                    Can anyone share their notes or summaries for this week’s lecture?
+                </div>
+                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
+            </li>
             </ul>
         </section>
     </section>
