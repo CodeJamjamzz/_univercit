@@ -29,6 +29,9 @@ class Thread(models.Model):
     forum_id = models.ForeignKey(Forum, on_delete=models.CASCADE)
     student_id = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
 
+    def get_student(self):
+        return Student.objects.filter(studentId=self.student_id)
+
     def get_comments(self):
         return Comment.objects.filter(thread_id=self.thread_id)
 

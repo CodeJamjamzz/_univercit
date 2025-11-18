@@ -34,11 +34,13 @@ def thread_view(request, thread_id):
     # Get thread's comments
     # TODO: paginate
     thread_comments = thread.get_comments()
+    thread_student = thread.get_student()
 
     # Give thread info to thread template
     return render(request, 'thread.html', {
         'thread': thread,
-        'thread_comments': thread_comments
+        'thread_comments': thread_comments,
+        'thread_student': thread_student
     })
 
 # @login_required
