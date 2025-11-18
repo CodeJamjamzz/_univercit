@@ -1,8 +1,10 @@
+def testimonial_write_form(request):
+    """Render a simple testimonial writing form."""
+    return render(request, 'testimonial_write.html')
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponseBadRequest
-from django.contrib.auth.decorators import login_required
 from django.views import View
-from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 from user.models import Student
 from curriculum.models import Course
 from .models import Testimonial
@@ -35,40 +37,43 @@ Security:
 - Associates testimonials with specific courses and students
 """
 
-@login_required
-@require_POST
+@csrf_exempt  # TODO: Remove csrf_exempt in production for security. See docs.
 def submit(request):
-    """Submit a testimonial for a course."""
-    try:
-        if isinstance(request.user, Student):
-            student = request.user
-        else:
-            student = Student.objects.get(user=request.user)
-    except Student.DoesNotExist:
-        return HttpResponseBadRequest('Student profile not found.')
-    except Exception:
-        return HttpResponseBadRequest('Could not find user.')
-
-    # get details
+    """
+    Submit a testimonial. No login or CSRF required. Course is optional.
+    TODO: Make course required again when ready. Currently optional for testing/demo.
+    """
+    if request.method != 'POST':
+        return HttpResponseBadRequest('POST required.')
     course_id = request.POST.get('course_id')
-    content = request.POST.get('content')
-    next_url = request.POST.get('next', '/')  # return to previous page
-
-    if not all([course_id, content]):
-        return HttpResponseBadRequest('Missing parameters.')
-
-    # Create testimonial
-    course = get_object_or_404(Course, pk=course_id)
+    content = request.POST.get('content', '')
+    next_url = request.POST.get('next', '/')
+    if not content:
+        return HttpResponseBadRequest('Missing content.')
+    # TODO: Make course required again. For now, allow testimonials without a course (for testing/demo).
+    course = None
+    if course_id:
+        try:
+            course = Course.objects.get(pk=course_id)
+        except Course.DoesNotExist:
+            course = None
     Testimonial.objects.create(
-        student_id=student,
+        student_id=None,
         course_id=course,
         content=content,
         is_visible=True
     )
-
     return redirect(next_url)
+
+
+def testimonial_list(request):
+    """View all testimonials (public, no login required)."""
+    testimonials = Testimonial.objects.all().order_by('-testimonial_id')
+    return render(request, 'testimonial_list.html', {'testimonials': testimonials})
 
 class TestimonialView(View):
     """Placeholder view for testimonial app."""
     def get(self, request):
         return render(request, 'testimonial.html')
+
+

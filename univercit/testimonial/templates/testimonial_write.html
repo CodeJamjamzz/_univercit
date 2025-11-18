@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Write a Testimonial</title>
+</head>
+<body>
+    <h1>Submit a Testimonial</h1>
+    <form method="POST" action="/testimonial/submit/">
+        <label for="content">Testimonial:</label><br>
+        <textarea name="content" id="content" rows="4" cols="50" required></textarea><br><br>
+        <label for="course_id">Course ID (optional):</label>
+        <input type="text" name="course_id" id="course_id"><br><br>
+        <input type="hidden" name="next" value="/testimonial/list/">
+        <button type="submit">Submit</button>
+    </form>
+    <hr>
+    <a href="/testimonial/list/">View Testimonials</a>
+</body>
+</html>
