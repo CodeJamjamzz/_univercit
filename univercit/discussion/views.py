@@ -48,11 +48,17 @@ def add_thread(request, forum_id):
     if request.method == 'POST':
         forum = Forum.objects.get(forum_id=forum_id)
         thread_title = request.POST.get('threadTitle')
+        thread_first_comment = request.POST.get('threadFirstComment')
 
         thread = Thread.objects.create(
             forum_id=forum,
             thread_title=thread_title,
             date_created=datetime.now(),
+            student_id=request.user.id
+        )
+        Comment.objects.create(
+            content=thread_first_comment,
+            thread_id=thread,
             student_id=request.user.id
         )
         return redirect('thread', thread_id=thread.thread_id)

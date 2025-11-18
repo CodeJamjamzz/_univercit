@@ -7,11 +7,17 @@
             <input id="threadTitle"
                    type="text"
                    name="threadTitle"
-                   placeholder="What's on your mind?"
+                   placeholder="Thread Title"
                    class="input input-bordered w-full"
                    value="{{ threadTitle }}">
 
-            <button type="submit" class="btn btn-primary sm:w-auto">Post</button>
+            <input id="threadFirstComment"
+                   type="text"
+                   name="threadFirstComment"
+                   placeholder="What's on your mind?"
+                   class="input input-bordered w-full"
+                   value="{{ threadFirstComment }}">
+            <button type="submit" class="btn btn-secondary sm:w-auto">Post</button>
         </div>
     </div>
 </form>
