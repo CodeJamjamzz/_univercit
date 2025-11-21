@@ -1,0 +1,95 @@
+{% extends "dashboard-base.html" %}
+{% load static %}
+
+{% block title %}
+    <h1 class="text-xl font-bold">
+        {% if mode == "create" %}
+            Add Course
+        {% else %}
+            Edit Course
+        {% endif %}
+    </h1>
+{% endblock %}
+
+{% block body %}
+    <section class="py-4">
+        <div class="max-w-[600px] mx-auto">
+            <p class="mb-6 text-sm text-gray-700">
+                {% if mode == "create" %}
+                    Create a new academic course by completing the form below
+                {% else %}
+                    Modify the course’s name, description, or units to ensure course information stays up-to-date.
+                {% endif %}
+            </p>
+            <form action="">
+
+                <fieldset class="fieldset mb-4">
+                    <legend class="fieldset-legend">Course ID</legend>
+                    <input type="text" class="input w-full" placeholder="e.g. CSIT365" 
+                        value="{% if mode == 'update' %}{{ course.course_id }}{% else %}{% endif %}"/>
+                    <p class="label text-error">Required*</p>
+                </fieldset>
+    
+                <fieldset class="fieldset mb-4">
+                    <legend class="fieldset-legend">Course Name</legend>
+                    <input type="text" class="input w-full" placeholder="e.g. Information Management 2" 
+                        value="{% if mode == 'update' %}{{ course.course_name }}{% else %}{% endif %}"/>
+                    <p class="label text-error">Required*</p>
+                </fieldset>
+                
+                <fieldset class="fieldset mb-4">
+                    <legend class="fieldset-legend">Course Description</legend>
+                    <textarea class="textarea h-24 w-full text-black" placeholder="Add course description here...">{% if mode == "update" %}{{ course.course_desc }}{% endif %}</textarea>
+                    <p class="label text-error">Required*</p>
+                </fieldset>
+                
+                <fieldset class="fieldset mb-8">
+                    <legend class="fieldset-legend">Add Programs</legend>
+    
+                    <div class="relative">
+                        <input type="hidden" name="pokemon" id="selected-values">
+    
+                        <div id="multiselect-container" class="input input-bordered w-full h-auto p-2 flex flex-wrap gap-2 cursor-text bg-base-100 focus-within:outline focus-within:outline-2 focus-within:outline-primary">
+                            {% if mode == 'update' %}
+                                {% for program in course.programs.all %}
+                                    <span class="badge badge-neutral gap-2 p-3">
+                                        {{ program.program_desc }}
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-4 h-4 stroke-current cursor-pointer remove-tag"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                    </span>
+                                {% endfor %}
+                            {% endif %}
+                            <input type="text" id="search-input" class="input w-full focus:outline-none" placeholder="Add programs..." autocomplete="off"/>
+                        </div>
+    
+                        <ul id="options-list" class="menu bg-base-100 w-full rounded-box shadow-lg border border-base-300 absolute top-full left-0 mt-2 z-50 hidden max-h-60 overflow-y-auto">
+                            {% for program in programs %}
+                                <li>
+                                    <a class="option-item" 
+                                        data-value={{program.program_code}}
+                                        data-added="{% if program in course.programs.all %}yes{% else %}no{% endif %}">
+                                        {{ program.program_desc }}
+                                    </a>
+                                </li>
+                            {% empty %}
+                                <span>No program available</span>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <p class="label">Optional</p>
+                </fieldset>
+
+                <div class="flex justify-between">
+                    <div class="flex gap-2">
+                        <button class="btn btn-success btn-sm text-white" type="submit">Create Program</button>
+                        <button class="btn btn-success btn-sm text-white" type="submit">Create & Add Another</button>
+                    </div>
+                    <button class="btn btn-error btn-sm text-white" type="reset">Discard</button>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/multi_select.js' %}"></script>
+{% endblock %}

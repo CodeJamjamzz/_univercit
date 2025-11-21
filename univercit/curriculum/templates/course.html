@@ -35,8 +35,8 @@
                 </h2>
                 <span>Summary:</span>
                 <ul>
-                    <li>Files Uploaded: </li>
-                    <li>Active Discussions: </li>
+                    <li>Files Uploaded: 0</li>
+                    <li>Active Discussions: 0</li>
                 </ul>
             </div>
         </div>
@@ -73,7 +73,7 @@
             </p>
         </section>
         <section class="py-12">
-            <h3 class="text-xl font-bold mb-4">FILES</h3>
+            <h3 class="text-xl font-bold mb-4">TOP FILES</h3>
             <div class="overflow-x-auto">
             <table class="table">
                 <!-- head -->
@@ -98,7 +98,7 @@
                         <div class="avatar">
                         <div class="mask mask-squircle h-12 w-12">
                             <img
-                            src="https://img.daisyui.com/images/profile/demo/3@94.webp"
+                            src="{% static 'assets/elgato.jpg' %}"
                             alt="Avatar Tailwind CSS Component" />
                         </div>
                         </div>
@@ -116,9 +116,12 @@
                 </tbody>
             </table>
             </div>
+            <div class="mt-4">
+                <button class="btn btn-secondary ml-auto block">More Files</button>
+            </div>
         </section>
         <section class="py-12">
-            <h3 class="text-xl font-bold">DISCUSSIONS</h3>
+            <h3 class="text-xl font-bold">TOP DISCUSSIONS</h3>
             <h4 class="text-3xl font-bold mb-4">Engage with forums from fellow students.</h4>
             <ul class="list bg-base-100 rounded-box shadow-md">
   
@@ -164,6 +167,9 @@
                 <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
             </li>
             </ul>
+            <div class="mt-6">
+                <button class="btn btn-secondary ml-auto block">More Discussions</button>
+            </div>
         </section>
     </section>
 </main>

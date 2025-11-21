@@ -1,0 +1,52 @@
+{% extends "dashboard-base.html" %}
+
+{% block title %}
+    <h1 class="text-xl font-bold">Programs</h1>
+{% endblock %}
+
+{% block body %}
+    <p class="mb-6 text-sm text-gray-700">
+        Administrator panel for managing academic programs. Use this page to maintain program records, add new offerings, and ensure all information is up-to-date.
+    </p>
+    <div class="w-full flex justify-between items-center">
+        <span class="text-sm text-gray-500">Number of Programs: {{ programs|length }}</span>
+        <a href="{% url 'dashboard_program_create' %}" class="btn bg-slate-600 text-white btn-md hover:bg-slate-700 mb-4">
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+            Add Program
+        </a>
+    </div>
+    <section>
+        <div class="overflow-x-auto max-h-[65vh]">
+        <table class="table">
+            <!-- head -->
+            <thead>
+            <tr>
+                <th>
+                    <button class="flex gap-2 items-center cursor-pointer hover:underline hover:underline-offset-4">
+                        <span>
+                            Program ID 
+                        </span>
+                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 14-4-4m4 4 4-4"/>
+                        </svg>
+                    </button>
+                </th>
+                <th>Program Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for program in programs %}
+                <tr class="hover:bg-gray-200 cursor-pointer"
+                    onclick="window.location.href='{% url 'dashboard_program_update' program.program_code %}'">
+                    <td>{{ program.program_code }}</td>
+                    <td>{{ program.program_desc }}</td>
+                </tr>
+            {% empty %}
+                <span>No program.</span>
+            {% endfor %}
+            
+            </tbody>
+        </table>
+        </div>
+    </section>
+{% endblock %}

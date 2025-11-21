@@ -17,7 +17,7 @@
             <div class="max-w-lg text-white">
                 <div class="breadcrumbs text-md mb-4">
                     <ul>
-                        <li><a>Programs</a></li>
+                        <li><a href="{% url 'program_list' %}">Programs</a></li>
                         <li><a>{{ program.program_code }}</a></li>
                     </ul>
                 </div>
@@ -59,28 +59,30 @@
             </p>
         </section>
         <section class="py-12">
-            <label class="input mb-6">
-                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g
-                    stroke-linejoin="round"
-                    stroke-linecap="round"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke="currentColor"
-                    >
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.3-4.3"></path>
-                    </g>
-                </svg>
-                <input 
-                    id="course-search" 
-                    type="search" 
-                    required 
-                    placeholder="Search courses..."
-                    value="{{ request.GET.q|default:'' }}"/>
-            </label>
+            <form id="search-form" method="GET">
+                <label class="input mb-6">
+                    <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <g
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                        stroke-width="2.5"
+                        fill="none"
+                        stroke="currentColor"
+                        >
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                        </g>
+                    </svg>
+                    <input 
+                        id="course-search" 
+                        type="search" 
+                        required 
+                        placeholder="Search courses..."
+                        value="{{ request.GET.q|default:'' }}"/>
+                </label>
+            </form>
             <div id="courses-container" class="grid grid-cols-4 gap-6">
-                {% for course in program.courses.all %}
+                {% for course in courses %}
                     <a href="{% url 'course_detail' course.course_id %}"
                         class="card card-dash card-md bg-base-100 w-80 shadow-md cursor-pointer hover:shadow-lg">
                     <div class="card-body">
@@ -100,4 +102,5 @@
         </section>
     </section>
 </main>
+<script src="{% static 'js/course_search.js' %}"></script>
 {% endblock %}

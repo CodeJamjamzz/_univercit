@@ -24,7 +24,17 @@ class ProgramListView(LoginRequiredMixin, View):
         else:
             programs = Program.objects.all()
 
-        return render(request, "all_programs.html", {
+        return render(request, "all-programs.html", {
+            "programs": programs
+        })
+    
+class DashboardProgramListView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    
+    def get(self, request):
+        programs = Program.objects.all()
+
+        return render(request, "dashboard-programs.html", {
             "programs": programs
         })
 
@@ -33,9 +43,19 @@ class ProgramDetailView(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def get(self, request, program_code):
+        query = request.GET.get('query', '')
+        if query:
+            query = query.strip()
+            courses = Course.objects.filter(
+                Q(course_id__icontains=query) | Q(course_name__icontains=query)
+            )
+        else:
+            courses = Course.objects.all()
+
         program = get_object_or_404(Program, pk=program_code)
         return render(request, 'program.html', {
-            "program": program
+            "program": program,
+            "courses": courses
         })
 
 
@@ -54,9 +74,15 @@ class ProgramCreateView(LoginRequiredMixin, View):
                 program_code=program_code,
                 program_desc=program_desc
             )
-            return redirect(reverse_lazy('program_list'))
+            return redirect(reverse_lazy('dashboard_program_list'))
 
         return HttpResponseForbidden("Missing program data.")
+    
+    def get(self, request):
+        return render(request, 'dashboard-program-form.html', {
+            "courses": Course.objects.all(),
+            "mode": "create"
+        })
 
 
 class ProgramUpdateView(LoginRequiredMixin, View):
@@ -75,6 +101,14 @@ class ProgramUpdateView(LoginRequiredMixin, View):
             return redirect(reverse_lazy('program_list'))
         
         return HttpResponseForbidden("Missing program description.")
+
+    def get(self, request, program_code):
+        program = get_object_or_404(Program, program_code=program_code)
+        return render(request, 'dashboard-program-form.html', {
+            "program": program,
+            "courses": Course.objects.all(),
+            "mode": "update"
+        })
 
     
 
@@ -104,7 +138,18 @@ class CourseListView(LoginRequiredMixin, View):
         else:
             courses = Course.objects.all()
 
-        return render(request, "all_courses.html", {
+        return render(request, "all-courses.html", {
+            "courses": courses
+        })
+    
+
+class DashboardCourseListView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    
+    def get(self, request):
+        courses = Course.objects.all()
+
+        return render(request, "dashboard-courses.html", {
             "courses": courses
         })
     
@@ -144,6 +189,12 @@ class CourseCreateView(LoginRequiredMixin, View):
 
         return HttpResponseForbidden("Missing course data.")
 
+    def get(self, request):
+        return render(request, 'dashboard-course-form.html', {
+            "programs": Program.objects.all(),
+            "mode": "create"
+        })
+
 
 class CourseUpdateView(LoginRequiredMixin, View):
     login_url = '/login/'
@@ -161,6 +212,14 @@ class CourseUpdateView(LoginRequiredMixin, View):
             return redirect(reverse_lazy('course_list'))
             
         return HttpResponseForbidden("Missing course description.")
+    
+    def get(self, request, course_id):
+        course = get_object_or_404(Course, course_id=course_id)
+        return render(request, "dashboard-course-form.html", {
+            "course": course,
+            "programs": Program.objects.all(),
+            "mode": "update"
+        })
 
 
 class CourseDeleteView(LoginRequiredMixin, View):
