@@ -166,35 +166,69 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
 
 
 class CourseCreateView(LoginRequiredMixin, View):
-    model = Course
-    fields = ['courseId', 'courseName', 'courseDesc']
-    success_url = reverse_lazy('course_list')
     login_url = '/login/'
 
     def post(self, request):
         if not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden("You are not allowed to create courses.")
         
-        course_id = request.POST.get('course_id')
-        course_name = request.POST.get('course_name')
-        course_desc = request.POST.get('ccourse_desc')
+        action = request.POST.get('action')
+        
+        if action == "discard":
+            return redirect(reverse_lazy("dashboard_course_list"))
+        
+        course_id = request.POST.get('course-id', '').strip()
+        course_name = request.POST.get('course-name', '').strip()
+        course_desc = request.POST.get('course-desc', '').strip()
+        course_programs = request.POST.get('programs-selected', '').strip()
 
-        if course_id and course_name and course_desc:
-            Course.objects.create(
-                course_id=course_id,
-                course_name=course_name,
-                course_desc=course_desc
-            )
-            return redirect(reverse_lazy('course_list'))
+        error_list = []
+        if course_id == "":
+            error_list.append("Course ID")
+        if course_name == "":
+            error_list.append("Course Name")
+        if course_desc == "":
+            error_list.append("Course Description")
 
-        return HttpResponseForbidden("Missing course data.")
+        if len(error_list) != 0:
+            error_msg = "Submission Error: Empty " + ", ".join(error_list)
+            return render(request, 'dashboard-course-form.html', {
+                "programs": Program.objects.all(),
+                "mode": "create",
+                "form_values": {
+                    "course_id": course_id,
+                    "course_name": course_name,
+                    "course_desc": course_desc,
+                    "course_programs": course_programs.split(",")
+                },
+                "error_msg": error_msg
+            })
+        
+        course = Course.objects.create(
+            course_id=course_id,
+            course_name=course_name,
+            course_desc=course_desc
+        )
+
+        if course_programs is not None and course_programs != "":
+            for code in course_programs.split(","):
+                program = get_object_or_404(Program, program_code=code)
+                course.programs.add(program)
+
+        if action == "create":
+            return redirect(reverse_lazy("dashboard_course_list"))
+        elif action == "create-add":
+            return redirect(reverse_lazy("dashboard_course_create"))
+        
+        return redirect(reverse_lazy("dashboard_course_list"))
+    
 
     def get(self, request):
-        return render(request, 'dashboard-course-form.html', {
+        return render(request, "dashboard-course-form.html", {
             "programs": Program.objects.all(),
-            "mode": "create"
+            "mode": "create",
         })
-
+    
 
 class CourseUpdateView(LoginRequiredMixin, View):
     login_url = '/login/'
@@ -203,15 +237,56 @@ class CourseUpdateView(LoginRequiredMixin, View):
         if not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden("You are not allowed to update courses.")
         
+        action = request.POST.get('action')
+        
+        if action == "discard":
+            return redirect(reverse_lazy("dashboard_course_list"))
+        
         course = get_object_or_404(Course, course_id=course_id)
-        new_desc = request.POST.get('course_desc')
+        new_course_id = request.POST.get('course-id', '').strip()
+        course_name = request.POST.get('course-name', '').strip()
+        course_desc = request.POST.get('course-desc', '').strip()
+        course_programs = request.POST.get('programs-selected', '').strip()
 
-        if new_desc:
-            course.course_desc = new_desc
-            course.save()
-            return redirect(reverse_lazy('course_list'))
+        error_list = []
+        if course_id == "":
+            error_list.append("Course ID")
+        if course_name == "":
+            error_list.append("Course Name")
+        if course_desc == "":
+            error_list.append("Course Description")
+
+        if len(error_list) != 0:
+            error_msg = "Submission Error: Empty " + ", ".join(error_list)
+            return render(request, 'dashboard-course-form.html', {
+                "programs": Program.objects.all(),
+                "mode": "create",
+                "form_values": {
+                    "course_id": course_id,
+                    "course_name": course_name,
+                    "course_desc": course_desc,
+                    "course_programs": course_programs.split(",")
+                },
+                "error_msg": error_msg
+            })
+        
+        course.course_id = new_course_id
+        course.course_name = course_name
+        course.course_desc = course_desc
+        course.save()
             
-        return HttpResponseForbidden("Missing course description.")
+        if course_programs is not None and course_programs != "":
+            program_codes = [code.strip() for code in course_programs.split(",")]
+            programs = Program.objects.filter(program_code__in=program_codes)
+            course.programs.set(programs) 
+        else:
+            course.programs.clear() 
+
+        if action == "create":
+            return redirect(reverse_lazy("dashboard_course_list"))
+        elif action == "save-edit":
+            return redirect(reverse_lazy("dashboard_course_update", args=(course_id)))
+
     
     def get(self, request, course_id):
         course = get_object_or_404(Course, course_id=course_id)

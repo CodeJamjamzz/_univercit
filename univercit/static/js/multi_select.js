@@ -4,20 +4,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const optionsList = document.getElementById('options-list');
     const hiddenInput = document.getElementById('selected-values');
     const options = document.querySelectorAll('.option-item');
-    
+
     let selectedItems = [];
     handleAddedInitially();
     
     function handleAddedInitially() {
         options.forEach(option => {
-            if (option.dataset.added == "yes") {
-                selectedItems.push(option.dataset.value)
+            if (option.dataset.added === "yes") {
+                const value = option.dataset.value;
+                const label = option.innerText;
+
+                addItem(value, label);
             }
         });
+        resetOptions();
     }
-
-    updateHiddenInput();
-    resetOptions();
 
     function adjustDropdownPosition() {
         optionsList.classList.remove('hidden');

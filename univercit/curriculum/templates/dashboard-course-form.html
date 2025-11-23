@@ -21,25 +21,37 @@
                     Modify the course’s name, description, or units to ensure course information stays up-to-date.
                 {% endif %}
             </p>
-            <form action="">
 
+            <form 
+                action="{% if mode == 'create' %}{% url 'dashboard_course_create' %}{% else %}{% url 'dashboard_course_update' course.course_id %}{% endif %}" 
+                method="POST" 
+            >
+                {% csrf_token %}
                 <fieldset class="fieldset mb-4">
                     <legend class="fieldset-legend">Course ID</legend>
-                    <input type="text" class="input w-full" placeholder="e.g. CSIT365" 
-                        value="{% if mode == 'update' %}{{ course.course_id }}{% else %}{% endif %}"/>
-                    <p class="label text-error">Required*</p>
+                    <input name="course-id" type="text" class="input w-full" placeholder="e.g. CSIT365" 
+                        value="{% if mode == 'update' %}{{ course.course_id }}{% elif form_values %}{{ form_values.course_id }}{% else %}{% endif %}"
+                        maxlength="10"/>
+                    <div class="flex justify-between">
+                        <span class="label text-error">Required*</span>
+                        <span class="label">Max length: 10</span>
+                    </div>
                 </fieldset>
     
                 <fieldset class="fieldset mb-4">
                     <legend class="fieldset-legend">Course Name</legend>
-                    <input type="text" class="input w-full" placeholder="e.g. Information Management 2" 
-                        value="{% if mode == 'update' %}{{ course.course_name }}{% else %}{% endif %}"/>
-                    <p class="label text-error">Required*</p>
+                    <input name="course-name" type="text" class="input w-full" placeholder="e.g. Information Management 2" 
+                        value="{% if mode == 'update' %}{{ course.course_name }}{% elif form_values %}{{ form_values.course_name }}{% else %}{% endif %}"
+                        maxlength="50"/>
+                    <div class="flex justify-between">
+                        <span class="label text-error">Required*</span>
+                        <span class="label">Max length: 50</span>
+                    </div>
                 </fieldset>
                 
                 <fieldset class="fieldset mb-4">
                     <legend class="fieldset-legend">Course Description</legend>
-                    <textarea class="textarea h-24 w-full text-black" placeholder="Add course description here...">{% if mode == "update" %}{{ course.course_desc }}{% endif %}</textarea>
+                    <textarea name="course-desc" class="textarea h-24 w-full text-black" placeholder="Add course description here...">{% if mode == "update" %}{{ course.course_desc }}{% elif form_values %}{{ form_values.course_desc }}{% else %}{% endif %}</textarea>
                     <p class="label text-error">Required*</p>
                 </fieldset>
                 
@@ -47,32 +59,38 @@
                     <legend class="fieldset-legend">Add Programs</legend>
     
                     <div class="relative">
-                        <input type="hidden" name="pokemon" id="selected-values">
+                        <input type="hidden" id="selected-values" name="programs-selected">
     
                         <div id="multiselect-container" class="input input-bordered w-full h-auto p-2 flex flex-wrap gap-2 cursor-text bg-base-100 focus-within:outline focus-within:outline-2 focus-within:outline-primary">
-                            {% if mode == 'update' %}
-                                {% for program in course.programs.all %}
-                                    <span class="badge badge-neutral gap-2 p-3">
-                                        {{ program.program_desc }}
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-4 h-4 stroke-current cursor-pointer remove-tag"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                                    </span>
-                                {% endfor %}
-                            {% endif %}
                             <input type="text" id="search-input" class="input w-full focus:outline-none" placeholder="Add programs..." autocomplete="off"/>
                         </div>
     
                         <ul id="options-list" class="menu bg-base-100 w-full rounded-box shadow-lg border border-base-300 absolute top-full left-0 mt-2 z-50 hidden max-h-60 overflow-y-auto">
-                            {% for program in programs %}
-                                <li>
-                                    <a class="option-item" 
-                                        data-value={{program.program_code}}
-                                        data-added="{% if program in course.programs.all %}yes{% else %}no{% endif %}">
-                                        {{ program.program_desc }}
-                                    </a>
-                                </li>
-                            {% empty %}
-                                <span>No program available</span>
-                            {% endfor %}
+                            {% if form_values %}
+                                {% for program in form_values.course_programs %}
+                                    <li>
+                                        <a class="option-item" 
+                                            data-value={{program.program_code}}
+                                            data-added="{% if program in course.programs.all %}yes{% else %}no{% endif %}">
+                                            {{ program.program_desc }}
+                                        </a>
+                                    </li>
+                                {% empty %}
+                                    <span>No program available</span>
+                                {% endfor %}
+                            {% else %}
+                                {% for program in programs %}
+                                    <li>
+                                        <a class="option-item" 
+                                            data-value={{program.program_code}}
+                                            data-added="{% if program in course.programs.all %}yes{% else %}no{% endif %}">
+                                            {{ program.program_desc }}
+                                        </a>
+                                    </li>
+                                {% empty %}
+                                    <span>No program available</span>
+                                {% endfor %}
+                            {% endif %}
                         </ul>
                     </div>
                     <p class="label">Optional</p>
@@ -80,16 +98,29 @@
 
                 <div class="flex justify-between">
                     <div class="flex gap-2">
-                        <button class="btn btn-success btn-sm text-white" type="submit">Create Program</button>
-                        <button class="btn btn-success btn-sm text-white" type="submit">Create & Add Another</button>
+                        <button id="create-btn" name="action" value="create" class="btn btn-success btn-sm text-white" type="submit">{% if mode == 'create' %}Create{% else %}Update{% endif %} Course</button>
+                        {% if mode == 'create' %}
+                            <button id="create-add-btn" name="action" value="create-add" class="btn btn-success btn-sm text-white" type="submit">Create & Add Another</button>
+                        {% else %}
+                            <button id="save-edit-btn" name="action" value="save-edit" class="btn btn-success btn-sm text-white" type="submit">Save & Continue Editing</button>
+                        {% endif %}
                     </div>
-                    <button class="btn btn-error btn-sm text-white" type="reset">Discard</button>
+                    <button id="discard-btn" name="action" value="discard" class="btn btn-error btn-sm text-white" type="submit">Discard</button>
                 </div>
             </form>
         </div>
     </section>
+    
+    {% if error_msg %}
+        <div id="toast-error" class="toast toast-center" role="status">
+            <div class="alert alert-error">
+                <span>{{ error_msg }}</span>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block script %}
+    <script src="{% static 'js/dashboard-course-form.js' %}"></script>
     <script src="{% static 'js/multi_select.js' %}"></script>
 {% endblock %}

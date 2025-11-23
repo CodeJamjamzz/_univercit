@@ -27,8 +27,12 @@
                     <legend class="fieldset-legend">Program Code</legend>
                     <input type="text" class="input w-full" placeholder="e.g. BSCS" 
                         value="{% if mode == 'update' %}{{ program.program_code }}{% else %}{% endif %}"
+                        maxlength="10"
                     />
-                    <p class="label text-error">Required*</p>
+                    <div class="flex justify-between">
+                        <span class="label text-error">Required*</span>
+                        <span class="label">Max length: 10</span>
+                    </div>
                 </fieldset>
     
                 <fieldset class="fieldset mb-4">

@@ -19,9 +19,9 @@ urlpatterns = [
     path('courses/<str:course_id>/delete/', views.CourseDeleteView.as_view(), name='course_delete'),
 
     # Program–Course Relationship
-    path('programs/<str:program_code>/courses/', views.ProgramCoursesView.as_view(), name='program_courses'),
-    path('programs/<str:program_code>/add-course/<str:course_id', views.ProgramCoursesAddView.as_view(), name='add_course_to_program'),
-    path('programs/<str:program_code>/remove-course/<str:course_id>/', views.ProgramCoursesDeleteView.as_view(), name='remove_course_from_program'),
+    # path('programs/<str:program_code>/courses/', views.ProgramCoursesView.as_view(), name='program_courses'),
+    # path('programs/<str:program_code>/add-course/<str:course_id', views.ProgramCoursesAddView.as_view(), name='add_course_to_program'),
+    # path('programs/<str:program_code>/remove-course/<str:course_id>/', views.ProgramCoursesDeleteView.as_view(), name='remove_course_from_program'),
 
     path('dashboard/programs/', views.DashboardProgramListView.as_view(), name='dashboard_program_list'),
     path('dashboard/programs/create/', views.ProgramCreateView.as_view(), name='dashboard_program_create'),
