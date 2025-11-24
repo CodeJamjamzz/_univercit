@@ -30,18 +30,20 @@
                 <fieldset class="fieldset mb-4">
                     <legend class="fieldset-legend">Course ID</legend>
                     <input name="course-id" type="text" class="input w-full" placeholder="e.g. CSIT365" 
-                        value="{% if mode == 'update' %}{{ course.course_id }}{% elif form_values %}{{ form_values.course_id }}{% else %}{% endif %}"
-                        maxlength="10"/>
+                        value="{% if form_values %}{{ form_values.course_id }}{% elif mode == 'update' %}{{ course.course_id }}{% else %}{% endif %}"
+                        maxlength="10"
+                        {% if mode == 'update' %}disabled{% endif %} />
                     <div class="flex justify-between">
-                        <span class="label text-error">Required*</span>
+                        <span class="label text-error">{% if mode == 'create' %}Required*{% else %}{% endif %}</span>
                         <span class="label">Max length: 10</span>
                     </div>
+                    {% if mode == 'create' %}<span class="label font-bold">Note: Once you created the Course ID, you can't change it</span>{% endif %}
                 </fieldset>
     
                 <fieldset class="fieldset mb-4">
                     <legend class="fieldset-legend">Course Name</legend>
                     <input name="course-name" type="text" class="input w-full" placeholder="e.g. Information Management 2" 
-                        value="{% if mode == 'update' %}{{ course.course_name }}{% elif form_values %}{{ form_values.course_name }}{% else %}{% endif %}"
+                        value="{% if form_values %}{{ form_values.course_name }}{% elif mode == 'update' %}{{ course.course_name }}{% else %}{% endif %}"
                         maxlength="50"/>
                     <div class="flex justify-between">
                         <span class="label text-error">Required*</span>
@@ -51,7 +53,7 @@
                 
                 <fieldset class="fieldset mb-4">
                     <legend class="fieldset-legend">Course Description</legend>
-                    <textarea name="course-desc" class="textarea h-24 w-full text-black" placeholder="Add course description here...">{% if mode == "update" %}{{ course.course_desc }}{% elif form_values %}{{ form_values.course_desc }}{% else %}{% endif %}</textarea>
+                    <textarea name="course-desc" class="textarea h-24 w-full text-black" placeholder="Add course description here...">{% if form_values %}{{ form_values.course_desc }}{% elif mode == "update" %}{{ course.course_desc }}{% else %}{% endif %}</textarea>
                     <p class="label text-error">Required*</p>
                 </fieldset>
                 
@@ -66,31 +68,17 @@
                         </div>
     
                         <ul id="options-list" class="menu bg-base-100 w-full rounded-box shadow-lg border border-base-300 absolute top-full left-0 mt-2 z-50 hidden max-h-60 overflow-y-auto">
-                            {% if form_values %}
-                                {% for program in form_values.course_programs %}
-                                    <li>
-                                        <a class="option-item" 
-                                            data-value={{program.program_code}}
-                                            data-added="{% if program in course.programs.all %}yes{% else %}no{% endif %}">
-                                            {{ program.program_desc }}
-                                        </a>
-                                    </li>
-                                {% empty %}
-                                    <span>No program available</span>
-                                {% endfor %}
-                            {% else %}
-                                {% for program in programs %}
-                                    <li>
-                                        <a class="option-item" 
-                                            data-value={{program.program_code}}
-                                            data-added="{% if program in course.programs.all %}yes{% else %}no{% endif %}">
-                                            {{ program.program_desc }}
-                                        </a>
-                                    </li>
-                                {% empty %}
-                                    <span>No program available</span>
-                                {% endfor %}
-                            {% endif %}
+                            {% for program in programs %}
+                                <li>
+                                    <a class="option-item"
+                                        data-value={{program.program_code}}
+                                        data-added="{% if form_values %}{% if program.program_code in form_values.course_programs %}yes{% else %}no{% endif %}{% elif mode == 'update' %}{% if program in course.programs.all %}yes{% else %}no{% endif %}{% else %}no{% endif %}">
+                                        {{ program.program_desc }}
+                                    </a>    
+                                </li>
+                            {% empty %}
+                                <span>No program available</span>
+                            {% endfor %}
                         </ul>
                     </div>
                     <p class="label">Optional</p>
