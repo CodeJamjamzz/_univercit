@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File</title>
+</head>
+<body>
+    <h1>Uploaded Files</h1>
+    <ul>
+    {% for file in files %}
+        <li>
+            <a href="{{ file.file_url.url }}" target="_blank">{{ file.file_url.name|default:'(no name)' }}</a>
+            {% if file.file_desc %}- {{ file.file_desc }}{% endif %}
+            (uploaded by student {{ file.student_id_id }})
+        </li>
+    {% empty %}
+        <li>No files uploaded yet.</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

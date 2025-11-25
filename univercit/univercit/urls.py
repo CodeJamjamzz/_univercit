@@ -22,4 +22,6 @@ urlpatterns = [
     path('', include('user.urls')),
     path('discussion/', include('discussion.urls')),
     path("rating/", include("rating.urls")),
+    path('testimonial/', include('testimonial.urls')),
+    path('file/', include('file.urls')),
 ]

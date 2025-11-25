@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload</title>
+</head>
+<body>
+    <h1>Upload a File</h1>
+    <form method="POST" action="/file/submit/" enctype="multipart/form-data">
+        <label for="file">Select file:</label>
+        <input type="file" name="file" id="file" required><br><br>
+        <label for="file_desc">Description:</label>
+        <input type="text" name="file_desc" id="file_desc"><br><br>
+        <label for="course_id">Course ID (optional):</label>
+        <input type="text" name="course_id" id="course_id"><br><br>
+        <input type="hidden" name="next" value="/file/fileview/">
+        <button type="submit">Upload</button>
+    </form>
+    <hr>
+    <a href="/file/fileview/">View Uploaded Files</a>
+</body>
+</html>
