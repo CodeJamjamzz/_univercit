@@ -1,0 +1,17 @@
+<form action="{% url 'add_thread' forum_id=forum.forum_id %}" method="post" class="card bg-base-100 shadow-md max-w-xl mb-12">
+    {% csrf_token %}
+    <div class="card-body p-6">
+        <h2 class="card-title mb-4">Create New Thread</h2>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+            <input id="threadTitle"
+                   type="text"
+                   name="threadTitle"
+                   placeholder="What's on your mind?"
+                   class="input input-bordered w-full"
+                   value="{{ threadTitle }}">
+
+            <button type="submit" class="btn btn-primary sm:w-auto">Post</button>
+        </div>
+    </div>
+</form>

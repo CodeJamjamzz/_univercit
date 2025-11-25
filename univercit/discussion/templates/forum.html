@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>{{ forum.forum_title }}</title>
+    {% load static %}
+    <link href="{% static 'css/src/output.css' %}" rel="stylesheet" type="text/css" />
+</head>
+<body class="bg-base-200 min-h-screen" data-theme="light">
+
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+
+        <div class="flex items-center gap-4 mb-8">
+
+            <div class="divider divider-horizontal divider-accent"></div>
+            <h1 class="text-5xl font-extrabold tracking-tight"> {{ forum.forum_title }} </h1>
+            <div class="badge badge-accent badge-lg mt-4">
+                {{ forum_threads|length }} Thread{% if forum_threads|length != 1 %}s{% endif %}
+            </div>
+        </div>
+
+        {% include 'forum_make_thread.html' %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for thread in forum_threads %}
+                {% include 'forum_thread_card.html' %}
+            {% endfor %}
+        </div>
+
+    </div>
+</body>
+</html>

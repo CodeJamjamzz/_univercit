@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="forest">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ thread.thread_title }}</title>
+    {% load static %}
+    <link href="{% static 'css/src/output.css' %}" rel="stylesheet" type="text/css" />
+</head>
+<body class="min-h-screen bg-base-300">
+    <div class="navbar bg-base-100 shadow-lg" style="position: sticky; top: 0; z-index: 50; padding: 1rem 1.5rem;">
+        <div class="card flex-none">
+            <!-- Back Button -->
+            <a href="{% url 'forum' forum_id=thread.forum_id.forum_id %}" class="btn btn-ghost btn-sm gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span class="hidden sm:inline">Back</span>
+            </a>
+        </div>
+
+        <div class="flex-1" style="padding-left: 1rem; padding-right: 1rem;">
+            <!-- Thread Title -->
+            <h1 class="text-base sm:text-lg md:text-xl font-bold truncate">
+                {{ thread.thread_title }}
+            </h1>
+        </div>
+
+        <div class="flex-none">
+            <!-- Comment Count Badge -->
+            <div class="badge badge-lg badge-primary gap-1">
+                <span class="hidden sm:inline">{{ thread_comments|length }} Comment{% if thread_comments|length != 1 %}s{% endif %}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="py-16 px-4 w-full">
+        <!-- Thread Info Card -->
+        <div class="card bg-base-200 shadow-xl mb-8">
+            <div class="card-body">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="avatar placeholder">
+                        <div class="bg-primary text-primary-content rounded-full w-12 h-12">
+                            <span class="text-lg font-bold">{{ thread.student.user.username|slice:":1"|upper|default:"?" }}</span>
+                        </div>
+                    </div>
+                    <div class="divider divider-horizontal"></div>
+                    <div>
+                        <p class="font-semibold">{{ thread.student }}</p>
+                        <p class="text-sm text-base-content/60">
+                            Started {{ thread.date_created|date:"M d, Y"|default:"recently" }}
+                        </p>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold mb-3">{{ thread.thread_title }}</h2>
+                {% if thread_comments %}
+                    <p class="text-base-content/80">{{ thread_comments.0.content|default:"Join the discussion below!" }}</p>
+                {% else %}
+                    <p class="text-base-content/80">Join the discussion below!</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Comments Section -->
+        {% if thread_comments|length > 1 %}
+            <div class="mb-8">
+                <ul class="space-y-4">
+                    {% for comment in thread_comments|slice:"1:" %}
+                        {% include 'thread_comment_card.html' %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <div class="alert alert-info shadow-lg mb-8">
+                <span>No comments yet. Be the first to share your thoughts!</span>
+            </div>
+        {% endif %}
+
+        <!-- Comment Form -->
+        {% include 'make_comment_thread.html' %}
+    </div>
+</body>
+</html>
