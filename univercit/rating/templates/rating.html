@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ thread.threadTitle }}</title>
+    {% load static %}
+    <link href="{% static 'css/src/output.css' %}" rel="stylesheet" type="text/css" />
+</head>
+<body class="m-8">
+    <a href="#" class="btn btn-soft">Back to Forum</a>
+
+    <h1>{{ thread.threadTitle }}</h1>
+
+    <br>
+
+    {% for comment in thread_comments %}
+        <div class="mb-4">
+            {% with item=comment %}
+                {% include 'thread_comment_card.html' %}
+            {% endwith %}
+        </div>
+    {% endfor %}
+
+    <div class="mt-4">
+        <h2 class="font-bold mb-2">Comment</h2>
+        <div class="flex gap-2">
+            <textarea class="textarea textarea-bordered flex-1" rows="4" placeholder="Write your comment here..."></textarea>
+            <button class="btn">Comment</button>
+        </div>
+    </div>
+</body>
+</html>
