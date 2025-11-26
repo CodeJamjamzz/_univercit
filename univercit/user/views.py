@@ -87,4 +87,5 @@ class HomeView(View):
 
     template = "index.html"
     def get(self, request):
+        print("hello world")
         return render(request, self.template)
