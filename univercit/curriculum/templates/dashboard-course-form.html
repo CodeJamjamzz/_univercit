@@ -73,7 +73,7 @@
                                     <a class="option-item"
                                         data-value={{program.program_code}}
                                         data-added="{% if form_values %}{% if program.program_code in form_values.course_programs %}yes{% else %}no{% endif %}{% elif mode == 'update' %}{% if program in course.programs.all %}yes{% else %}no{% endif %}{% else %}no{% endif %}">
-                                        {{ program.program_desc }}
+                                        {{ program.program_name }}
                                     </a>    
                                 </li>
                             {% empty %}

@@ -39,7 +39,7 @@
                 <tr class="hover:bg-gray-200 cursor-pointer"
                     onclick="window.location.href='{% url 'dashboard_program_update' program.program_code %}'">
                     <td>{{ program.program_code }}</td>
-                    <td>{{ program.program_desc }}</td>
+                    <td>{{ program.program_name }}</td>
                 </tr>
             {% empty %}
                 <span>No program.</span>

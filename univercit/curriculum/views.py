@@ -179,13 +179,13 @@ class ProgramUpdateView(LoginRequiredMixin, View):
 class ProgramDeleteView(LoginRequiredMixin, View):
     login_url = '/login/'
 
-    def post(self, request, program_code):
+    def post(self, request):
         if not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden("You are not allowd to delete programs.")
         
-        program = get_object_or_404(Program, program_code=program_code)
-        program.delete()
-        return redirect(reverse_lazy('program_list'))
+        # program = get_object_or_404(Program, program_code=program_code)
+        # program.delete()
+        return redirect(reverse_lazy('dashboard_program_list'))
 
 
 # Course Views
@@ -361,13 +361,21 @@ class CourseUpdateView(LoginRequiredMixin, View):
 class CourseDeleteView(LoginRequiredMixin, View):
     login_url = '/login/'
 
-    def post(self, request, course_id):
+    def post(self, request):
         if not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden("You are not allowd to delete courses.")
         
-        course = get_object_or_404(Course, course_code=course_id)
-        course.delete()
-        return redirect(reverse_lazy('course_list'))
+        courses = request.POST.get('selected-courses-delete', '').strip()
+
+        if courses == "" or courses is None:
+            return redirect(reverse_lazy('dashboard_course_list'))
+        
+
+        for id in courses.split(','):
+            course = get_object_or_404(Course, course_id=id)
+            course.delete()
+
+        return redirect(reverse_lazy('dashboard_course_list'))
 
 
 # Relationship Views
