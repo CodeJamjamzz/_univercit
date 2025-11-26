@@ -7,7 +7,6 @@ from .models import Program, Course
 from django.http import HttpResponseForbidden
 from django.db.models import Q
 
-
 # Program Views
 
 # Limit the program the can be seen by the User on what program they are in
