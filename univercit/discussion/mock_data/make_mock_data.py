@@ -16,7 +16,6 @@ course_id = Course.objects.create(
     course_desc="Applications Development"
 )
 program_id = Program.objects.create(
-    program_id=1,
     program_code="BSCS",
     program_desc="Bachelor of Science in Computer Science",
     courses=course_id

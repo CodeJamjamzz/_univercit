@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 class Program(models.Model):
     program_code = models.CharField(max_length=10, primary_key=True)
+    program_name = models.CharField(max_length=50)
     program_desc = models.TextField()
     courses = models.ManyToManyField('Course', related_name="programs")
 
