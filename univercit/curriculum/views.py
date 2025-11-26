@@ -72,12 +72,15 @@ class ProgramCreateView(LoginRequiredMixin, View):
             return redirect(reverse_lazy("dashboard_program_list"))
         
         program_code = request.POST.get('program-code', '').strip()
+        program_name = request.POST.get('program-name', '').strip()
         program_desc = request.POST.get('program-desc', '').strip()
         program_courses = request.POST.get('courses-selected', '').strip()
 
         error_list = []
         if program_code == "":
             error_list.append("Program Code")
+        if program_name == "":
+            error_list.append("Program Name")
         if program_desc == "":
             error_list.append("Program Description")
 
@@ -88,6 +91,7 @@ class ProgramCreateView(LoginRequiredMixin, View):
                 "mode": "create",
                 "form_values": {
                     "program_code": program_code,
+                    "program_name": program_name,
                     "program_desc": program_desc,
                     "program_courses": program_courses.split(",")
                 },
@@ -96,6 +100,7 @@ class ProgramCreateView(LoginRequiredMixin, View):
 
         program = Program.objects.create(
             program_code=program_code,
+            program_name=program_name,
             program_desc=program_desc
         )
 
@@ -130,10 +135,13 @@ class ProgramUpdateView(LoginRequiredMixin, View):
             return redirect(reverse_lazy("dashboard_program_list"))
         
         program = get_object_or_404(Program, program_code=program_code)
+        program_name = request.POST.get('program-name', '').strip()
         program_desc = request.POST.get('program-desc', '').strip()
         program_courses = request.POST.get('courses-selected', '').strip()
 
         error_list = []
+        if program_name == "":
+            error_list.append("Program Name")
         if program_desc == "":
             error_list.append("Program Description")
 
@@ -145,12 +153,14 @@ class ProgramUpdateView(LoginRequiredMixin, View):
                 "mode": "update",
                 "form_values": {
                     "program_code": program_code,
+                    "program_name": program_name,
                     "program_desc": program_desc,
                     "program_courses": program_courses.split(",")
                 },
                 "error_msg": error_msg
             })
 
+        program.program_name=program_name
         program.program_desc=program_desc
         program.save()
 
@@ -166,6 +176,7 @@ class ProgramUpdateView(LoginRequiredMixin, View):
         elif action == "save-edit":
             return redirect(reverse_lazy("dashboard_program_update", args=(program_code,)))
 
+
     def get(self, request, program_code):
         program = get_object_or_404(Program, program_code=program_code)
         return render(request, 'dashboard-program-form.html', {
@@ -176,15 +187,23 @@ class ProgramUpdateView(LoginRequiredMixin, View):
 
     
 
-class ProgramDeleteView(LoginRequiredMixin, View):
+class ProgramDeleteView(LoginRequiredMixin, View):    
     login_url = '/login/'
 
     def post(self, request):
         if not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden("You are not allowd to delete programs.")
         
-        # program = get_object_or_404(Program, program_code=program_code)
-        # program.delete()
+        programs = request.POST.get('selected-programs-delete', '').strip()
+
+        if programs == "" or programs is None:
+            return redirect(reverse_lazy('dashboard_program_list'))
+        
+
+        for code in programs.split(','):
+            program = get_object_or_404(Program, program_code=code)
+            program.delete()
+
         return redirect(reverse_lazy('dashboard_program_list'))
 
 

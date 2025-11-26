@@ -60,14 +60,14 @@
                     <td onclick="window.location.href='{% url 'dashboard_course_update' course.course_id %}'">{{ course.course_name }}</td>
                 </tr>
             {% empty %}
-            No program.
+                <span>No course.</span>
             {% endfor %}
             
             </tbody>
         </table>
         </div>
     </section>
-    <dialog id="delete_modal" class="modal">
+    <dialog id="delete-modal" class="modal">
     <div class="modal-box">
         <h3 class="text-lg font-bold">Delete Course</h3>
         <p class="py-4">Are you sure you want to delete the selected course(s)?</p>

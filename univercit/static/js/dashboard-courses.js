@@ -3,7 +3,6 @@ const courseCheckboxes = document.querySelectorAll(".dashboard-course-checkbox")
 const removeCourse = document.getElementById("remove-course");
 const deleteModal = document.getElementById("delete_modal");
 const selectedCourseToDelete = document.getElementById("selected-course-delete")
-const hiddenDeleteInput = document.getElementById("")
 
 let anyChecked = false;
 

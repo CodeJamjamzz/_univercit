@@ -34,22 +34,25 @@
                         {% if mode == 'update' %}disabled{% endif %}
                     />
                     <div class="flex justify-between">
-                        <span class="label text-error">{% if mode == 'creaete' %}Required*{% else %}{% endif %}</span>
+                        <span class="label text-error">{% if mode == 'create' %}Required*{% else %}{% endif %}</span>
                         <span class="label">Max length: 10</span>
                     </div>
                      {% if mode == 'create' %}<span class="label font-bold">Note: Once you created the Program Code, you can't change it</span>{% endif %}
                 </fieldset>
     
-                <!-- <fieldset class="fieldset mb-4">
+                <fieldset class="fieldset mb-4">
                     <legend class="fieldset-legend">Program Name</legend>
-                    <input type="text" class="input w-full" placeholder="e.g. Bachelor of Science in Computer Science"
-                        value="{% if mode == 'update' %}{{ program.program_desc }}{% else %}{% endif %}"/>
-                    <p class="label text-error">Required*</p>
-                </fieldset> -->
+                    <input name="program-name" type="text" class="input w-full" placeholder="e.g. Bachelor of Science in Computer Science"
+                        value="{% if form_values %}{{ form_values.program_name }}{% elif mode == 'update' %}{{ program.program_name }}{% else %}{% endif %}"/>
+                    <div class="flex justify-between">
+                        <span class="label text-error">Required*</span>
+                        <span class="label">Max length: 50</span>
+                    </div>
+                </fieldset>
 
                 <fieldset class="fieldset mb-4">
                     <legend class="fieldset-legend">Program Description</legend>
-                    <textarea name="program-desc" class="textarea h-24 w-full" placeholder="e.g. Bachelor Of Science in Computer Science">{% if form_values %}{{ form_values.program_desc }}{% elif mode == 'update' %}{{ program.program_desc }}{% else %}{% endif %}</textarea>
+                    <textarea name="program-desc" class="textarea h-24 w-full" placeholder="Add program description here...">{% if form_values %}{{ form_values.program_desc }}{% elif mode == 'update' %}{{ program.program_desc }}{% else %}{% endif %}</textarea>
                     <p class="label text-error">Required*</p>
                 </fieldset>
                 
