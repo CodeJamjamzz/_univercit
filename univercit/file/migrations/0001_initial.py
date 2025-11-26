@@ -15,13 +15,17 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Testimonial',
+            name='File',
             fields=[
-                ('testimonial_id', models.AutoField(primary_key=True, serialize=False)),
-                ('content', models.TextField()),
+                ('file_id', models.AutoField(primary_key=True, serialize=False)),
+                ('file_url', models.FileField(upload_to='files/')),
+                ('file_desc', models.TextField()),
+                ('date_uploaded', models.DateTimeField(auto_now_add=True)),
+                ('upvote_count', models.IntegerField(default=0)),
+                ('downvote_count', models.IntegerField(default=0)),
                 ('is_visible', models.BooleanField(default=True)),
                 ('course_id', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='curriculum.course')),
-                ('student_id', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='user.student')),
+                ('student_id', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='user.student')),
             ],
         ),
     ]

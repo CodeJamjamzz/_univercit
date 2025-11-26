@@ -1,46 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="univercitTheme">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UniverCIT Login</title>
+    {% load static %}
+    <link href="{% static 'css/src/output.css' %}" rel="stylesheet" type="text/css" />
+
+    <style>
+        body {
+            background-image: url("{% static 'assets/login_bg.png' %}");
+            background-size: cover;
+            background-position: center;
+        }
+        .alert-error {
+            background-color: #aa1e1e;
+            color: white;
+        }
+        .link-error {
+            color: #aa1e1e;
+        }
+        input[type="submit"].btn-error {
+           background-color: #fff224;
+           border-color: #fff224;
+           color: #1f2937;
+        }
+        input[type="submit"].btn-error:hover {
+            background-color: #facc15;
+            border-color: #facc15;
+        }
+    </style>
 </head>
-<body>
+<body class="min-h-screen p-4">
 
-<!-- Outer Box -->
-<table border="1" width="70%" align="center" cellpadding="20" style="border-radius: 15px;">
-    <tr>
-        <!-- Left Side -->
-        <td valign="top" width="40%">
-            <h2 align="center">UniverCIT</h2>
-            <p align="center">
-                A platform designed to connect and empower university students
-                through innovative IT-driven tools for collaboration and learning.
-            </p>
-        </td>
-
-        <!-- Right Side (Form Section) -->
-        <td valign="top" width="60%">
-            <fieldset style="border-radius: 10px;">
-                <legend align="center"><b>Login Form</b></legend>
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="card w-full max-w-md bg-base-100 shadow-xl border border-gray-200">
+            <div class="card-body p-8">
+                <h2 class="text-2xl font-bold mb-4">Log in to your account</h2>
 
                 <form method="POST" action="">
                     {% csrf_token %}
 
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text">Email</span>
+                        </label>
+                        <input type="email" name="email" class="input input-bordered w-full" required />
+                    </div>
+
+                    <div class="form-control w-full mt-4">
+                        <label class="label">
+                            <span class="label-text">Password</span>
+                        </label>
+                        <input type="password" name="password" class="input input-bordered w-full" required />
+                        <div class="text-right mt-2">
+                            <a href="#" class="text-sm link link-hover">Forgot your password?</a>
+                        </div>
+                    </div>
+
                     {% if error %}
-                        <p style="color:red;">{{ error }}</p>
+                        <div class="alert alert-error mt-4 text-sm p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-4 w-4" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>{{ error }}</span>
+                        </div>
                     {% endif %}
 
-                    <label>Email:</label><br>
-                    <input type="email" name="email" required><br><br>
+                    <div class="form-control mt-4">
+                        <label class="label cursor-pointer justify-start gap-3">
+                            <input type="checkbox" checked="checked" class="checkbox checkbox-primary" />
+                            <span class="label-text">Remember me on this device</span>
+                        </label>
+                    </div>
 
-                    <label>Password:</label><br>
-                    <input type="password" name="password" required><br><br>
-
-                    <input type="submit" value="Login">
+                    <input type="submit" value="Log in" class="btn btn-error w-full mt-6">
                 </form>
-            </fieldset>
-        </td>
-    </tr>
-</table>
+
+                <div class="divider my-6">OR</div>
+
+                <button class="btn btn-outline w-full font-normal">
+                    <img src="{% static 'assets/google_logo.png' %}" alt="Google logo" class="w-5 h-5 mr-2">
+                    Log in with Google
+                </button>
+                <button class="btn btn-outline w-full mt-2 font-normal">
+                    <img src="{% static 'assets/twitter_logo.png' %}" alt="Twitter logo" class="w-5 h-5 mr-2">
+                    Log in with Twitter
+                </button>
+                <button class="btn btn-outline w-full mt-2 font-normal">
+                    <img src="{% static 'assets/outlook_logo.png' %}" alt="Outlook logo" class="w-5 h-5 mr-2">
+                    Log in with Outlook
+                </button>
+
+                <p class="text-center text-sm mt-8">
+                    New to UniverCIT? <a href="#" class="link link-error">Create account</a>
+                </p>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
