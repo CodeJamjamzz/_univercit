@@ -1,43 +1,67 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home - Blog</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f4; }
-        h1 { text-align: center; }
-        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; }
-        form { margin-bottom: 30px; }
-        input[type="text"], textarea { width: 100%; padding: 10px; margin: 5px 0 15px; border: 1px solid #ccc; border-radius: 5px; }
-        button { padding: 10px 20px; border: none; border-radius: 5px; background: #28a745; color: #fff; cursor: pointer; }
-        button:hover { background: #218838; }
-        .post { border-bottom: 1px solid #ccc; padding: 10px 0; }
-        .post:last-child { border-bottom: none; }
-        .post-title { font-weight: bold; font-size: 1.2em; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Blog Home</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UniverCIT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="relative min-h-screen w-full font-sans text-white overflow-hidden flex flex-col"
+    style="
+      background-image: url('{% static 'bg.png' %}');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    "
+  >
+    <!-- Page Content -->
+    <div class="relative z-10 flex flex-col flex-grow">
+      <!-- Header -->
+      <header class="w-full max-w-5xl mx-auto py-6 px-4">
+        <div
+          class="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg w-full flex justify-between items-center p-3"
+        >
+          <h1 class="text-xl font-bold text-gray-800">UniverCIT</h1>
+          <nav class="flex items-center gap-2">
+            <a href="{% url 'signin' %}"
+              class="px-6 py-2 rounded-md font-semibold text-sm transition-all duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#c72c2c] bg-yellow-400 text-black hover:bg-yellow-300 focus:ring-yellow-400"
+            >
+              Sign Up
+            </a>
+            <a
+              href="{% url 'login' %}"
+              class="px-6 py-2 rounded-md font-semibold text-sm transition-all duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#c72c2c] bg-[#a42525] text-white hover:bg-[#8e2020] focus:ring-red-500"
+            >
+              Log In
+            </a>
+          </nav>
+        </div>
+      </header>
 
-        <!-- Form to create a new post -->
-        <h2>Create a New Post</h2>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Submit</button>
-        </form>
-
-        <!-- List of posts -->
-        <h2>All Posts</h2>
-        {% for post in posts %}
-            <div class="post">
-                <div class="post-title">{{ post.title }}</div>
-                <div class="post-content">{{ post.content }}</div>
-            </div>
-        {% empty %}
-            <p>No posts yet.</p>
-        {% endfor %}
+      <!-- Main Content -->
+      <main
+        class="flex-grow flex flex-col items-center justify-center text-center px-4 -mt-16 sm:-mt-20"
+      >
+        <h2
+          class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight max-w-4xl"
+        >
+          Empowering Students to Learn, Share, and Grow Together
+        </h2>
+        <p class="mt-6 text-lg sm:text-xl max-w-2xl text-red-100">
+          Access study materials, share notes, collaborate on projects, and
+          track your learning progress — all in one place.
+        </p>
+        <div class="mt-10">
+          <a
+            href="{% url 'signin' %}"
+            class="rounded-md transition-all duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#c72c2c] bg-yellow-400 text-black hover:bg-yellow-300 focus:ring-yellow-400 px-10 py-4 text-base font-bold shadow-lg"
+          >
+            Sign Up
+          </a>
+        </div>
+      </main>
     </div>
-</body>
+  </body>
 </html>

@@ -1,46 +1,118 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="light">
 <head>
-    <title>UniverCIT Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniverCIT - Log in</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* This style applies your patterned background to the entire page. */
+        .full-background {
+            /* VVV --- The path below uses Django's static template tag --- VVV */
+            background-image: url("{% static 'signup_bg.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
 </head>
 <body>
 
-<!-- Outer Box -->
-<table border="1" width="70%" align="center" cellpadding="20" style="border-radius: 15px;">
-    <tr>
-        <!-- Left Side -->
-        <td valign="top" width="40%">
-            <h2 align="center">UniverCIT</h2>
-            <p align="center">
-                A platform designed to connect and empower university students
-                through innovative IT-driven tools for collaboration and learning.
-            </p>
-        </td>
+    <!-- Full screen background element -->
+    <div class="full-background"></div>
 
-        <!-- Right Side (Form Section) -->
-        <td valign="top" width="60%">
-            <fieldset style="border-radius: 10px;">
-                <legend align="center"><b>Login Form</b></legend>
+    <main class="min-h-screen flex items-center justify-center relative p-4">
+        <!-- Login Form Card -->
+        <div class="card w-full max-w-md shrink-0 shadow-2xl bg-white z-10">
+            <form class="card-body" method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <h1 class="card-title text-2xl font-bold">Log in to your account</h1>
 
-                <form method="POST" action="">
-                    {% csrf_token %}
+                <!-- Email Input -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Email</span>
+                    </label>
+                    <input type="email" name="email" required class="input input-bordered" />
+                </div>
 
-                    {% if error %}
-                        <p style="color:red;">{{ error }}</p>
-                    {% endif %}
+                <!-- Password Input -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Password</span>
+                    </label>
+                    <input type="password" name="password" required class="input input-bordered" />
+                </div>
 
-                    <label>Email:</label><br>
-                    <input type="email" name="email" required><br><br>
+                <!-- Forgot Password & Remember Me -->
+                <div class="flex justify-between items-center text-sm mt-2">
+                    <div class="form-control">
+                        <label class="label cursor-pointer gap-2">
+                            <input type="checkbox" checked="checked" class="checkbox checkbox-sm" />
+                            <span class="label-text">Remember me</span>
+                        </label>
+                    </div>
+                    <a href="#" class="link link-hover">Forgot password?</a>
+                </div>
 
-                    <label>Password:</label><br>
-                    <input type="password" name="password" required><br><br>
+                <!-- Log in Button -->
+                <div class="form-control mt-6">
+                    <button type="submit" class="btn border-none text-black" style="background-color: #fde047; hover:background-color: #facc15;">
+                        Log in
+                    </button>
+                </div>
 
-                    <input type="submit" value="Login">
-                </form>
-            </fieldset>
-        </td>
-    </tr>
-</table>
+                <!-- "OR" Divider -->
+                <div class="divider">OR</div>
+
+                <!-- Social Login Buttons -->
+                <div class="grid grid-cols-1 gap-3">
+                    <button type="button" class="btn btn-outline font-normal">
+                        <span class="h-5 w-5">
+                            <svg viewBox="0 0 48 48">
+                                <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039L38.804 8.841C34.523 4.901 29.605 2.5 24 2.5C11.318 2.5 2.5 11.318 2.5 24s8.818 21.5 21.5 21.5S45.5 36.682 45.5 24c0-1.599-.138-3.153-.389-4.682z" />
+                                <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12.5 24 12.5c3.059 0 5.842 1.154 7.961 3.039l5.843-5.541C34.523 4.901 29.605 2.5 24 2.5C16.318 2.5 9.818 6.355 6.306 11.691z" />
+                                <path fill="#4CAF50" d="M24 45.5c5.605 0 10.523-2.401 14.804-6.341l-5.843-5.541C30.842 37.846 27.059 40 24 40c-5.223 0-9.65-3.657-11.277-8.481l-6.571 4.819C9.818 41.145 16.318 45.5 24 45.5z" />
+                                <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l5.843 5.541C42.872 35.771 45.5 30.286 45.5 24c0-1.599-.138-3.153-.389-4.682z" />
+                            </svg>
+                        </span>
+                        Log in with Google
+                    </button>
+                    <button type="button" class="btn btn-outline font-normal">
+                        <span class="h-5 w-5">
+                            <svg viewBox="0 0 24 24" fill="currentColor" class="text-sky-500">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                        </span>
+                        Log in with Twitter
+                    </button>
+                    <button type="button" class="btn btn-outline font-normal">
+                        <span class="h-5 w-5">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2.5 5.5H21.5C22.3284 5.5 23 6.17157 23 7V17C23 17.8284 22.3284 18.5 21.5 18.5H2.5C1.67157 18.5 1 17.8284 1 17V7C1 6.17157 1.67157 5.5 2.5 5.5Z" fill="#0072C6"/>
+                                <path d="M1 7L11.1662 12.429C11.6826 12.7095 12.3174 12.7095 12.8338 12.429L23 7" stroke="white" stroke-width="1.2"/>
+                            </svg>
+                        </span>
+                        Log in with Outlook
+                    </button>
+                </div>
+
+                <!-- Create Account Link -->
+                <p class="text-center mt-6 text-sm">
+                    New to UniverCIT?
+                    <a href="{% url 'signin' %}" class="link" style="color: #d94b3d;">Create account</a>
+                </p>
+            </form>
+        </div>
+    </main>
 
 </body>
 </html>
