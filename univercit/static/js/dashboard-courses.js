@@ -1,7 +1,7 @@
 const selectAll = document.getElementById("dasshboard-course-select-all");
 const courseCheckboxes = document.querySelectorAll(".dashboard-course-checkbox");
 const removeCourse = document.getElementById("remove-course");
-const deleteModal = document.getElementById("delete_modal");
+const deleteModal = document.getElementById("delete-modal");
 const selectedCourseToDelete = document.getElementById("selected-course-delete")
 
 let anyChecked = false;

@@ -1,5 +1,6 @@
 # curriculum/views.py
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -86,6 +87,7 @@ class ProgramCreateView(LoginRequiredMixin, View):
 
         if len(error_list) != 0:
             error_msg = "Submission Error: Empty " + ", ".join(error_list)
+            messages.error(request, error_msg)
             return render(request, 'dashboard-program-form.html', {
                 "courses": Course.objects.all(),
                 "mode": "create",
@@ -95,7 +97,6 @@ class ProgramCreateView(LoginRequiredMixin, View):
                     "program_desc": program_desc,
                     "program_courses": program_courses.split(",")
                 },
-                "error_msg": error_msg
             })
 
         program = Program.objects.create(
@@ -109,6 +110,7 @@ class ProgramCreateView(LoginRequiredMixin, View):
                 course = get_object_or_404(Course, course_id=id)
                 program.courses.add(course)
 
+        messages.success(request, f"Program {program_code} created successfully!")
         if action == "create":
             return redirect(reverse_lazy("dashboard_program_list"))
         elif action == "create-add":
@@ -147,6 +149,7 @@ class ProgramUpdateView(LoginRequiredMixin, View):
 
         if len(error_list) != 0:
             error_msg = "Submission Error: Empty " + ", ".join(error_list)
+            messages.error(request, error_msg)
             return render(request, 'dashboard-program-form.html', {
                 "program": program,
                 "courses": Course.objects.all(),
@@ -157,7 +160,6 @@ class ProgramUpdateView(LoginRequiredMixin, View):
                     "program_desc": program_desc,
                     "program_courses": program_courses.split(",")
                 },
-                "error_msg": error_msg
             })
 
         program.program_name=program_name
@@ -171,6 +173,7 @@ class ProgramUpdateView(LoginRequiredMixin, View):
         else:
             program.courses.clear()
 
+        messages.success(request, f"Program {program_code} updated successfully!")
         if action == "create":
             return redirect(reverse_lazy("dashboard_program_list"))
         elif action == "save-edit":
@@ -199,10 +202,18 @@ class ProgramDeleteView(LoginRequiredMixin, View):
         if programs == "" or programs is None:
             return redirect(reverse_lazy('dashboard_program_list'))
         
+        programs_selected = programs.split(',')
 
-        for code in programs.split(','):
+        for code in programs_selected:
             program = get_object_or_404(Program, program_code=code)
             program.delete()
+
+        if (len(programs_selected) > 4):
+            messages.success(request, f"Programs {", ".join(programs_selected[:4])}, and {len(programs_selected) - 4} others deleted successfully!")
+        elif (len(programs_selected) == 1):
+            messages.success(request, f"Program {programs_selected[0]} deleted successfully!")
+        else:
+            messages.success(request, f"Programs {", ".join(programs_selected)} deleted successfully!")
 
         return redirect(reverse_lazy('dashboard_program_list'))
 
@@ -275,6 +286,7 @@ class CourseCreateView(LoginRequiredMixin, View):
 
         if len(error_list) != 0:
             error_msg = "Submission Error: Empty " + ", ".join(error_list)
+            messages.error(request, error_msg)
             return render(request, 'dashboard-course-form.html', {
                 "programs": Program.objects.all(),
                 "mode": "create",
@@ -284,7 +296,6 @@ class CourseCreateView(LoginRequiredMixin, View):
                     "course_desc": course_desc,
                     "course_programs": course_programs.split(",")
                 },
-                "error_msg": error_msg
             })
         
         course = Course.objects.create(
@@ -298,6 +309,7 @@ class CourseCreateView(LoginRequiredMixin, View):
                 program = get_object_or_404(Program, program_code=code)
                 course.programs.add(program)
 
+        messages.success(request, f"Course {course_id} created successfully!")
         if action == "create":
             return redirect(reverse_lazy("dashboard_course_list"))
         elif action == "create-add":
@@ -338,6 +350,7 @@ class CourseUpdateView(LoginRequiredMixin, View):
 
         if len(error_list) != 0:
             error_msg = "Submission Error: Empty " + ", ".join(error_list)
+            messages.error(request, error_msg)
             return render(request, 'dashboard-course-form.html', {
                 "course": course,
                 "programs": Program.objects.all(),
@@ -348,7 +361,6 @@ class CourseUpdateView(LoginRequiredMixin, View):
                     "course_desc": course_desc,
                     "course_programs": course_programs.split(",")
                 },
-                "error_msg": error_msg
             })
         
         course.course_name = course_name
@@ -362,6 +374,7 @@ class CourseUpdateView(LoginRequiredMixin, View):
         else:
             course.programs.clear() 
 
+        messages.success(request, f"Course {course_id} updated successfully!")
         if action == "create":
             return redirect(reverse_lazy("dashboard_course_list"))
         elif action == "save-edit":
@@ -388,11 +401,19 @@ class CourseDeleteView(LoginRequiredMixin, View):
 
         if courses == "" or courses is None:
             return redirect(reverse_lazy('dashboard_course_list'))
-        
 
-        for id in courses.split(','):
+        courses_selected = courses.split(',')    
+
+        for id in courses_selected:
             course = get_object_or_404(Course, course_id=id)
             course.delete()
+
+        if (len(courses_selected) > 4):
+            messages.success(request, f"Courses {", ".join(courses_selected[:4])}, and {len(courses_selected) - 4} others deleted successfully!")
+        elif (len(courses_selected) == 1):
+            messages.success(request, f"Course {courses_selected[0]} deleted successfully!")
+        else:
+            messages.success(request, f"Courses {", ".join(courses_selected)} deleted successfully!")
 
         return redirect(reverse_lazy('dashboard_course_list'))
 
