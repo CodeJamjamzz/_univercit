@@ -52,7 +52,7 @@
                         <h2 class="card-title">{{ course.course_id }}: {{ course.course_name }}</h2>
                         <p class="truncate">{{ course.course_desc }}</p>
                         <div class="card-actions justify-end mt-6">
-                            {% for program in course.programs.all %}
+                            {% for program in course.programs %}
                                 <div class="badge badge-primary">{{ program.program_code }}</div>
                             {% endfor %}
                         </div>

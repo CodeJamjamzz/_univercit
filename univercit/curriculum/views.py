@@ -4,9 +4,11 @@ from django.contrib import messages
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from .models import Program, Course
 from django.http import HttpResponseForbidden
 from django.db.models import Q
+
+from .models import Program, Course
+from .utils import *
 
 # Program Views
 
@@ -224,18 +226,20 @@ class CourseListView(LoginRequiredMixin, View):
     
     def get(self, request):
         query = request.GET.get('query', '')
-        if query:
-            query = query.strip()
-            courses = Course.objects.filter(
-                Q(course_id__icontains=query) | Q(course_name__icontains=query)
-            )
-        else:
-            courses = Course.objects.all()
 
-        return render(request, "all-courses.html", {
-            "courses": courses
-        })
-    
+        with connection.cursor() as cursor:
+            courses = get_courses(query)
+
+            for course in courses:
+                programs = get_courses_programs(course["course_id"])
+                course["programs"] = programs
+            
+            print(courses)
+                
+            return render(request, "all-courses.html", {
+                "courses": courses,
+            })
+
 
 class DashboardCourseListView(LoginRequiredMixin, View):
     login_url = '/login/'
