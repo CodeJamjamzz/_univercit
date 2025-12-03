@@ -1,0 +1,27 @@
+<dialog id="reply_modal" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold mb-4">Replying to {{ comment.get_student_username }}</h3>
+
+        <form method="POST" action="{% url 'add_reply' comment_id=comment.comment_id %}">
+            {% csrf_token %}
+
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">Your Reply:</span>
+                </label>
+                <textarea
+                    id="reply_content"
+                    name="reply_content"
+                    class="textarea textarea-bordered h-24 w-full resize-none"
+                    placeholder="Share your thoughts..."
+                    required
+                ></textarea>
+            </div>
+
+            <div class="modal-action">
+                <button type="submit" class="btn btn-primary">Submit Reply</button>
+                <button type="button" class="btn" onclick="document.getElementById('reply_modal').close()">Close</button>
+            </div>
+        </form>
+    </div>
+</dialog>

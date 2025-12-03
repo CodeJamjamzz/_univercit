@@ -46,3 +46,10 @@ class Comment(models.Model):
     # Foreign Key(s)
     thread_id = models.ForeignKey(Thread, on_delete=models.CASCADE)
     student_id = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
+    reply_to = models.ForeignKey('Comment', on_delete=models.SET_NULL, null=True)
+
+    def get_student_username(self):
+        return Student.objects.get(studentId=self.student_id)
+
+    def get_replied_comment(self):
+        return Comment.objects.filter(comment_id=self.reply_to.comment_id)

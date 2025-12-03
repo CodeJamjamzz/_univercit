@@ -1,4 +1,4 @@
-<div class="divider my-8"></div>
+<div id="make_comment_thread" class="divider my-8"></div>
 <form action="{% url 'add_comment' thread_id=thread.thread_id %}" method="post" class="card bg-base-200 shadow-xl sticky mb-8 z-10">
     {% csrf_token %}
     <div class="card-body">

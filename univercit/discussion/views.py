@@ -80,3 +80,18 @@ def add_comment(request, thread_id):
             student_id=request.user.id
         )
     return redirect('thread', thread_id=thread_id)
+
+def add_reply(request, comment_id):
+    comment = Comment.objects.get(comment_id=comment_id)
+    thread = comment.thread_id
+
+    if request.method == 'POST':
+        reply = request.POST.get('reply_content')
+        Comment.objects.create(
+            content=reply,
+            thread_id=thread,
+            student_id=request.user.id,
+            reply_to=comment
+        )
+
+    return redirect('thread', thread_id=thread.thread_id)
