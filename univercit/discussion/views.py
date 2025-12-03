@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.db import connection
 from .models import Forum, Thread, Comment
 
 from datetime import datetime
@@ -65,11 +66,8 @@ def add_thread(request, forum_id):
 
     return redirect('forum', forum_id=forum_id)
 
+# @login_required
 def add_comment(request, thread_id):
-    # Reject comment if user not auth
-    # if not request.user.is_authenticated():
-    #     return
-
     thread = Thread.objects.get(thread_id=thread_id)
 
     if request.method == 'POST':
@@ -81,6 +79,7 @@ def add_comment(request, thread_id):
         )
     return redirect('thread', thread_id=thread_id)
 
+# @login_required
 def add_reply(request, comment_id):
     comment = Comment.objects.get(comment_id=comment_id)
     thread = comment.thread_id
@@ -95,3 +94,18 @@ def add_reply(request, comment_id):
         )
 
     return redirect('thread', thread_id=thread.thread_id)
+
+# @login_required
+def edit_comment(request, comment_id):
+    if request.method == 'POST':
+        new_content = request.POST.get('edit_content')
+        thread_id = Comment.objects.get(comment_id=comment_id).thread_id.thread_id
+
+        with connection.cursor() as cursor:
+            cursor.execute("CALL edit_comment(%s, %s, %s, @success)", [
+                request.user.id,
+                comment_id,
+                new_content
+            ])
+
+    return redirect('thread', thread_id=thread_id)

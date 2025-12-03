@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from curriculum.models import Course
 from user.models import Student
@@ -40,6 +41,7 @@ class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)
     # Attributes
     content = models.TextField()
+    last_update = models.DateTimeField(default=timezone.now)
     upvote_count = models.IntegerField(default=0)
     downvote_count = models.IntegerField(default=0)
     is_visible = models.BooleanField(default=True)
@@ -53,3 +55,9 @@ class Comment(models.Model):
 
     def get_replied_comment(self):
         return Comment.objects.filter(comment_id=self.reply_to.comment_id)
+
+class CommentSnapshot(models.Model):
+    snapshot_id = models.AutoField(primary_key=True)
+    snapshot_date = models.DateTimeField(default=timezone.now)
+    content = models.TextField()
+    comment_id = models.ForeignKey(Comment, on_delete=models.CASCADE)

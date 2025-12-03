@@ -1,4 +1,4 @@
-<dialog id="reply_modal" class="modal">
+<dialog id="reply_modal_{{ comment.comment_id }}" class="modal">
     <div class="modal-box">
         <h3 class="text-lg font-bold mb-4">Replying to {{ comment.get_student_username }}</h3>
 
@@ -20,7 +20,7 @@
 
             <div class="modal-action">
                 <button type="submit" class="btn btn-primary">Submit Reply</button>
-                <button type="button" class="btn" onclick="document.getElementById('reply_modal').close()">Close</button>
+                <button type="button" class="btn" onclick="document.getElementById('reply_modal_{{ comment.comment_id }}').close()">Close</button>
             </div>
         </form>
     </div>
