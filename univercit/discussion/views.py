@@ -33,8 +33,22 @@ def thread_view(request, thread_id):
         return HttpResponse("i dunno where that thread is")
 
     # Get thread's comments
-    # TODO: paginate
-    thread_comments = thread.get_comments()
+    # TODO: add pagination in frontend
+    current_page = 1
+
+    with connection.cursor() as cursor:
+        cursor.callproc('get_thread_comments', [
+            thread_id,
+            current_page
+        ])
+        result = cursor.fetchall()
+        columns = [col[0] for col in cursor.description]
+
+    thread_comments = []
+    for row in result:
+        row_dict = dict(zip(columns, row))
+        thread_comments.append(Comment(**row_dict))
+
     thread_student = thread.get_student()
 
     # Give thread info to thread template
