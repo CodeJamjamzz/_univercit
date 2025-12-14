@@ -51,17 +51,17 @@ def add_thread(request, forum_id):
         thread_title = request.POST.get('threadTitle')
         thread_first_comment = request.POST.get('threadFirstComment')
 
-        thread = Thread.objects.create(
-            forum_id=forum,
-            thread_title=thread_title,
-            date_created=datetime.now(),
-            student_id=request.user.id
-        )
-        Comment.objects.create(
-            content=thread_first_comment,
-            thread_id=thread,
-            student_id=request.user.id
-        )
+        with connection.cursor() as cursor:
+            cursor.callproc('add_thread', [
+                forum.forum_id,
+                thread_title,
+                thread_first_comment,
+                request.user.id
+            ])
+            thread_id = cursor.fetchone()[0]
+
+        thread = Thread.objects.get(thread_id=thread_id)
+
         return redirect('thread', thread_id=thread.thread_id)
 
     return redirect('forum', forum_id=forum_id)
@@ -101,11 +101,13 @@ def edit_comment(request, comment_id):
         new_content = request.POST.get('edit_content')
         thread_id = Comment.objects.get(comment_id=comment_id).thread_id.thread_id
 
+        success = False
         with connection.cursor() as cursor:
-            cursor.execute("CALL edit_comment(%s, %s, %s, @success)", [
+            cursor.callproc('edit_comment', [
                 request.user.id,
                 comment_id,
-                new_content
+                new_content,
+                success
             ])
 
     return redirect('thread', thread_id=thread_id)
