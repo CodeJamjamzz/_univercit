@@ -8,7 +8,10 @@ from user.models import Student
 @require_POST
 def rate(request):
     # getting user
-    student = request.user if isinstance(request.user, Student) else Student.objects.get(user=request.user)
+    if hasattr(request.user, 'studentId'):
+        student = request.user
+    else:
+        student = Student.objects.get(email=request.user.email)
 
     # getting params
     item_id = request.POST.get('item_id')
