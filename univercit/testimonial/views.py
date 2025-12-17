@@ -57,12 +57,15 @@ def submit(request):
             course = Course.objects.get(pk=course_id)
         except Course.DoesNotExist:
             course = None
-    Testimonial.objects.create(
-        student_id=None,
-        course_id=course,
-        content=content,
-        is_visible=True
-    )
+    from django.db import connection
+    with connection.cursor() as cursor:
+        cursor.callproc('add_testimonial', [
+            course.pk if course else None,
+            None, # student_id
+            content,
+            1 # is_visible=True
+        ])
+
     return redirect(next_url)
 
 
@@ -75,5 +78,55 @@ class TestimonialView(View):
     """Placeholder view for testimonial app."""
     def get(self, request):
         return render(request, 'testimonial.html')
+
+
+@csrf_exempt
+def delete_testimonial(request, testimonial_id):
+    """Delete a testimonial knowing the ID."""
+    if request.method != 'POST':
+        # Fallback for non-POST/JS method if needed, or strictly enforce POST
+        pass
+    
+    # In a real app, get student_id from logical session/auth
+    student_id = None # Placeholder or get from request.user.student.id
+
+    from django.db import connection
+    with connection.cursor() as cursor:
+        cursor.callproc('delete_testimonial', [
+            testimonial_id,
+            student_id 
+        ])
+    
+    # redirect to where they came from or list
+    return redirect('testimonial_list')
+
+@csrf_exempt
+def edit_testimonial(request, testimonial_id):
+    """Edit a testimonial."""
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        student_id = None # Placeholder
+        
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.callproc('edit_testimonial', [
+                testimonial_id,
+                student_id,
+                content
+            ])
+        return redirect('testimonial_list')
+    
+    # Render edit form
+    # We need to fetch the existing content first to populate the form
+    # Using raw SQL for read consistency
+    testimonial = None
+    from django.db import connection
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT testimonial_id, content FROM testimonial_testimonial WHERE testimonial_id = %s", [testimonial_id])
+        row = cursor.fetchone()
+        if row:
+            testimonial = {'testimonial_id': row[0], 'content': row[1]}
+
+    return render(request, 'testimonial_write.html', {'testimonial': testimonial, 'is_edit': True})
 
 

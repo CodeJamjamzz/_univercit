@@ -5,6 +5,7 @@ urlpatterns = [
     # placeholder
     path('fileview/', views.FileView.as_view(), name='fileView'),
     path('submit/', views.submit, name='submit'),
+    path('delete/<int:file_id>/', views.delete_file, name='delete_file'),
 ]
 
 from django.urls import path
