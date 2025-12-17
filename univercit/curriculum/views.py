@@ -21,13 +21,8 @@ class ProgramListView(LoginRequiredMixin, View):
     
     def get(self, request):
         query = request.GET.get('query', '')
-        if query:
-            query = query.strip()
-            programs = Program.objects.filter(
-                Q(program_code__icontains=query) | Q(program_desc__icontains=query)
-            )
-        else:
-            programs = Program.objects.all()
+
+        programs = get_programs(query)
 
         return render(request, "all-programs.html", {
             "programs": programs
@@ -37,7 +32,7 @@ class DashboardProgramListView(LoginRequiredMixin, View):
     login_url = '/login/'
     
     def get(self, request):
-        programs = Program.objects.all()
+        programs = get_programs()
 
         return render(request, "dashboard-programs.html", {
             "programs": programs
@@ -245,16 +240,15 @@ class CourseListView(LoginRequiredMixin, View):
     def get(self, request):
         query = request.GET.get('query', '')
 
-        with connection.cursor() as cursor:
-            courses = get_courses(query)
+        courses = get_courses(query)
 
-            for course in courses:
-                programs = get_courses_programs(course["course_id"])
-                course["programs"] = programs
-                
-            return render(request, "all-courses.html", {
-                "courses": courses,
-            })
+        for course in courses:
+            programs = get_courses_programs(course["course_id"])
+            course["programs"] = programs
+            
+        return render(request, "all-courses.html", {
+            "courses": courses,
+        })
 
 
 class DashboardCourseListView(LoginRequiredMixin, View):
