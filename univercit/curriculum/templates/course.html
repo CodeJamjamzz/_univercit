@@ -19,11 +19,11 @@
                     <ul>
                         <li><a href="{% url 'program_list' %}">Programs</a></li>
                         <li>
-                            {% for program in programs.all %}
+                            {% for program in programs %}
                                 <a href="{% url 'program_detail' program.program_code %}">{{ program.program_code }} </a>
                                 {% if not forloop.last %}-{% endif %}
                             {% empty %}
-                                ___
+                                -
                             {% endfor %}
                         </li>
                         <li><a>{{ course.course_id }}</a></li>
