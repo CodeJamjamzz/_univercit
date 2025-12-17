@@ -1,32 +1,131 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-    <meta charset="UTF-8">
-    <title>{{ forum.forum_title }}</title>
-    {% load static %}
-    <link href="{% static 'css/src/output.css' %}" rel="stylesheet" type="text/css" />
-</head>
-<body class="bg-base-200 min-h-screen" data-theme="light">
+{% extends "base.html" %}
+{% load static %}
 
-    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+{% block body %}
+<main>
+    <section class="hero-custom min-h-[360px] px-24" style="background-image: linear-gradient(to right top, #fa812f, 
+        #fc843a, #fd8744, #fe8a4e, #ff8d57, #ff9060, #ff9368, 
+        #ff9670, #ff9a79, #ff9e82, #ffa28b, #ffa693);">
+        <div class="flex items-center justify-between gap-1 p-4 w-full flex-col lg:flex-row-reverse">
+            <div>
+                <img src="{% static 'assets/idea.jpg' %}" class="max-w-sm rounded-lg shadow-2xl" />
+            </div>
+            <div class="max-w-lg text-white">
+                <div class="breadcrumbs text-md mb-4">
+                    <ul>
+                        <li><a href="{% url 'program_list' %}">Programs</a></li>
 
-        <div class="flex items-center gap-4 mb-8">
+                        <li>
+                            <a href="{% url 'course_detail' forum.course_id_id %}">
+                                {{ forum.course_id_id }}
+                            </a>
+                        </li>
 
-            <div class="divider divider-horizontal divider-accent"></div>
-            <h1 class="text-5xl font-extrabold tracking-tight"> {{ forum.forum_title }} </h1>
-            <div class="badge badge-accent badge-lg mt-4">
-                {{ forum_threads|length }} Thread{% if forum_threads|length != 1 %}s{% endif %}
+                        <li>
+                            <a href="{% url 'all_forums' %}?course_id={{ forum.course_id_id }}">
+                                All Forums
+                            </a>
+                        </li>
+
+                        <li>{{ forum.forum_title }}</li>
+                    </ul>
+                </div>
+                <h1 class="text-5xl font-bold mb-2">{{ forum.forum_title }}</h1>
+                <h2 class="text-xl font-bold mb-6">
+                    {{ forum.forum_desc }}
+                </h2>
+                <span>View all threads in this forum.</span>
             </div>
         </div>
+    </section>
 
-        {% include 'forum_make_thread.html' %}
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for thread in forum_threads %}
-                {% include 'forum_thread_card.html' %}
-            {% endfor %}
+    <section class="px-24 py-12">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold">THREADS</h3>
+            <!-- Open the modal using ID.showModal() method -->
+            <button class="btn btn-secondary" onclick="new_thread_modal.showModal()">New Thread</button>
+            <dialog id="new_thread_modal" class="modal">
+                <div class="modal-box w-11/12 max-w-5xl bg-transparent shadow-none p-0 overflow-visible">
+                    <form method="dialog">
+                        <button
+                            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-50 bg-base-100">✕</button>
+                    </form>
+                    {% include 'forum_make_thread.html' %}
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
         </div>
 
-    </div>
-</body>
-</html>
+        <div class="flex flex-col gap-4">
+            {% for thread in forum_threads %}
+            <!-- Thread Card -->
+            <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 border border-base-200">
+                <div class="card-body flex-row p-6 gap-6 items-center">
+
+                    <!-- Voting Side -->
+                    <!-- Voting Side -->
+                    <div class="flex flex-col items-center gap-1 min-w-[3rem]">
+                        <form action="{% url 'rate' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ thread.thread_id }}">
+                            <input type="hidden" name="item_type" value="thread">
+                            <input type="hidden" name="action" value="upvote">
+                            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                            <button type="submit"
+                                class="btn btn-ghost btn-sm btn-circle {% if thread.user_is_upvoted %}text-yellow-500{% else %}text-gray-400{% endif %} hover:text-yellow-500 hover:bg-transparent">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="currentColor">
+                                    <path d="M480-600 240-360l56 56 184-184 184 184 56-56-240-240Z"
+                                        stroke="currentColor" stroke-width="60" />
+                                </svg>
+                            </button>
+                        </form>
+
+                        <span class="font-bold text-lg text-gray-500">{{ thread.score|default:0 }}</span>
+
+                        <form action="{% url 'rate' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ thread.thread_id }}">
+                            <input type="hidden" name="item_type" value="thread">
+                            <input type="hidden" name="action" value="downvote">
+                            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                            <button type="submit"
+                                class="btn btn-ghost btn-sm btn-circle {% if thread.user_is_upvoted == False %}text-red-500{% else %}text-gray-400{% endif %} hover:text-red-500 hover:bg-transparent">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                    width="24px" fill="currentColor">
+                                    <path d="M480-360 240-600l56-56 184 184 184-184 56 56-240 240Z"
+                                        stroke="currentColor" stroke-width="60" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Thread Content -->
+                    <div class="flex-1">
+                        <a href="{% url 'thread' thread.thread_id %}" class="group block">
+                            <h2 class="card-title text-2xl mb-2 transition-colors">
+                                {{ thread.thread_title }}
+                            </h2>
+                        </a>
+                        <div class="text-sm text-gray-500">
+                            Posted by <span
+                                class="font-semibold text-base-content">{{thread.student_id.username}}</span>
+                            on {{ thread.date_created|date:"M d, Y" }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-10">
+                <p class="text-xl font-bold text-gray-400">No threads found in this forum.</p>
+                <a href="{% url 'add_thread' forum.forum_id %}" class="btn btn-outline btn-primary mt-4">Start a
+                    Discussion</a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+{% endblock %}

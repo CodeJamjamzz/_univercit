@@ -1,23 +1,54 @@
-<form action="{% url 'add_thread' forum_id=forum.forum_id %}" method="post" class="card bg-base-100 shadow-md max-w-xl mb-12">
+<form action="{% url 'add_thread' forum_id=forum.forum_id %}" method="post"
+    class="card bg-base-100 shadow-2xl w-full max-w-3xl mx-auto rounded-3xl overflow-hidden border border-gray-200">
     {% csrf_token %}
-    <div class="card-body p-6">
-        <h2 class="card-title mb-4">Create New Thread</h2>
 
-        <div class="flex flex-col sm:flex-row gap-4">
-            <input id="threadTitle"
-                   type="text"
-                   name="threadTitle"
-                   placeholder="Thread Title"
-                   class="input input-bordered w-full"
-                   value="{{ threadTitle }}">
+    <div class="bg-gray-50 p-8 pb-6 border-b border-gray-200">
+        <div class="flex items-start justify-between">
+            <div>
+                <h2 class="text-3xl font-extrabold text-gray-800 tracking-tight">Create Discussion</h2>
+                <div class="flex items-center gap-2 mt-2 text-gray-600">
+                    <span>Posting in:</span>
+                    <span class="badge badge-lg bg-gray-200 border-none text-gray-800 font-bold gap-1">
+                        {{ forum.forum_title }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <input id="threadFirstComment"
-                   type="text"
-                   name="threadFirstComment"
-                   placeholder="What's on your mind?"
-                   class="input input-bordered w-full"
-                   value="{{ threadFirstComment }}">
-            <button type="submit" class="btn btn-secondary sm:w-auto">Post</button>
+    <div class="card-body p-8 gap-6">
+        <div class="form-control w-full">
+            <label class="label pb-1">
+                <span class="label-text text-xs font-bold uppercase tracking-wider text-gray-500">Thread Title</span>
+            </label>
+
+            <input id="threadTitle" type="text" name="threadTitle"
+                placeholder="Give your topic a catchy name..."
+                class="input input-bordered w-full input-lg bg-white text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                required value="{{ threadTitle|default:'' }}">
+        </div>
+
+        <div class="form-control w-full">
+            <label class="label pb-1">
+                <span class="label-text text-xs font-bold uppercase tracking-wider text-gray-500">Discussion Content</span>
+            </label>
+            <textarea id="threadFirstComment" name="threadFirstComment"
+                class="textarea textarea-bordered w-full h-48 p-4 text-lg bg-white text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 leading-relaxed resize-none"
+                placeholder="What's on your mind? Share your thoughts, questions, or ideas..."
+                required>{{ threadFirstComment|default:'' }}</textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 mt-4 pt-4 border-t border-gray-100">
+            <button type="button" class="btn btn-primary btn-lg text-gray-500 hover:bg-gray-100" onclick="document.getElementById('your_modal_id').close()">
+                Cancel
+            </button>
+
+            <button type="submit" class="btn btn-secondary btn-lg px-8 gap-2 shadow-lg hover:scale-105 transition-transform text-black border-none">
+                <span>Post Thread</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
         </div>
     </div>
 </form>

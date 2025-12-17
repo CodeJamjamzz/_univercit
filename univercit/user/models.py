@@ -20,3 +20,7 @@ class Student(models.Model):
         Email: {self.email}
         """
 
+    @property
+    def id(self):
+        return self.studentId
+
