@@ -1,0 +1,27 @@
+<dialog id="edit_modal_{{ comment.comment_id }}" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold mb-4">Edit Comment</h3>
+
+        <form method="POST" action="{% url 'edit_comment' comment_id=comment.comment_id %}">
+            {% csrf_token %}
+
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">Edit Comment:</span>
+                </label>
+                <textarea
+                    id="edit_content"
+                    name="edit_content"
+                    class="textarea textarea-bordered h-24 w-full resize-none"
+                    placeholder="Edit comment..."
+                    required
+                >{{ comment.content}}</textarea>
+            </div>
+
+            <div class="modal-action">
+                <button type="submit" class="btn btn-primary">Edit</button>
+                <button type="button" class="btn" onclick="document.getElementById('edit_modal_{{ comment.comment_id }}').close()">Close</button>
+            </div>
+        </form>
+    </div>
+</dialog>

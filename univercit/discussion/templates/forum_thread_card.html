@@ -2,7 +2,7 @@
     <div class="card bg-base-100 shadow-md h-full transition-shadow duration-300 hover:shadow-lg">
         <div class="card-body">
             <h2 class="card-title">{{thread.thread_title}}</h2>
-            <p class="text-base-content/70"> First comment goes here. </p>
+            <p class="text-base-content/70"> {{thread.get_comments.0.content}} </p>
         </div>
     </div>
 </a>

@@ -1,6 +1,30 @@
 <div class="card shadow-sm h-full">
     <div class="card-body">
-        <h1 class="card-title">Student Username</h1>
-        <h2>{{comment.content}}</h2>
+
+        <h1 class="card-title">
+            {{ comment.student_id.username|slice:":1"|upper|default:"?" }}
+        </h1>
+
+        {% if comment.reply_to %}
+            <div class="flex">
+                <div class="divider divider-horizontal"></div>
+                <h2 class="bg-base-100">
+                {{ comment.get_replied_comment.0.content }}
+                </h2>
+            </div>
+        {% endif %}
+
+        <h2>{{ comment.content }}</h2>
+
+        <div class="flex p-4">
+            <button class="btn" onclick="document.getElementById('reply_modal_{{ comment.comment_id }}').showModal()">Comment</button>
+            {% include 'thread_reply_modal.html' %}
+
+            {% if comment.student_id == user.id %}
+                <button class="btn btn-ghost ml-4" onclick="document.getElementById('edit_modal_{{ comment.comment_id }}').showModal()">Edit</button>
+                {% include 'thread_edit_comment_modal.html' %}
+
+            {% endif %}
+        </div>
     </div>
 </div>
