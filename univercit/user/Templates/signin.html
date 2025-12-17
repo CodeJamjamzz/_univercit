@@ -27,7 +27,6 @@
 </head>
 <body>
 
-```
 <!-- Background element -->
 <div class="full-background"></div>
 
@@ -72,7 +71,7 @@
                 <select class="select select-bordered" name="programId" required>
                     <option disabled selected>Choose your program</option>
                     {% for program in programs %}
-                        <option value="{{ program.program_code }}">{{ program.program_desc }}</option>
+                        <option value="{{ program.program_code }}">{{ program.program_code }}</option>
                     {% endfor %}
                 </select>
             </div>
