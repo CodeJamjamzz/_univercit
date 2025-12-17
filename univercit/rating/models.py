@@ -11,7 +11,8 @@ class Rating(models.Model):
     ratingId = models.AutoField(primary_key=True)
     isUpvoted = models.BooleanField(default=False)
     studentId = models.ForeignKey(Student, on_delete=models.CASCADE,null=True,blank=True)
-
+    class Meta:
+        abstract = True
 class CommentRating(Rating):
     commentId = models.ForeignKey(Comment, on_delete=models.CASCADE,null=True,blank=True)
     pass
