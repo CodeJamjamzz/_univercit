@@ -12,8 +12,8 @@
             <nav class="bg-base-100 flex justify-between items-center h-16 rounded-xl px-14">
                 <h1 class="text-2xl font-medium">UniverCIT</h1>
                 <div class="flex gap-4 items-center">
-                    <button class="btn btn-secondary px-8 h-[35px]">Sign up</button>
-                    <button class="btn btn-accent px-8 h-[35px]">Log in</button>
+                    <a href="{% url 'signin' %}" class="btn btn-secondary px-8 h-[35px]">Sign up</a>
+                    <a href="{% url 'login' %}" class="btn btn-accent px-8 h-[35px]">Log in</a>
                 </div>
             </nav>
         </header>
@@ -62,7 +62,7 @@
                 </p>
             </div>
 
-            <button class="btn btn-secondary px-12 text-xl h-14">Sign Up</button>
+            <a href="{% url 'signin' %}" class="btn btn-secondary px-12 text-xl h-14" >Sign Up</a>
         </div>
     </section>
 </body>

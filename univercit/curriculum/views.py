@@ -7,12 +7,13 @@ from .models import Program, Course
 from django.http import HttpResponseForbidden
 from django.db.models import Q
 
+
 # Program Views
 
 # Limit the program the can be seen by the User on what program they are in
 class ProgramListView(LoginRequiredMixin, View):
     login_url = '/login/'
-    
+
     def get(self, request):
         query = request.GET.get('query', '')
         if query:
@@ -26,10 +27,11 @@ class ProgramListView(LoginRequiredMixin, View):
         return render(request, "all-programs.html", {
             "programs": programs
         })
-    
+
+
 class DashboardProgramListView(LoginRequiredMixin, View):
     login_url = '/login/'
-    
+
     def get(self, request):
         programs = Program.objects.all()
 
@@ -65,12 +67,12 @@ class ProgramCreateView(LoginRequiredMixin, View):
     def post(self, request):
         if not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden("You are not allowed to create programs.")
-        
+
         action = request.POST.get('action')
-        
+
         if action == "discard":
             return redirect(reverse_lazy("dashboard_program_list"))
-        
+
         program_code = request.POST.get('program-code', '').strip()
         program_desc = request.POST.get('program-desc', '').strip()
         program_courses = request.POST.get('courses-selected', '').strip()
@@ -108,8 +110,7 @@ class ProgramCreateView(LoginRequiredMixin, View):
             return redirect(reverse_lazy("dashboard_program_list"))
         elif action == "create-add":
             return redirect(reverse_lazy("dashboard_program_create"))
-        
-    
+
     def get(self, request):
         return render(request, 'dashboard-program-form.html', {
             "courses": Course.objects.all(),
@@ -119,16 +120,16 @@ class ProgramCreateView(LoginRequiredMixin, View):
 
 class ProgramUpdateView(LoginRequiredMixin, View):
     login_url = '/login/'
-    
+
     def post(self, request, program_code):
         if not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden("You are not allowed to create programs.")
-        
+
         action = request.POST.get('action')
-        
+
         if action == "discard":
             return redirect(reverse_lazy("dashboard_program_list"))
-        
+
         program = get_object_or_404(Program, program_code=program_code)
         program_desc = request.POST.get('program-desc', '').strip()
         program_courses = request.POST.get('courses-selected', '').strip()
@@ -151,7 +152,7 @@ class ProgramUpdateView(LoginRequiredMixin, View):
                 "error_msg": error_msg
             })
 
-        program.program_desc=program_desc
+        program.program_desc = program_desc
         program.save()
 
         if program_courses is not None and program_courses != "":
@@ -174,7 +175,6 @@ class ProgramUpdateView(LoginRequiredMixin, View):
             "mode": "update"
         })
 
-    
 
 class ProgramDeleteView(LoginRequiredMixin, View):
     login_url = '/login/'
@@ -182,7 +182,7 @@ class ProgramDeleteView(LoginRequiredMixin, View):
     def post(self, request, program_code):
         if not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden("You are not allowd to delete programs.")
-        
+
         program = get_object_or_404(Program, program_code=program_code)
         program.delete()
         return redirect(reverse_lazy('program_list'))
@@ -191,7 +191,7 @@ class ProgramDeleteView(LoginRequiredMixin, View):
 # Course Views
 class CourseListView(LoginRequiredMixin, View):
     login_url = '/login/'
-    
+
     def get(self, request):
         query = request.GET.get('query', '')
         if query:
@@ -205,22 +205,22 @@ class CourseListView(LoginRequiredMixin, View):
         return render(request, "all-courses.html", {
             "courses": courses
         })
-    
+
 
 class DashboardCourseListView(LoginRequiredMixin, View):
     login_url = '/login/'
-    
+
     def get(self, request):
         courses = Course.objects.all()
 
         return render(request, "dashboard-courses.html", {
             "courses": courses
         })
-    
+
 
 class CourseDetailView(LoginRequiredMixin, DetailView):
     login_url = '/login/'
-    
+
     def get(self, request, course_id):
         course = get_object_or_404(Course, course_id=course_id)
         return render(request, 'course.html', {
@@ -235,12 +235,12 @@ class CourseCreateView(LoginRequiredMixin, View):
     def post(self, request):
         if not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden("You are not allowed to create courses.")
-        
+
         action = request.POST.get('action')
-        
+
         if action == "discard":
             return redirect(reverse_lazy("dashboard_course_list"))
-        
+
         course_id = request.POST.get('course-id', '').strip()
         course_name = request.POST.get('course-name', '').strip()
         course_desc = request.POST.get('course-desc', '').strip()
@@ -267,7 +267,7 @@ class CourseCreateView(LoginRequiredMixin, View):
                 },
                 "error_msg": error_msg
             })
-        
+
         course = Course.objects.create(
             course_id=course_id,
             course_name=course_name,
@@ -283,16 +283,15 @@ class CourseCreateView(LoginRequiredMixin, View):
             return redirect(reverse_lazy("dashboard_course_list"))
         elif action == "create-add":
             return redirect(reverse_lazy("dashboard_course_create"))
-        
+
         return redirect(reverse_lazy("dashboard_course_list"))
-    
 
     def get(self, request):
         return render(request, "dashboard-course-form.html", {
             "programs": Program.objects.all(),
             "mode": "create",
         })
-    
+
 
 class CourseUpdateView(LoginRequiredMixin, View):
     login_url = '/login/'
@@ -300,12 +299,12 @@ class CourseUpdateView(LoginRequiredMixin, View):
     def post(self, request, course_id):
         if not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden("You are not allowed to update courses.")
-        
+
         action = request.POST.get('action')
-        
+
         if action == "discard":
             return redirect(reverse_lazy("dashboard_course_list"))
-        
+
         course = get_object_or_404(Course, course_id=course_id)
         course_name = request.POST.get('course-name', '').strip()
         course_desc = request.POST.get('course-desc', '').strip()
@@ -331,24 +330,23 @@ class CourseUpdateView(LoginRequiredMixin, View):
                 },
                 "error_msg": error_msg
             })
-        
+
         course.course_name = course_name
         course.course_desc = course_desc
         course.save()
-             
+
         if course_programs is not None and course_programs != "":
             program_codes = [code.strip() for code in course_programs.split(",")]
             programs = Program.objects.filter(program_code__in=program_codes)
-            course.programs.set(programs) 
+            course.programs.set(programs)
         else:
-            course.programs.clear() 
+            course.programs.clear()
 
         if action == "create":
             return redirect(reverse_lazy("dashboard_course_list"))
         elif action == "save-edit":
             return redirect(reverse_lazy("dashboard_course_update", args=(course_id,)))
 
-    
     def get(self, request, course_id):
         course = get_object_or_404(Course, course_id=course_id)
         return render(request, "dashboard-course-form.html", {
@@ -364,7 +362,7 @@ class CourseDeleteView(LoginRequiredMixin, View):
     def post(self, request, course_id):
         if not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden("You are not allowd to delete courses.")
-        
+
         course = get_object_or_404(Course, course_code=course_id)
         course.delete()
         return redirect(reverse_lazy('course_list'))
@@ -396,7 +394,7 @@ class ProgramCoursesAddView(LoginRequiredMixin, View):
         program.courses.add(course)
 
         return redirect('program_courses', program_code=program.program_code)
-    
+
 
 class ProgramCoursesDeleteView(LoginRequiredMixin, View):
     login_url = '/login/'
