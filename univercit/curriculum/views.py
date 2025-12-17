@@ -1,7 +1,8 @@
 # curriculum/views.py
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.exceptions import PermissionDenied
 from django.contrib import messages
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
+from django.views.generic import DetailView, View
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.http import HttpResponseForbidden
@@ -28,7 +29,7 @@ class ProgramListView(LoginRequiredMixin, View):
             "programs": programs
         })
     
-class DashboardProgramListView(LoginRequiredMixin, View):
+class DashboardProgramListView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = '/login/'
     
     def get(self, request):
@@ -37,6 +38,9 @@ class DashboardProgramListView(LoginRequiredMixin, View):
         return render(request, "dashboard-programs.html", {
             "programs": programs
         })
+
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
 
 
 class ProgramDetailView(LoginRequiredMixin, View):
@@ -60,7 +64,7 @@ class ProgramDetailView(LoginRequiredMixin, View):
         })
 
 
-class ProgramCreateView(LoginRequiredMixin, View):
+class ProgramCreateView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = '/login/'
 
     def post(self, request):
@@ -131,7 +135,10 @@ class ProgramCreateView(LoginRequiredMixin, View):
         })
 
 
-class ProgramUpdateView(LoginRequiredMixin, View):
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+class ProgramUpdateView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = '/login/'
     
     def post(self, request, program_code):
@@ -200,10 +207,13 @@ class ProgramUpdateView(LoginRequiredMixin, View):
             "courses": Course.objects.all(),
             "mode": "update"
         })
-
     
 
-class ProgramDeleteView(LoginRequiredMixin, View):
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+    
+
+class ProgramDeleteView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = '/login/'
 
     def post(self, request):
@@ -232,6 +242,10 @@ class ProgramDeleteView(LoginRequiredMixin, View):
             messages.success(request, f"Programs {", ".join(programs_selected)} deleted successfully!")
 
         return redirect(reverse_lazy('dashboard_program_list'))
+    
+
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
 
 
 # Course Views
@@ -252,7 +266,7 @@ class CourseListView(LoginRequiredMixin, View):
         })
 
 
-class DashboardCourseListView(LoginRequiredMixin, View):
+class DashboardCourseListView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = '/login/'
     
     def get(self, request):
@@ -262,6 +276,9 @@ class DashboardCourseListView(LoginRequiredMixin, View):
             "courses": courses
         })
     
+
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
 
 class CourseDetailView(LoginRequiredMixin, DetailView):
     login_url = '/login/'
@@ -289,7 +306,7 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
         })
 
 
-class CourseCreateView(LoginRequiredMixin, View):
+class CourseCreateView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = '/login/'
 
     def post(self, request):
@@ -355,13 +372,20 @@ class CourseCreateView(LoginRequiredMixin, View):
     
 
     def get(self, request):
+        if not request.user.is_staff and not request.user.is_superuser:
+            return HttpResponseForbidden("You are not allowed to create courses.")
+        
         return render(request, "dashboard-course-form.html", {
             "programs": Program.objects.all(),
             "mode": "create",
         })
     
 
-class CourseUpdateView(LoginRequiredMixin, View):
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+    
+
+class CourseUpdateView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = '/login/'
 
     def post(self, request, course_id):
@@ -425,6 +449,7 @@ class CourseUpdateView(LoginRequiredMixin, View):
 
         return redirect(reverse_lazy("dashboard_course_list"))
 
+
     def get(self, request, course_id):
         course = get_object_or_404(Course, course_id=course_id)
         return render(request, "dashboard-course-form.html", {
@@ -434,7 +459,11 @@ class CourseUpdateView(LoginRequiredMixin, View):
         })
 
 
-class CourseDeleteView(LoginRequiredMixin, View):
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+
+class CourseDeleteView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = '/login/'
 
     def post(self, request):
@@ -463,3 +492,7 @@ class CourseDeleteView(LoginRequiredMixin, View):
             messages.success(request, f"Courses {", ".join(courses_selected)} deleted successfully!")
 
         return redirect(reverse_lazy('dashboard_course_list'))
+    
+
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser

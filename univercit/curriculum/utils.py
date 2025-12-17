@@ -1,7 +1,7 @@
 from django.db import connection, DatabaseError
 from univercit.utils import dictfetchall
 
-# Util functions
+# Database Util functions
 def get_courses(query=''):
     with connection.cursor() as cursor:
         cursor.callproc("get_courses", [query])

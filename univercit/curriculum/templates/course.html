@@ -108,8 +108,8 @@
                 <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Most active disucssions</li>
 
                 {% for forum in forums %}
-                <li class="list-row">
-                    <a href="{% url 'forum' forum.forum_id %}">
+                <li>
+                    <a class="list-row" href="{% url 'forum' forum.forum_id %}">
                         <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px"
                                 viewBox="0 -960 960 960" width="24px" fill="#5D0E07">
                                 <path
