@@ -71,31 +71,30 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for i in "01234" %}
+                {% for file in files %}
                 <!-- rows -->
                 <tr>
                     <td>
-                        File Name {{ forloop.counter0 }}
+                        {{ file.file_desc }}
                     </td>
                     <td>
                     <div class="flex items-center gap-3">
-                        <div class="avatar">
-                        <div class="mask mask-squircle h-12 w-12">
-                            <img
-                            src="{% static 'assets/elgato.jpg' %}"
-                            alt="Avatar Tailwind CSS Component" />
-                        </div>
-                        </div>
                         <div>
-                        <div class="font-bold">Jane Doe</div>
-                        <div class="text-sm opacity-50">BSCS</div>
+                        <div class="font-bold">{{ file.student_id.fname }} {{ file.student_id.lname }}</div>
+                        <div class="text-sm opacity-50">{{ file.course_id.course_id }}</div>
                         </div>
                     </div>
                     </td>
-                    <td class="text-center">18/11/2025</td>
-                    <td class="text-center">10</td>
-                    <td class="text-center">3</td>
+                    <td class="text-center">{{ file.date_uploaded|date:"d/m/Y" }}</td>
+                    <td class="text-center">{{ file.upvote_count }}</td>
+                    <td class="text-center">{{ file.downvote_count }}</td>
                 </tr>
+                {% empty %}
+                    <tr>
+                        <td>
+                            No files uploaded.
+                        </td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
@@ -111,45 +110,24 @@
   
             <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Most active disucssions</li>
             
-            <li class="list-row">
-                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
-                <div class="flex items-center text-xl font-bold">
-                    What part of this course did you find most challenging and why?
-                </div>
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-            </li>
+                {% for forum in forums %}
+                    <li class="list-row">
+                        <a href="{% url 'forum' forum.forum_id %}">
+                            <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
+                            <div class="flex items-center text-xl font-bold">
+                                {{ forum.forum_title }}
+                            </div>
+                            <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
+                        </a>
+                    </li>
+                {% empty %}
+                    <li class="list-row">
+                        <div class="flex items-center text-xl font-bold">
+                            No active disucssions.
+                        </div>
+                    </li>
+                {% endfor %}
             
-            <li class="list-row">
-                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
-                <div class="flex items-center text-xl font-bold">
-                    Can anyone share tips for studying this subject effectively?
-                </div>
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-            </li>
-            
-            <li class="list-row">
-                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
-                <div class="flex items-center text-xl font-bold">
-                    How do you usually prepare for quizzes or exams in this course?
-                </div>
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-            </li>
-            
-            <li class="list-row">
-                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
-                <div class="flex items-center text-xl font-bold">
-                    What topics do you think deserve more focus from the instructor?
-                </div>
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-            </li>
-
-            <li class="list-row">
-                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
-                <div class="flex items-center text-xl font-bold">
-                    Can anyone share their notes or summaries for this week’s lecture?
-                </div>
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-            </li>
             </ul>
             <div class="mt-6">
                 <button class="btn btn-secondary ml-auto block">More Discussions</button>

@@ -5,9 +5,12 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.http import HttpResponseForbidden
-from django.db.models import Q
+from django.db.models import Q, Count, Sum, F
+from django.db.models.functions import Coalesce
 
 from .models import Program, Course
+from discussion.models import Forum
+from file.models import File
 from .utils import *
 
 # Program Views
@@ -271,9 +274,23 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
     def get(self, request, course_id):
         course = get_course(course_id)
         programs = get_courses_programs(course_id)
+        
+        top_files = File.objects.filter(course_id=course_id).annotate(
+            popularity_score=F('upvote_count') - F('downvote_count')
+        ).order_by('-popularity_score')[:5]
+
+        top_forums = Forum.objects.filter(course_id=course_id).annotate(
+            thread_count=Count('thread'),
+            total_upvotes=Coalesce(Sum('thread__upvote_count'), 0)
+        ).annotate(
+                popularity_score=F('thread_count') + F('total_upvotes')
+        ).order_by('-popularity_score')[:5]
+        
         return render(request, 'course.html', {
             "programs": programs,
-            "course": course
+            "course": course,
+            "files": top_files,
+            "forums": top_forums
         })
 
 
