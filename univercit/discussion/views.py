@@ -1,10 +1,13 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.db import connection
 from .models import Forum, Thread, Comment
 
 from datetime import datetime
+
+from curriculum.models import Course
+
 
 # Create your views here.
 # @login_required
@@ -92,6 +95,21 @@ def add_comment(request, thread_id):
             student_id=request.user.id
         )
     return redirect('thread', thread_id=thread_id)
+
+# @login_required
+def all_forums_view(request):
+    course_id = request.GET.get('course_id')
+    if not course_id:
+        return HttpResponse("Course ID is required.", status=400)
+
+    
+    course = get_object_or_404(Course, course_id=course_id)
+    forums = Forum.objects.filter(course_id=course)
+
+    return render(request, 'all_forums.html', {
+        'course': course,
+        'forums': forums
+    })
 
 # @login_required
 def add_reply(request, comment_id):

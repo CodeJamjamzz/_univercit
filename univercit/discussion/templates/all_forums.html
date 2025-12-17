@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+<main>
+    <section class="hero-custom min-h-[360px] px-24" style="background-image: linear-gradient(to right top, #fa812f, 
+        #fc843a, #fd8744, #fe8a4e, #ff8d57, #ff9060, #ff9368, 
+        #ff9670, #ff9a79, #ff9e82, #ffa28b, #ffa693);">
+        <div class="flex items-center justify-between gap-1 p-4 w-full flex-col lg:flex-row-reverse">
+            <div>
+                <img src="{% static 'assets/idea.jpg' %}" class="max-w-sm rounded-lg shadow-2xl" />
+            </div>
+            <div class="max-w-lg text-white">
+                <div class="breadcrumbs text-md mb-4">
+                    <ul>
+                        <li><a href="{% url 'program_list' %}">Programs</a></li>
+                        <li><a href="{% url 'course_detail' course.course_id %}">{{ course.course_id }}</a></li>
+                        <li>All Forums</li>
+                    </ul>
+                </div>
+                <h1 class="text-5xl font-bold mb-2">Forums</h1>
+                <h2 class="text-3xl font-bold mb-6">
+                    {{ course.course_name }}
+                </h2>
+                <span>View all discussions for this course.</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="px-24 py-12">
+        <h3 class="text-xl font-bold">ALL DISCUSSIONS</h3>
+        <h4 class="text-3xl font-bold mb-4">Join the conversation.</h4>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for forum in forums %}
+            <a href="{% url 'forum' forum.forum_id %}"
+                class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 h-full block">
+                <div class="card-body">
+                    <div class="flex items-center gap-2 mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#5D0E07">
+                            <path
+                                d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z" />
+                        </svg>
+                        <h2 class="card-title text-accent">{{ forum.forum_title }}</h2>
+                    </div>
+                    <p class="line-clamp-3 text-gray-600 mb-4">{{ forum.forum_desc }}</p>
+                </div>
+            </a>
+            {% empty %}
+            <div class="col-span-full text-center py-10">
+                <p class="text-xl font-bold text-gray-400">No active discussions found for this course.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+{% endblock %}

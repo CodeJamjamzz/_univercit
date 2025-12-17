@@ -9,5 +9,6 @@ urlpatterns = [
     path('thread/<int:thread_id>/comments', views.add_comment, name='add_comment'),
 
     path('comment/<int:comment_id>/reply', views.add_reply, name='add_reply'),
-    path('comment/<int:comment_id>/edit', views.edit_comment, name='edit_comment')
+    path('comment/<int:comment_id>/edit', views.edit_comment, name='edit_comment'),
+    path('forums/', views.all_forums_view, name='all_forums'),
 ]

@@ -3,16 +3,12 @@
 
 {% block body %}
 <main>
-    <section class="hero-custom min-h-[360px] px-24"
-        style="background-image: linear-gradient(to right top, #fa812f, 
+    <section class="hero-custom min-h-[360px] px-24" style="background-image: linear-gradient(to right top, #fa812f, 
         #fc843a, #fd8744, #fe8a4e, #ff8d57, #ff9060, #ff9368, 
         #ff9670, #ff9a79, #ff9e82, #ffa28b, #ffa693);">
         <div class="flex items-center justify-between gap-1 p-4 w-full flex-col lg:flex-row-reverse">
             <div>
-                <img
-                    src="{% static 'assets/idea.jpg' %}"
-                    class="max-w-sm rounded-lg shadow-2xl"
-                />
+                <img src="{% static 'assets/idea.jpg' %}" class="max-w-sm rounded-lg shadow-2xl" />
             </div>
             <div class="max-w-lg text-white">
                 <div class="breadcrumbs text-md mb-4">
@@ -20,10 +16,10 @@
                         <li><a href="{% url 'program_list' %}">Programs</a></li>
                         <li>
                             {% for program in programs %}
-                                <a href="{% url 'program_detail' program.program_code %}">{{ program.program_code }} </a>
-                                {% if not forloop.last %}-{% endif %}
+                            <a href="{% url 'program_detail' program.program_code %}">{{ program.program_code }} </a>
+                            {% if not forloop.last %}-{% endif %}
                             {% empty %}
-                                -
+                            -
                             {% endfor %}
                         </li>
                         <li><a>{{ course.course_id }}</a></li>
@@ -59,45 +55,46 @@
         <section id="files-section" class="py-12 scroll-section">
             <h3 class="text-xl font-bold mb-4">TOP FILES</h3>
             <div class="overflow-x-auto">
-            <table class="table">
-                <!-- head -->
-                <thead>
-                <tr>
-                    <th>Files</th>
-                    <th>Owner</th>
-                    <th class="text-center">Date Uploaded</th>
-                    <th class="text-center">Upvotes</th>
-                    <th class="text-center">Downvotes</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for file in files %}
-                <!-- rows -->
-                <tr>
-                    <td>
-                        {{ file.file_desc }}
-                    </td>
-                    <td>
-                    <div class="flex items-center gap-3">
-                        <div>
-                        <div class="font-bold">{{ file.student_id.fname }} {{ file.student_id.lname }}</div>
-                        <div class="text-sm opacity-50">{{ file.course_id.course_id }}</div>
-                        </div>
-                    </div>
-                    </td>
-                    <td class="text-center">{{ file.date_uploaded|date:"d/m/Y" }}</td>
-                    <td class="text-center">{{ file.upvote_count }}</td>
-                    <td class="text-center">{{ file.downvote_count }}</td>
-                </tr>
-                {% empty %}
-                    <tr>
-                        <td>
-                            No files uploaded.
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                <table class="table">
+                    <!-- head -->
+                    <thead>
+                        <tr>
+                            <th>Files</th>
+                            <th>Owner</th>
+                            <th class="text-center">Date Uploaded</th>
+                            <th class="text-center">Upvotes</th>
+                            <th class="text-center">Downvotes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in files %}
+                        <!-- rows -->
+                        <tr>
+                            <td>
+                                {{ file.file_desc }}
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-3">
+                                    <div>
+                                        <div class="font-bold">{{ file.student_id.fname }} {{ file.student_id.lname }}
+                                        </div>
+                                        <div class="text-sm opacity-50">{{ file.course_id.course_id }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">{{ file.date_uploaded|date:"d/m/Y" }}</td>
+                            <td class="text-center">{{ file.upvote_count }}</td>
+                            <td class="text-center">{{ file.downvote_count }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td>
+                                No files uploaded.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
             <div class="mt-4">
                 <button class="btn btn-secondary ml-auto block">More Files</button>
@@ -107,30 +104,42 @@
             <h3 class="text-xl font-bold">TOP DISCUSSIONS</h3>
             <h4 class="text-3xl font-bold mb-4">Engage with forums from fellow students.</h4>
             <ul class="list bg-base-100 rounded-box shadow-md">
-  
-            <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Most active disucssions</li>
-            
+
+                <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Most active disucssions</li>
+
                 {% for forum in forums %}
-                    <li class="list-row">
-                        <a href="{% url 'forum' forum.forum_id %}">
-                            <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
-                            <div class="flex items-center text-xl font-bold">
-                                {{ forum.forum_title }}
-                            </div>
-                            <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-                        </a>
-                    </li>
-                {% empty %}
-                    <li class="list-row">
+                <li class="list-row">
+                    <a href="{% url 'forum' forum.forum_id %}">
+                        <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px"
+                                viewBox="0 -960 960 960" width="24px" fill="#5D0E07">
+                                <path
+                                    d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z" />
+                            </svg></div>
                         <div class="flex items-center text-xl font-bold">
-                            No active disucssions.
+                            {{ forum.forum_title }}
                         </div>
-                    </li>
+                        <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none"
+                                stroke="currentColor">
+                                <path d="M6 3L20 12 6 21 6 3z"></path>
+                            </g>
+                        </svg>
+                    </a>
+                </li>
+                {% empty %}
+                <li class="list-row">
+                    <div class="flex items-center text-xl font-bold">
+                        No active disucssions.
+                    </div>
+                </li>
                 {% endfor %}
-            
+
             </ul>
-            <div class="mt-6">
-                <button class="btn btn-secondary ml-auto block">More Discussions</button>
+            <div class="mt-6 flex justify-end">
+                <a href="{% url 'all_forums' %}?course_id={{ course.course_id }}"
+                   class="btn btn-secondary">
+                   More Discussions
+                </a>
             </div>
         </section>
     </section>
