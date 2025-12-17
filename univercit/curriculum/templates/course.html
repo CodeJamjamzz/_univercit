@@ -19,11 +19,11 @@
                     <ul>
                         <li><a href="{% url 'program_list' %}">Programs</a></li>
                         <li>
-                            {% for program in programs.all %}
+                            {% for program in programs %}
                                 <a href="{% url 'program_detail' program.program_code %}">{{ program.program_code }} </a>
                                 {% if not forloop.last %}-{% endif %}
                             {% empty %}
-                                ___
+                                -
                             {% endfor %}
                         </li>
                         <li><a>{{ course.course_id }}</a></li>
@@ -51,27 +51,9 @@
     <section class="px-24 py-6">
         <section id="overview-section" class="py-12 text-justify scroll-section">
             <h3 class="text-xl font-bold">OVERVIEW</h3>
-            <h2 class="text-4xl font-bold mb-12">About This Course</h2>
-            <p class="mb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec 
-                gravida ligula odio. Suspendisse gravida nibh eu mi semper placerat. 
-                Aenean aliquam quis ipsum a sollicitudin. Aenean vestibulum, nisi a 
-                bibendum suscipit, ante justo mattis ligula, ornare faucibus urna nisl 
-                sed quam. In ut nisl varius enim iaculis vestibulum at non magna. Maecenas 
-                blandit arcu in porta commodo. Praesent est justo, viverra et venenatis 
-                vitae, accumsan eget arcu. Proin aliquet, metus pharetra vestibulum 
-                lobortis, erat justo elementum mi, at blandit lacus ipsum at nisl. Morbi 
-                quis facilisis velit. Proin vel tristique ex. Proin consequat luctus vulputate.
-            </p>
-
-            <p>
-                Integer non lectus mattis, maximus lectus condimentum, aliquet magna. 
-                Proin at purus erat. Ut laoreet nisi ac leo sodales ultrices. Fusce ut 
-                magna tortor. Morbi a metus vitae felis condimentum pulvinar eu eget 
-                ipsum. Praesent vitae tempor elit. Aliquam pulvinar faucibus elit vel 
-                tincidunt. Morbi eget mattis elit. Nunc ut ante arcu. Sed ornare at ante 
-                ut gravida. Cras et mauris massa. Praesent id arcu quam. Mauris tempor 
-                fringilla nibh nec aliquam. Nunc ultricies risus sed purus laoreet dictum. 
-                Donec eu justo et justo elementum eleifend.
+            <h2 class="text-4xl font-bold mb-6">About This Course</h2>
+            <p class="text-lg leading-relaxed">
+                {{ course.course_desc }}
             </p>
         </section>
         <section id="files-section" class="py-12 scroll-section">
@@ -89,31 +71,30 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for i in "01234" %}
+                {% for file in files %}
                 <!-- rows -->
                 <tr>
                     <td>
-                        File Name {{ forloop.counter0 }}
+                        {{ file.file_desc }}
                     </td>
                     <td>
                     <div class="flex items-center gap-3">
-                        <div class="avatar">
-                        <div class="mask mask-squircle h-12 w-12">
-                            <img
-                            src="{% static 'assets/elgato.jpg' %}"
-                            alt="Avatar Tailwind CSS Component" />
-                        </div>
-                        </div>
                         <div>
-                        <div class="font-bold">Jane Doe</div>
-                        <div class="text-sm opacity-50">BSCS</div>
+                        <div class="font-bold">{{ file.student_id.fname }} {{ file.student_id.lname }}</div>
+                        <div class="text-sm opacity-50">{{ file.course_id.course_id }}</div>
                         </div>
                     </div>
                     </td>
-                    <td class="text-center">18/11/2025</td>
-                    <td class="text-center">10</td>
-                    <td class="text-center">3</td>
+                    <td class="text-center">{{ file.date_uploaded|date:"d/m/Y" }}</td>
+                    <td class="text-center">{{ file.upvote_count }}</td>
+                    <td class="text-center">{{ file.downvote_count }}</td>
                 </tr>
+                {% empty %}
+                    <tr>
+                        <td>
+                            No files uploaded.
+                        </td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
@@ -129,45 +110,24 @@
   
             <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Most active disucssions</li>
             
-            <li class="list-row">
-                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
-                <div class="flex items-center text-xl font-bold">
-                    What part of this course did you find most challenging and why?
-                </div>
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-            </li>
+                {% for forum in forums %}
+                    <li class="list-row">
+                        <a href="{% url 'forum' forum.forum_id %}">
+                            <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
+                            <div class="flex items-center text-xl font-bold">
+                                {{ forum.forum_title }}
+                            </div>
+                            <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
+                        </a>
+                    </li>
+                {% empty %}
+                    <li class="list-row">
+                        <div class="flex items-center text-xl font-bold">
+                            No active disucssions.
+                        </div>
+                    </li>
+                {% endfor %}
             
-            <li class="list-row">
-                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
-                <div class="flex items-center text-xl font-bold">
-                    Can anyone share tips for studying this subject effectively?
-                </div>
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-            </li>
-            
-            <li class="list-row">
-                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
-                <div class="flex items-center text-xl font-bold">
-                    How do you usually prepare for quizzes or exams in this course?
-                </div>
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-            </li>
-            
-            <li class="list-row">
-                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
-                <div class="flex items-center text-xl font-bold">
-                    What topics do you think deserve more focus from the instructor?
-                </div>
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-            </li>
-
-            <li class="list-row">
-                <div class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="24px" fill="#5D0E07"><path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg></div>
-                <div class="flex items-center text-xl font-bold">
-                    Can anyone share their notes or summaries for this week’s lecture?
-                </div>
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-            </li>
             </ul>
             <div class="mt-6">
                 <button class="btn btn-secondary ml-auto block">More Discussions</button>
@@ -177,6 +137,6 @@
 </main>
 {% endblock %}
 
-{% block static %}
+{% block script %}
 <script src="{% static 'js/course_scroll_section.js' %}"></script>
 {% endblock %}

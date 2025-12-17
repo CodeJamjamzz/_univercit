@@ -15,7 +15,10 @@ urlpatterns = [
     path('dashboard/programs/', views.DashboardProgramListView.as_view(), name='dashboard_program_list'),
     path('dashboard/programs/create/', views.ProgramCreateView.as_view(), name='dashboard_program_create'),
     path('dashboard/programs/<str:program_code>/update/', views.ProgramUpdateView.as_view(), name='dashboard_program_update'),
+    path('dashboard/programs/delete/', views.ProgramDeleteView.as_view(), name='dashboard_program_delete'),
+
     path('dashboard/courses/', views.DashboardCourseListView.as_view(), name='dashboard_course_list'),
     path('dashboard/courses/create/', views.CourseCreateView.as_view(), name='dashboard_course_create'),
-    path('dashboard/courses/<str:course_id>/update/', views.CourseUpdateView.as_view(), name='dashboard_course_update')
+    path('dashboard/courses/<str:course_id>/update/', views.CourseUpdateView.as_view(), name='dashboard_course_update'),
+    path('dashboard/courses/delete/', views.CourseDeleteView.as_view(), name='dashboard_course_delete'),
 ]

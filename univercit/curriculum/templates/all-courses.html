@@ -50,9 +50,9 @@
                     class="card card-dash card-md bg-base-100 w-80 shadow-md cursor-pointer hover:shadow-lg">
                     <div class="card-body">
                         <h2 class="card-title">{{ course.course_id }}: {{ course.course_name }}</h2>
-                        <p>{{ course.course_desc }}</p>
+                        <p class="truncate">{{ course.course_desc }}</p>
                         <div class="card-actions justify-end mt-6">
-                            {% for program in course.programs.all %}
+                            {% for program in course.programs %}
                                 <div class="badge badge-primary">{{ program.program_code }}</div>
                             {% endfor %}
                         </div>

@@ -23,7 +23,7 @@
                 </div>
                 <h1 class="text-5xl font-bold mb-2">{{ program.program_code }}</h1>
                 <h2 class="text-3xl font-bold mb-6">
-                    {{ program.program_desc }}
+                    {{ program.program_name }}
                 </h2>
             </div>
         </div>
@@ -37,27 +37,9 @@
     <section class="px-24 py-6">
         <section id="overview-section" class="py-12 text-justify scroll-section">
             <h3 class="text-xl font-bold">OVERVIEW</h3>
-            <h2 class="text-4xl font-bold mb-12">About This Program</h2>
-            <p class="mb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec 
-                gravida ligula odio. Suspendisse gravida nibh eu mi semper placerat. 
-                Aenean aliquam quis ipsum a sollicitudin. Aenean vestibulum, nisi a 
-                bibendum suscipit, ante justo mattis ligula, ornare faucibus urna nisl 
-                sed quam. In ut nisl varius enim iaculis vestibulum at non magna. Maecenas 
-                blandit arcu in porta commodo. Praesent est justo, viverra et venenatis 
-                vitae, accumsan eget arcu. Proin aliquet, metus pharetra vestibulum 
-                lobortis, erat justo elementum mi, at blandit lacus ipsum at nisl. Morbi 
-                quis facilisis velit. Proin vel tristique ex. Proin consequat luctus vulputate.
-            </p>
-
-            <p>
-                Integer non lectus mattis, maximus lectus condimentum, aliquet magna. 
-                Proin at purus erat. Ut laoreet nisi ac leo sodales ultrices. Fusce ut 
-                magna tortor. Morbi a metus vitae felis condimentum pulvinar eu eget 
-                ipsum. Praesent vitae tempor elit. Aliquam pulvinar faucibus elit vel 
-                tincidunt. Morbi eget mattis elit. Nunc ut ante arcu. Sed ornare at ante 
-                ut gravida. Cras et mauris massa. Praesent id arcu quam. Mauris tempor 
-                fringilla nibh nec aliquam. Nunc ultricies risus sed purus laoreet dictum. 
-                Donec eu justo et justo elementum eleifend.
+            <h2 class="text-4xl font-bold mb-6">About This Program</h2>
+            <p class="text-lg leading-relaxed">
+                {{ program.program_desc }}
             </p>
         </section>
         <section id="courses-section" class="py-12 scroll-section">
@@ -90,7 +72,7 @@
                         class="card card-dash card-md bg-base-100 w-80 shadow-md cursor-pointer hover:shadow-lg">
                     <div class="card-body">
                         <h2 class="card-title">{{ course.course_id }}: {{ course.course_name }}</h2>
-                        <p>{{ course.course_desc }}</p>
+                        <p class="line-clamp-2">{{ course.course_desc }}</p>
                         <div class="card-actions justify-end mt-6">
                             {% for program in course.programs.all %}
                                 <div class="badge badge-primary">{{ program.program_code }}</div>
@@ -107,7 +89,7 @@
 </main>
 {% endblock %}
 
-{% block static %}
+{% block script %}
 <script src="{% static 'js/course_search.js' %}"></script>
 <script src="{% static 'js/program_scroll_section.js' %}"></script>
 {% endblock %}
