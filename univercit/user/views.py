@@ -104,5 +104,5 @@ class SignInView(View):
             elif status == 2:
                 return redirect('/curriculum/programs/')
             elif status == 3:
-                return render(request, self.template, {"error": "Account has already been used.", 'programs': programs})
+                return render(request, self.template, {"error": "Passwords does not match.", 'programs': programs})
 
