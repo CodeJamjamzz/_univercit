@@ -143,9 +143,9 @@ class LogInView(View):
                     user.set_unusable_password()
                     user.save()
 
-                if student and student.user != user:
-                    student.user = user
-                    student.save()
+               # if student and student.user != user:
+                #    student.user = user
+                 #   student.save()
 
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 
