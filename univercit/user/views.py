@@ -243,3 +243,10 @@ class SignInView(View):
 
             elif status == 3:
                 return render(request, self.template, {"error": "Passwords does not match.", 'programs': programs})
+
+
+def logout_view(request):
+    from django.contrib.auth import logout
+    logout(request)
+    request.session.flush()
+    return redirect('/')
