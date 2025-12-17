@@ -1,5 +1,3 @@
-# rating/views.py
-
 from django.shortcuts import redirect
 from django.db import connection
 from django.contrib.auth.decorators import login_required
@@ -20,9 +18,6 @@ def rate(request):
 
     # stored proc calling
     with connection.cursor() as cursor:
-        cursor.execute(
-            "CALL Rate(%s, %s, %s, %s)",
-            [student.id, item_id, item_type, action]
-        )
+        cursor.callproc('Rate', [student.id, item_id, item_type, action])
 
     return redirect(next_url)

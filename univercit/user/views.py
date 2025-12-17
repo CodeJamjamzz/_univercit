@@ -1,6 +1,7 @@
 import re
 
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
@@ -130,10 +131,31 @@ class LogInView(View):
             login_status = cursor.fetchone()[0]
 
         if login_status == 1:
-            request.session['user_email'] = email
-            request.session['is_authenticated'] = True
-            print("LOGIN")
-            return redirect('/curriculum/programs/')
+            try:
+                student = Student.objects.filter(email=email).first()
+                if student:
+                   username = student.username
+                else:
+                   username = email.split('@')[0] # Fallback
+
+                user, created = User.objects.get_or_create(username=username, defaults={'email': email})
+                if created:
+                    user.set_unusable_password()
+                    user.save()
+
+                if student and student.user != user:
+                    student.user = user
+                    student.save()
+
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                
+                request.session['user_email'] = email
+                request.session['is_authenticated'] = True
+                print("LOGIN")
+                return redirect('/curriculum/programs/')
+            except Exception as e:
+                print(f"Error syncing user: {e}")
+                return render(request, "login.html", {"error": "Login Error"})
 
         else:
             print("DID NOT LOGIN")
@@ -206,6 +228,18 @@ class SignInView(View):
             if status == 1:
                 return render(request, self.template, {"error": "Account has already been used.", 'programs': programs})
             elif status == 2:
-                return redirect('/curriculum/programs/')
+                # Sync with Django User
+                try:
+                    user, created = User.objects.get_or_create(username=username, defaults={'email': email, 'first_name': firstname, 'last_name': lastname})
+                    if created:
+                        user.set_unusable_password()
+                        user.save()
+                    
+                    login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                    return redirect('/curriculum/programs/')
+                except Exception as e:
+                     print(f"Error syncing user: {e}")
+                     return render(request, self.template, {"error": "Signup Error", 'programs': programs})
+
             elif status == 3:
                 return render(request, self.template, {"error": "Passwords does not match.", 'programs': programs})
