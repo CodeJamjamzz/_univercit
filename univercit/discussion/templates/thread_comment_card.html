@@ -20,7 +20,7 @@
             <button class="btn" onclick="document.getElementById('reply_modal_{{ comment.comment_id }}').showModal()">Comment</button>
             {% include 'thread_reply_modal.html' %}
 
-            {% if comment.student_id == user.id %}
+            {% if comment.student_id.studentId == user.id %}
                 <button class="btn btn-ghost ml-4" onclick="document.getElementById('edit_modal_{{ comment.comment_id }}').showModal()">Edit</button>
                 {% include 'thread_edit_comment_modal.html' %}
 

@@ -31,7 +31,7 @@ class Thread(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
 
     def get_student(self):
-        return Student.objects.filter(studentId=self.student_id)
+        return Student.objects.get(studentId=self.student_id.studentId)
 
     def get_comments(self):
         return Comment.objects.filter(thread_id=self.thread_id)
@@ -51,7 +51,7 @@ class Comment(models.Model):
     reply_to = models.ForeignKey('Comment', on_delete=models.SET_NULL, null=True)
 
     def get_student_username(self):
-        return Student.objects.get(studentId=self.student_id)
+        return Student.objects.get(studentId=self.student_id.studentId).username
 
     def get_replied_comment(self):
         return Comment.objects.filter(comment_id=self.reply_to.comment_id)

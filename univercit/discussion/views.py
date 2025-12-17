@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.db import connection
+
+from user.models import Student
 from .models import Forum, Thread, Comment
 
 from datetime import datetime
@@ -52,7 +54,7 @@ def thread_view(request, thread_id):
         row_dict = dict(zip(columns, row))
         thread_comments.append(Comment(**row_dict))
 
-    thread_student = thread.get_student()
+    thread_student = thread.get_student().username
 
     # Give thread info to thread template
     return render(request, 'thread.html', {
@@ -86,13 +88,14 @@ def add_thread(request, forum_id):
 # @login_required
 def add_comment(request, thread_id):
     thread = Thread.objects.get(thread_id=thread_id)
+    student = Student.objects.get(studentId=request.user.id)
 
     if request.method == 'POST':
         content = request.POST.get('content')
         Comment.objects.create(
             content=content,
             thread_id=thread,
-            student_id=request.user.id
+            student_id=student
         )
     return redirect('thread', thread_id=thread_id)
 
