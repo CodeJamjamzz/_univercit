@@ -14,26 +14,13 @@
                 <div class="breadcrumbs text-md mb-4">
                     <ul>
                         <li><a href="{% url 'program_list' %}">Programs</a></li>
-
-                        <li>
-                            <a href="{% url 'course_detail' forum.course_id_id %}">
-                                {{ forum.course_id_id }}
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="{% url 'all_forums' %}?course_id={{ forum.course_id_id }}">
-                                All Forums
-                            </a>
-                        </li>
-
+                        <li><a href="{% url 'course_detail' forum.course_id_id %}">{{ forum.course_id_id }}</a></li>
+                        <li><a href="{% url 'all_forums' %}?course_id={{ forum.course_id_id }}">All Forums</a></li>
                         <li>{{ forum.forum_title }}</li>
                     </ul>
                 </div>
                 <h1 class="text-5xl font-bold mb-2">{{ forum.forum_title }}</h1>
-                <h2 class="text-xl font-bold mb-6">
-                    {{ forum.forum_desc }}
-                </h2>
+                <h2 class="text-xl font-bold mb-6">{{ forum.forum_desc }}</h2>
                 <span>View all threads in this forum.</span>
             </div>
         </div>
@@ -42,13 +29,11 @@
     <section class="px-24 py-12">
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-xl font-bold">THREADS</h3>
-            <!-- Open the modal using ID.showModal() method -->
             <button class="btn btn-secondary" onclick="new_thread_modal.showModal()">New Thread</button>
             <dialog id="new_thread_modal" class="modal">
                 <div class="modal-box w-11/12 max-w-5xl bg-transparent shadow-none p-0 overflow-visible">
                     <form method="dialog">
-                        <button
-                            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-50 bg-base-100">✕</button>
+                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-50 bg-base-100">✕</button>
                     </form>
                     {% include 'forum_make_thread.html' %}
                 </div>
@@ -60,25 +45,22 @@
 
         <div class="flex flex-col gap-4">
             {% for thread in forum_threads %}
-            <!-- Thread Card -->
             <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 border border-base-200">
                 <div class="card-body flex-row p-6 gap-6 items-center">
 
-                    <!-- Voting Side -->
-                    <!-- Voting Side -->
                     <div class="flex flex-col items-center gap-1 min-w-[3rem]">
+
                         <form action="{% url 'rate' %}" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="item_id" value="{{ thread.thread_id }}">
                             <input type="hidden" name="item_type" value="thread">
                             <input type="hidden" name="action" value="upvote">
                             <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
                             <button type="submit"
                                 class="btn btn-ghost btn-sm btn-circle {% if thread.user_is_upvoted %}text-yellow-500{% else %}text-gray-400{% endif %} hover:text-yellow-500 hover:bg-transparent">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                    width="24px" fill="currentColor">
-                                    <path d="M480-600 240-360l56 56 184-184 184 184 56-56-240-240Z"
-                                        stroke="currentColor" stroke-width="60" />
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+                                    <path d="M480-600 240-360l56 56 184-184 184 184 56-56-240-240Z" stroke="currentColor" stroke-width="60" />
                                 </svg>
                             </button>
                         </form>
@@ -91,18 +73,16 @@
                             <input type="hidden" name="item_type" value="thread">
                             <input type="hidden" name="action" value="downvote">
                             <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
                             <button type="submit"
-                                class="btn btn-ghost btn-sm btn-circle {% if thread.user_is_upvoted == False %}text-red-500{% else %}text-gray-400{% endif %} hover:text-red-500 hover:bg-transparent">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                    width="24px" fill="currentColor">
-                                    <path d="M480-360 240-600l56-56 184 184 184-184 56 56-240 240Z"
-                                        stroke="currentColor" stroke-width="60" />
+                                class="btn btn-ghost btn-sm btn-circle {% if thread.user_is_upvoted is False %}text-red-500{% else %}text-gray-400{% endif %} hover:text-red-500 hover:bg-transparent">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+                                    <path d="M480-360 240-600l56-56 184 184 184-184 56 56-240 240Z" stroke="currentColor" stroke-width="60" />
                                 </svg>
                             </button>
                         </form>
                     </div>
 
-                    <!-- Thread Content -->
                     <div class="flex-1">
                         <a href="{% url 'thread' thread.thread_id %}" class="group block">
                             <h2 class="card-title text-2xl mb-2 transition-colors">
@@ -110,8 +90,7 @@
                             </h2>
                         </a>
                         <div class="text-sm text-gray-500">
-                            Posted by <span
-                                class="font-semibold text-base-content">{{thread.student_id.username}}</span>
+                            Posted by <span class="font-semibold text-base-content">{{thread.student_id.username}}</span>
                             on {{ thread.date_created|date:"M d, Y" }}
                         </div>
                     </div>
@@ -121,8 +100,7 @@
             {% empty %}
             <div class="text-center py-10">
                 <p class="text-xl font-bold text-gray-400">No threads found in this forum.</p>
-                <a href="{% url 'add_thread' forum.forum_id %}" class="btn btn-outline btn-primary mt-4">Start a
-                    Discussion</a>
+                <a href="{% url 'add_thread' forum.forum_id %}" class="btn btn-outline btn-primary mt-4">Start a Discussion</a>
             </div>
             {% endfor %}
         </div>

@@ -8,10 +8,16 @@ from user.models import Student
 @require_POST
 def rate(request):
     # getting user
-    if hasattr(request.user, 'studentId'):
-        student = request.user
+    user_email = request.user.email
+    if not user_email:
+        student = None
     else:
-        student = Student.objects.get(email=request.user.email)
+        try:
+            student = Student.objects.get(email__iexact=user_email)
+        except Student.DoesNotExist:
+            student = None
+        except Student.MultipleObjectsReturned:
+            student = Student.objects.filter(email__iexact=user_email).first()
 
     # getting params
     item_id = request.POST.get('item_id')

@@ -11,7 +11,6 @@
 
 <body class="min-h-screen bg-gray-100/50 text-gray-900 font-sans">
 
-    <!-- Navbar -->
     <nav class="bg-white sticky top-0 z-50 border-b border-gray-200 px-4 h-16 flex items-center justify-between">
         <div class="flex items-center">
             <a href="{% url 'forum' forum_id=thread.forum_id.forum_id %}"
@@ -29,7 +28,6 @@
 
     <main class="max-w-4xl mx-auto py-8 px-4">
 
-        <!-- Thread Post -->
         <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden mb-8">
             <div class="p-8 pb-4">
                 <div class="flex items-center gap-4 mb-6">
@@ -53,14 +51,15 @@
                 </div>
             </div>
 
-            <!-- Thread Actions -->
             <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex items-center gap-4">
+
                 <form action="{% url 'rate' %}" method="post" class="flex items-center">
                     {% csrf_token %}
                     <input type="hidden" name="item_id" value="{{ thread.thread_id }}">
                     <input type="hidden" name="item_type" value="thread">
                     <input type="hidden" name="action" value="upvote">
                     <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
                     <button type="submit"
                         class="btn btn-ghost btn-sm btn-circle {% if thread.user_is_upvoted %}text-yellow-500{% else %}text-gray-400{% endif %} hover:text-yellow-500 hover:bg-transparent">
                         ▲
@@ -75,8 +74,9 @@
                     <input type="hidden" name="item_type" value="thread">
                     <input type="hidden" name="action" value="downvote">
                     <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
                     <button type="submit"
-                        class="btn btn-ghost btn-sm btn-circle {% if thread.user_is_upvoted == False %}text-red-500{% else %}text-gray-400{% endif %} hover:text-red-500 hover:bg-transparent">
+                        class="btn btn-ghost btn-sm btn-circle {% if thread.user_is_upvoted is False %}text-red-500{% else %}text-gray-400{% endif %} hover:text-red-500 hover:bg-transparent">
                         ▼
                     </button>
                 </form>
@@ -88,7 +88,6 @@
                 class="bg-gray-100/50 pr-4 text-xs font-bold text-gray-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-2">RESPONSES</span>
         </div>
 
-        <!-- Comment Form -->
         <div class="bg-white rounded-lg p-6 mb-10 border border-gray-200">
             <div class="text-gray-700 font-bold mb-4">
                 Add Your Comment
@@ -108,13 +107,12 @@
         </div>
 
 
-        <!-- Responses -->
         <div class="space-y-4">
             {% if thread_comments|length > 1 %}
             {% for comment in thread_comments|slice:"1:" %}
             <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
                 <div class="p-6 flex gap-4">
-                    <!-- Comment Voting -->
+
                     <div class="flex flex-col items-center gap-1 min-w-[3rem]">
                         <form action="{% url 'rate' %}" method="post">
                             {% csrf_token %}
@@ -122,6 +120,7 @@
                             <input type="hidden" name="item_type" value="comment">
                             <input type="hidden" name="action" value="upvote">
                             <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
                             <button type="submit"
                                 class="btn btn-ghost btn-sm btn-circle {% if comment.user_is_upvoted %}text-yellow-500{% else %}text-gray-400{% endif %} hover:text-yellow-500 hover:bg-transparent">
                                 ▲
@@ -136,20 +135,20 @@
                             <input type="hidden" name="item_type" value="comment">
                             <input type="hidden" name="action" value="downvote">
                             <input type="hidden" name="next" value="{{ request.get_full_path }}">
+
                             <button type="submit"
-                                class="btn btn-ghost btn-sm btn-circle {% if comment.user_is_upvoted == False %}text-red-500{% else %}text-gray-400{% endif %} hover:text-red-500 hover:bg-transparent">
+                                class="btn btn-ghost btn-sm btn-circle {% if comment.user_is_upvoted is False %}text-red-500{% else %}text-gray-400{% endif %} hover:text-red-500 hover:bg-transparent">
                                 ▼
                             </button>
                         </form>
                     </div>
 
-                    <!-- Comment Content -->
                     <div class="flex-1">
                         <div class="flex items-center justify-between mb-2">
                             <div class="font-bold text-gray-900 text-sm">
                                 {{ comment.student_id.username|default:"Anonymous" }}
                             </div>
-                            {% if request.user.id == comment.student_id.studentId %}
+                            {% if request.user.username == comment.student_id.username %}
                             <button onclick="toggleEdit{{comment.comment_id}}()"
                                 class="btn btn-xs btn-outline normal-case hover:bg-gray-100">
                                 Edit
@@ -157,10 +156,8 @@
                             {% endif %}
                         </div>
 
-                        <!-- Display Mode -->
                         <p id="content-{{ comment.comment_id }}" class="text-gray-600 text-sm">{{ comment.content }}</p>
 
-                        <!-- Edit Mode (hidden by default) -->
                         <form id="edit-form-{{ comment.comment_id }}"
                             action="{% url 'edit_comment' comment.comment_id %}" method="post" style="display:none;">
                             {% csrf_token %}
@@ -179,7 +176,7 @@
                         </form>
 
                         <script>
-                            function toggleEdit{{comment.comment_id}} () {
+                            function toggleEdit{{ comment.comment_id }}() {
                                 const content = document.getElementById('content-{{ comment.comment_id }}');
                                 const form = document.getElementById('edit-form-{{ comment.comment_id }}');
                                 if (content.style.display === 'none') {
