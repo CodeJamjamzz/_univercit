@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create your account</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Full-screen background */
+        .full-background {
+            background-image: url("{% static 'signup_bg.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Background element -->
+<div class="full-background"></div>
+
+<div class="min-h-screen flex items-center justify-center relative py-12">
+    <!-- Signup card -->
+    <div class="card w-full max-w-lg shadow-2xl bg-base-100 z-10">
+        <form class="card-body" method="POST" action="{% url 'update_student' student.studentId %}">
+            {% csrf_token %}
+            <h2 class="card-title text-2xl font-bold mb-4">Update account</h2>
+            <!-- Display error message -->
+                {% if error %}
+                    <div class="text-red-600 font-semibold mb-2">{{ error }}</div>
+                {% endif %}
+
+            <!-- First Name & Last Name -->
+            <div class="flex flex-col sm:flex-row gap-4">
+                <div class="form-control w-full sm:w-1/2">
+                    <label class="label"><span class="label-text">First Name</span></label>
+                    <input type="text" name="fname" value="{{ student.fname }}"placeholder="John" class="input input-bordered" required />
+                </div>
+                <div class="form-control w-full sm:w-1/2">
+                    <label class="label"><span class="label-text">Last Name</span></label>
+                    <input type="text" name="lname" value="{{ student.lname }}" placeholder="Doe" class="input input-bordered" required />
+                </div>
+            </div>
+
+            <!-- Username -->
+            <div class="form-control">
+                <label class="label"><span class="label-text">Username</span></label>
+                <input type="text" name="username" value="{{ student.username }}" placeholder="johndoe" class="input input-bordered" required />
+            </div>
+
+            <!-- Email -->
+            <div class="form-control">
+                <label class="label"><span class="label-text">Email</span></label>
+                <input type="email" name="email" value="{{ student.email }}" placeholder="john.doe@example.com" class="input input-bordered" required />
+            </div>
+
+            <!-- Program Selection -->
+            <div class="form-control">
+                <label class="label"><span class="label-text">Select your Program</span></label>
+                <select class="select select-bordered" name="programId" required>
+                    <option disabled {% if not student.programId_id %}selected{% endif %}>Choose your program</option>
+                    {% for program in programs %}
+                        <option value="{{ program.program_code }}"
+                            {% if program.program_code == student.programId_id %}selected{% endif %}>
+                            {{ program.program_desc }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-control mt-6">
+                <button type="submit" class="btn border-none text-black bg-yellow-300 hover:bg-yellow-400">Update Account</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
