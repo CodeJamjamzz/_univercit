@@ -1,18 +1,32 @@
 import re
+from math import ceil
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import View
 from .models import Student
 from django.db import connection
 
+from curriculum.models import Program
+
 
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
 
+def get_programs():
+
+    with connection.cursor() as cursor:
+        cursor.execute("Select * from all_programs")
+        rows = cursor.fetchall()
+        columns = [col[0] for col in cursor.description]
+        programs = [dict(zip(columns, row)) for row in rows]
+
+    return programs
 
 def get_dashboardstatsrow():
     with connection.cursor() as cursor:
@@ -85,6 +99,77 @@ def get_courses_per_program():
 
     return program_stats
 
+def student_directory(q, program):
+
+    with connection.cursor() as cursor:
+        cursor.callproc("student_directory", [q, program])
+
+        students = cursor.fetchall()
+
+    student_list = [
+        {
+            "studentId": row[0],
+            "fname": row[1],
+            "lname": row[2],
+            "username": row[3],
+            "email": row[4],
+            "programId_id": row[5],
+        }
+        for row in students
+    ]
+
+    programs = get_programs()
+
+    return {
+        "students": student_list,
+        "programs": programs,
+        "q": q,
+        "program_selected": program
+    }
+
+class TableView(View):
+    update_template = 'update_account.html'
+
+    def get(self, request, id):
+        student = get_object_or_404(Student, pk=id)
+        programs = Program.objects.all()
+        return render(request, self.update_template, {
+            "student": student,
+            "programs": programs
+        })
+
+    def post(self, request, id):
+
+        with connection.cursor() as cursor:
+            cursor.callproc(
+                'update_student',
+                [
+                    id,
+                    request.POST.get('fname'),
+                    request.POST.get('lname'),
+                    request.POST.get('username'),
+                    request.POST.get('email'),
+                    request.POST.get('programId')
+                ]
+            )
+
+            result = cursor.fetchone()
+            status = result[0] if result else -1
+
+            if status != 0:
+                return render(
+                    request,
+                    self.update_template,
+                    {'error': 'SQL Exception occurred.'}
+                )
+
+        return redirect('dashboard')
+
+def delete_student(request, id):
+    with connection.cursor() as cursor:
+        cursor.callproc('delete_student', [id])
+    return redirect('dashboard')
+
 class DashboardView(View):
     template = 'dashboard.html'
 
@@ -99,18 +184,43 @@ class DashboardView(View):
         students_per_program = dashboard_view()
         course_per_program = get_courses_per_program()
 
+        q = request.GET.get("q", "")
+        program = request.GET.get("program", "")
+
+        table = student_directory(q, program)
+        students = table['students']
+        programs = table['programs']
+
         if status == 1:
-            print("SQLExcetpion occured")
+            print("SQLException occurred")
             return render(request, self.template)
 
+        # Render template
         return render(request, self.template,
-                      {"total_students": total_students,
-                       "total_programs": total_programs,
-                       "total_courses": total_courses,
-                       "total_files": total_files,
-                       "program_stats": students_per_program,
-                       "courseperprogram_stats": course_per_program})
+                      {
+                          "total_students": total_students,
+                          "total_programs": total_programs,
+                          "total_courses": total_courses,
+                          "total_files": total_files,
+                          "program_stats": students_per_program,
+                          "courseperprogram_stats": course_per_program,
+                          "students": students,  #
+                          "programs": programs,
+                          "q": q,
+                          "program_selected": program
+                      })
 
+
+def check_admin(email, password):
+    try:
+        user = User.objects.get(email=email)
+        if user is None:
+            return False
+        if user.check_password(password) and user.is_superuser:
+            return user
+    except User.DoesNotExist:
+        return None
+    return None
 
 class LogInView(View):
     template = "login.html"
@@ -122,6 +232,11 @@ class LogInView(View):
         email = request.POST["email"]
         password = request.POST["password"]
         login_status = 0
+
+        admin_user = check_admin(email, password)
+        if admin_user:
+            login(self.request, admin_user)  # log in the admin
+            return redirect('dashboard')
 
         with connection.cursor() as cursor:
             cursor.execute("SET @login_result = 0;")
@@ -139,30 +254,15 @@ class LogInView(View):
             print("DID NOT LOGIN")
             return render(request, "login.html", {"error": "Invalid credentials"})
 
-
 class SignInView(View):
     template = "signin.html"
 
-    def get_programs(self):
-
-        with connection.cursor() as cursor:
-            cursor.execute("Select * from all_programs")
-            rows = cursor.fetchall()
-            columns = [col[0] for col in cursor.description]
-            programs = [dict(zip(columns, row)) for row in rows]
-
-        return programs
-
     def get(self, request):
-        programs = self.get_programs()
+        programs = get_programs()
         return render(request, self.template, {'programs': programs})
 
-        # if not programs:
-        #     programs = [{"program_code": "None", "program_desc": "No programs available"}]
-        # return render(request, self.template, {'programs': programs})
-
     def post(self, request):
-        programs = self.get_programs()
+        programs = get_programs()
         program_code = request.POST.get("programId")
         print(program_code)
         firstname = request.POST.get('fname')
